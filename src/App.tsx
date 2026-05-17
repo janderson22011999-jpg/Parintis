@@ -318,55 +318,145 @@ const CuradoriaPage = () => (
   </div>
 );
 
-const ManifestoPage = () => (
-  <div className="pt-32 px-6 max-w-4xl mx-auto pb-32">
-    <div className="text-center mb-24">
-      <p className="text-[10px] uppercase tracking-[0.4em] text-heritage-red mb-8 font-bold">Ação Política e Cultural</p>
-      <h1 className="text-6xl md:text-8xl font-serif mb-6">Assine o Manifesto <br /><span className="serif-italic">Global</span></h1>
-    </div>
+const ManifestoPage = () => {
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [city, setCity] = React.useState('');
+  const [status, setStatus] = React.useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = React.useState('');
+  const [count, setCount] = React.useState<number | null>(null);
 
-    <div className="prose prose-heritage text-xl leading-relaxed opacity-80 space-y-12 mb-32">
-      <p className="first-letter:text-7xl first-letter:font-serif first-letter:float-left first-letter:mr-4 first-letter:mt-2">
-        Sua assinatura não é apenas um apoio; é um ato de pressão política e cultural. Exigimos que a UNESCO ouça a força do movimento popular que pulsa no coração da Amazônia. 
-      </p>
-      <p>
-        O Boi-Bumbá de Parintins já é Patrimônio Imaterial da Humanidade em sua essência e prática. A formalização internacional é um dever das instituições globais perante a diversidade humana. Assine e faça parte desta convocação histórica.
-      </p>
-      <div className="py-12 border-y border-heritage-ink/10 text-center italic text-2xl">
-        "Cada assinatura é um eco que viaja do coração da Amazônia até as salas da ONU."
-      </div>
-    </div>
+  React.useEffect(() => {
+    fetch('/api/signatures/count')
+      .then((r) => r.json())
+      .then((data) => setCount(data.count))
+      .catch(() => {});
+  }, []);
 
-    <section id="sign" className="bg-heritage-ink text-heritage-cream p-12 rounded-[2rem] shadow-2xl">
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-serif mb-2">Petição Pública</h2>
-        <p className="text-xs uppercase tracking-widest opacity-60">Reconhecimento como Patrimônio da Humanidade</p>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    setErrorMsg('');
+
+    try {
+      const res = await fetch('/api/signatures', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, city }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrorMsg(data.error || 'Erro ao registrar assinatura.');
+        setStatus('error');
+        return;
+      }
+
+      setStatus('success');
+      setCount((c) => (c !== null ? c + 1 : null));
+    } catch {
+      setErrorMsg('Erro de conexão. Tente novamente.');
+      setStatus('error');
+    }
+  };
+
+  return (
+    <div className="pt-32 px-6 max-w-4xl mx-auto pb-32">
+      <div className="text-center mb-24">
+        <p className="text-[10px] uppercase tracking-[0.4em] text-heritage-red mb-8 font-bold">Ação Política e Cultural</p>
+        <h1 className="text-6xl md:text-8xl font-serif mb-6">Assine o Manifesto <br /><span className="serif-italic">Global</span></h1>
+        {count !== null && (
+          <p className="text-sm uppercase tracking-widest opacity-50 mt-6">
+            <span className="text-heritage-red font-bold text-2xl">{count.toLocaleString('pt-BR')}</span> pessoas já assinaram
+          </p>
+        )}
       </div>
-      <form className="space-y-8" onSubmit={(e) => {
-        e.preventDefault();
-        alert('Obrigado pelo seu apoio! Sua assinatura foi registrada simbolicamente.');
-      }}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="flex flex-col gap-2">
-            <label className="text-[10px] uppercase tracking-widest font-bold opacity-60">Nome Completo</label>
-            <input type="text" required className="bg-transparent border-b border-heritage-cream/20 py-2 focus:border-heritage-cream outline-none transition-colors" placeholder="Nome completo" />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-[10px] uppercase tracking-widest font-bold opacity-60">E-mail</label>
-            <input type="email" required className="bg-transparent border-b border-heritage-cream/20 py-2 focus:border-heritage-cream outline-none transition-colors" placeholder="seuemail@exemplo.com" />
-          </div>
+
+      <div className="prose prose-heritage text-xl leading-relaxed opacity-80 space-y-12 mb-32">
+        <p className="first-letter:text-7xl first-letter:font-serif first-letter:float-left first-letter:mr-4 first-letter:mt-2">
+          Sua assinatura não é apenas um apoio; é um ato de pressão política e cultural. Exigimos que a UNESCO ouça a força do movimento popular que pulsa no coração da Amazônia.
+        </p>
+        <p>
+          O Boi-Bumbá de Parintins já é Patrimônio Imaterial da Humanidade em sua essência e prática. A formalização internacional é um dever das instituições globais perante a diversidade humana. Assine e faça parte desta convocação histórica.
+        </p>
+        <div className="py-12 border-y border-heritage-ink/10 text-center italic text-2xl">
+          "Cada assinatura é um eco que viaja do coração da Amazônia até as salas da ONU."
         </div>
-        <div className="flex flex-col gap-2">
-          <label className="text-[10px] uppercase tracking-widest font-bold opacity-60">Cidade / País</label>
-          <input type="text" required className="bg-transparent border-b border-heritage-cream/20 py-2 focus:border-heritage-cream outline-none transition-colors" placeholder="Onde você está no mundo?" />
+      </div>
+
+      <section id="sign" className="bg-heritage-ink text-heritage-cream p-12 rounded-[2rem] shadow-2xl">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-serif mb-2">Petição Pública</h2>
+          <p className="text-xs uppercase tracking-widest opacity-60">Reconhecimento como Patrimônio da Humanidade</p>
         </div>
-        <button className="w-full py-6 bg-heritage-cream text-heritage-ink text-sm uppercase tracking-[0.3em] font-bold hover:bg-heritage-red hover:text-white transition-all duration-500 rounded-full">
-          Assinar Agora
-        </button>
-      </form>
-    </section>
-  </div>
-);
+
+        {status === 'success' ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-12 space-y-6"
+          >
+            <div className="w-20 h-20 rounded-full border-2 border-heritage-cream/40 flex items-center justify-center mx-auto">
+              <span className="text-4xl">✓</span>
+            </div>
+            <h3 className="text-3xl font-serif">Obrigado, {name.split(' ')[0]}!</h3>
+            <p className="opacity-60 max-w-sm mx-auto leading-relaxed">
+              Sua assinatura foi registrada. Juntos ecoamos a voz da Amazônia até a UNESCO.
+            </p>
+          </motion.div>
+        ) : (
+          <form className="space-y-8" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] uppercase tracking-widest font-bold opacity-60">Nome Completo</label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="bg-transparent border-b border-heritage-cream/20 py-2 focus:border-heritage-cream outline-none transition-colors"
+                  placeholder="Nome completo"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] uppercase tracking-widest font-bold opacity-60">E-mail</label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-transparent border-b border-heritage-cream/20 py-2 focus:border-heritage-cream outline-none transition-colors"
+                  placeholder="seuemail@exemplo.com"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] uppercase tracking-widest font-bold opacity-60">Cidade / País</label>
+              <input
+                type="text"
+                required
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="bg-transparent border-b border-heritage-cream/20 py-2 focus:border-heritage-cream outline-none transition-colors"
+                placeholder="Onde você está no mundo?"
+              />
+            </div>
+            {status === 'error' && (
+              <p className="text-red-400 text-sm text-center">{errorMsg}</p>
+            )}
+            <button
+              type="submit"
+              disabled={status === 'loading'}
+              className="w-full py-6 bg-heritage-cream text-heritage-ink text-sm uppercase tracking-[0.3em] font-bold hover:bg-heritage-red hover:text-white transition-all duration-500 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {status === 'loading' ? 'Registrando...' : 'Assinar Agora'}
+            </button>
+          </form>
+        )}
+      </section>
+    </div>
+  );
+};
 
 const ItemDetail = () => {
   const { id } = useParams<{ id: string }>();
