@@ -127,13 +127,19 @@ const Home = () => {
 
   return (
     <div className="pt-32">
+      {/* Background color blocks — red left, blue right, never mixed */}
+      <div className="fixed inset-0 -z-10 pointer-events-none">
+        <div className="absolute top-0 left-0 w-[18%] h-full" style={{ backgroundColor: "rgba(185,28,28,0.07)" }} />
+        <div className="absolute top-0 right-0 w-[18%] h-full" style={{ backgroundColor: "rgba(29,78,216,0.07)" }} />
+      </div>
+
       <section className="min-h-[90vh] flex items-center px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-xl pb-12"
+            className="max-w-xl"
           >
             <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-40 mb-6 block">Campanha Global</span>
             <h1 className="text-7xl md:text-[10rem] font-serif leading-[0.8] tracking-tighter mb-12">
@@ -163,7 +169,8 @@ const Home = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-            className="relative h-[80vh] lg:h-[90vh] rounded-[2rem] overflow-hidden shadow-2xl"
+            className="relative rounded-[2rem] overflow-hidden shadow-2xl self-center"
+            style={{ height: "clamp(400px, 65vh, 700px)" }}
           >
             <img
               src={ritualImg}
