@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { MessageCircle, X, Send, User, Bot, Loader2 } from "lucide-react";
+import { MessageCircle, X, Send, User, Bot, Loader2, Phone } from "lucide-react";
 import { GoogleGenAI } from "@google/genai";
 import { cn } from "../lib/utils";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+const WHATSAPP_URL = "https://wa.me/5592985002781";
 
 interface Message {
   role: "user" | "bot";
@@ -14,7 +16,7 @@ interface Message {
 export const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "bot", content: "Oi tudo bem, me chamo Irae, sou a assistente de comunicação da campanha, como posso ajudar voce nesse contato?" }
+    { role: "bot", content: "Olá! Me chamo Tapiri, sou o assistente da campanha Bumbá Patrimônio Vivo. Posso te ajudar com informações sobre o Boi-Bumbá de Parintins ou encaminhar seu contato diretamente para a equipe da campanha pelo WhatsApp. Como posso ajudar?" }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +47,7 @@ export const ChatBot = () => {
           { role: "user", parts: [{ text: userMessage }] }
         ],
         config: {
-          systemInstruction: "Seu nome é Irae e você é a assistente de comunicação da campanha 'Bumbá Patrimônio Vivo'. Sua missão é ajudar usuários a navegar pelo site, fornecer informações sobre o Boi-Bumbá de Parintins (Garantido e Caprichoso) e engajá-los na petição pública para o reconhecimento oficial como Patrimônio Imaterial da Humanidade. O tom deve ser respeitoso, culturalmente sensível, porém argumentativo e firme sobre a importância deste título mundial para a Amazônia. Responda em Português do Brasil.",
+          systemInstruction: `Seu nome é Tapiri e você é o assistente da campanha 'Bumbá Patrimônio Vivo'. Sua missão é ajudar usuários a navegar pelo site, fornecer informações sobre o Boi-Bumbá de Parintins (Garantido e Caprichoso) e engajá-los na petição pública para o reconhecimento oficial como Patrimônio Imaterial da Humanidade. O tom deve ser respeitoso, culturalmente sensível, porém argumentativo e firme sobre a importância deste título mundial para a Amazônia. Quando o usuário quiser entrar em contato com a campanha, falar com alguém da equipe, tirar dúvidas específicas, enviar sugestões ou demonstrar interesse em colaborar, indique sempre o WhatsApp oficial da campanha: ${WHATSAPP_URL}. Responda em Português do Brasil.`,
         }
       });
 
@@ -67,15 +69,15 @@ export const ChatBot = () => {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="mb-4 w-[350px] md:w-[400px] h-[500px] bg-heritage-cream border border-heritage-ink/10 rounded-3xl shadow-2xl flex flex-col overflow-hidden"
+            className="mb-4 w-[350px] md:w-[400px] h-[540px] bg-heritage-cream border border-heritage-ink/10 rounded-3xl shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="bg-heritage-ink p-4 flex justify-between items-center text-heritage-cream">
               <div className="flex items-center gap-2">
                 <Bot size={20} />
-                <span className="font-serif italic font-bold tracking-tight">Irae - Comunicação</span>
+                <span className="font-serif italic font-bold tracking-tight">Tapiri - Comunicação</span>
               </div>
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
                 className="hover:rotate-90 transition-transform duration-300"
               >
@@ -84,13 +86,13 @@ export const ChatBot = () => {
             </div>
 
             {/* Messages */}
-            <div 
+            <div
               ref={scrollRef}
               className="flex-grow overflow-y-auto p-4 space-y-4 scroll-smooth"
             >
               {messages.map((msg, i) => (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   className={cn(
                     "flex gap-2 max-w-[85%]",
                     msg.role === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
@@ -104,8 +106,8 @@ export const ChatBot = () => {
                   </div>
                   <div className={cn(
                     "p-3 rounded-2xl text-sm leading-relaxed",
-                    msg.role === "user" 
-                      ? "bg-heritage-ink text-heritage-cream rounded-tr-none" 
+                    msg.role === "user"
+                      ? "bg-heritage-ink text-heritage-cream rounded-tr-none"
                       : "bg-white border border-heritage-ink/5 rounded-tl-none shadow-sm"
                   )}>
                     {msg.content}
@@ -128,10 +130,21 @@ export const ChatBot = () => {
               )}
             </div>
 
+            {/* WhatsApp CTA */}
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mx-4 mb-2 flex items-center justify-center gap-2 py-2 bg-green-600 hover:bg-green-700 text-white text-xs font-bold uppercase tracking-widest rounded-full transition-colors"
+            >
+              <Phone size={13} />
+              Falar com a Campanha no WhatsApp
+            </a>
+
             {/* Input */}
-            <form 
+            <form
               onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-              className="p-4 border-t border-heritage-ink/5 bg-white"
+              className="p-4 pt-2 border-t border-heritage-ink/5 bg-white"
             >
               <div className="relative flex items-center gap-2">
                 <input
@@ -141,7 +154,7 @@ export const ChatBot = () => {
                   placeholder="Pergunte sobre as tradições..."
                   className="w-full bg-heritage-cream/50 border-none rounded-full px-4 py-2 pr-10 text-sm focus:ring-2 focus:ring-heritage-ink outline-none"
                 />
-                <button 
+                <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
                   className="absolute right-1 w-8 h-8 rounded-full bg-heritage-ink text-heritage-cream flex items-center justify-center hover:bg-heritage-red transition-colors disabled:opacity-50"

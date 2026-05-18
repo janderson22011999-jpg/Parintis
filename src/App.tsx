@@ -486,13 +486,15 @@ const ManifestoPage = () => {
                 Erro ao registrar. Tente novamente em instantes.
               </p>
             )}
-            <button
+            <motion.button
               type="submit"
               disabled={status === "loading"}
-              className="w-full py-6 bg-heritage-cream text-heritage-ink text-sm uppercase tracking-[0.3em] font-bold hover:bg-heritage-red hover:text-white transition-all duration-500 rounded-full disabled:opacity-50"
+              animate={{ backgroundColor: ["#b91c1c", "#1d4ed8", "#b91c1c"] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="w-full py-6 text-white text-sm uppercase tracking-[0.3em] font-bold rounded-full disabled:opacity-50"
             >
               {status === "loading" ? "Registrando..." : "Assinar Agora"}
-            </button>
+            </motion.button>
           </form>
         )}
       </section>
