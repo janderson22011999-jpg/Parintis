@@ -162,15 +162,20 @@ const Home = () => {
 
   return (
     <div className="pt-32">
-      {/* Background — horizontal alternating red/blue stripes, never mixed */}
-      <div className="fixed inset-0 -z-10 pointer-events-none flex flex-col">
-        {[...Array(10)].map((_, i) => (
-          <div key={i} className="flex-1 w-full" style={{ backgroundColor: i % 2 === 0 ? "rgba(185,28,28,0.05)" : "rgba(29,78,216,0.05)" }} />
-        ))}
-      </div>
+      {/* Background — blocos inteiros alternando azul/vermelho, nunca misturados */}
+      <div className="fixed inset-0 -z-10 pointer-events-none" style={{
+        background: `repeating-linear-gradient(
+          to bottom,
+          rgba(29,78,216,0.07) 0vh,
+          rgba(29,78,216,0.07) 100vh,
+          rgba(185,28,28,0.07) 100vh,
+          rgba(185,28,28,0.07) 200vh
+        )`,
+        backgroundSize: "100% 200vh"
+      }} />
 
       <section className="min-h-[90vh] flex items-center px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-2 gap-8 md:gap-16 items-center w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -178,13 +183,13 @@ const Home = () => {
             className="max-w-xl"
           >
             <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-40 mb-6 block">Campanha Global</span>
-            <h1 className="text-7xl md:text-[10rem] font-serif leading-[0.8] tracking-tighter mb-12">
+            <h1 className="text-4xl md:text-7xl lg:text-[8rem] font-serif leading-[0.85] tracking-tighter mb-8 md:mb-12">
               O <span className="serif-italic">Pulsar</span> <br />
               de um <br />
               Patrimônio <span className="serif-italic">Vivo</span>
             </h1>
-            <div className="flex flex-col gap-10">
-              <p className="text-xl opacity-70 leading-relaxed max-w-md">
+            <div className="flex flex-col gap-6 md:gap-10">
+              <p className="text-sm md:text-xl opacity-70 leading-relaxed max-w-md">
                 Exigimos o reconhecimento da nossa ancestralidade. Junte-se ao movimento para elevar o Boi-Bumbá de Parintins ao status definitivo de Patrimônio Imaterial da Humanidade.
               </p>
               {signatureCount !== null && (
@@ -193,11 +198,11 @@ const Home = () => {
                   <span><span className="text-heritage-red font-bold">{signatureCount.toLocaleString("pt-BR")}</span> assinaturas coletadas</span>
                 </div>
               )}
-              <Link to="/manifesto" className="inline-flex items-center gap-4 group">
-                <div className="w-14 h-14 rounded-full border border-heritage-ink bg-heritage-ink text-white flex items-center justify-center group-hover:bg-heritage-red group-hover:border-heritage-red transition-all duration-500">
-                  <ArrowRight size={24} />
+              <Link to="/manifesto" className="inline-flex items-center gap-3 md:gap-4 group">
+                <div className="w-10 h-10 md:w-14 md:h-14 rounded-full border border-heritage-ink bg-heritage-ink text-white flex items-center justify-center group-hover:bg-heritage-red group-hover:border-heritage-red transition-all duration-500">
+                  <ArrowRight size={18} />
                 </div>
-                <span className="text-xs uppercase tracking-widest font-bold">Assinar Manifesto</span>
+                <span className="text-[10px] md:text-xs uppercase tracking-widest font-bold hidden sm:inline">Assinar Manifesto</span>
               </Link>
             </div>
           </motion.div>
