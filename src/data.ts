@@ -9,15 +9,19 @@ import dançaImg from "./assets/_MG_2206.jpg";
 import mestreImg from "./assets/_MG_4306.jpg";
 import poetaImg from "./assets/_MG_2777.jpg";
 import ritualImg from "./assets/_MG_9261.jpg";
+import img1017 from "./assets/_MG_1017.jpg";
+import img1152 from "./assets/_MG_1152.jpg";
+import img4840 from "./assets/_MG_4840.jpg";
+import img8681 from "./assets/_MG_8681.jpg";
 
 export { ritualImg };
 
 export const carouselImages = [
+  img4840,
+  img1152,
+  img8681,
+  img1017,
   ritualImg,
-  mestreImg,
-  poetaImg,
-  dançaImg,
-  toadaImg,
 ];
 
 export interface HeritageItem {
@@ -71,7 +75,7 @@ export const heritageItems: HeritageItem[] = [
     title: "Pajé do Boi Garantido",
     category: "Manifestação",
     description: "O Pajé é a figura central da espiritualidade indígena no espetáculo, incorporando a cosmogonia da floresta com indumentárias monumentais que expressam séculos de tradição.",
-    image: autoBoiImg,
+    image: img4840,
     year: 1940,
     location: "Bumbódromo, AM"
   },
