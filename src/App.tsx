@@ -162,19 +162,8 @@ const Home = () => {
 
   return (
     <div className="pt-32">
-      {/* Background — blocos inteiros alternando azul/vermelho, nunca misturados */}
-      <div className="fixed inset-0 -z-10 pointer-events-none" style={{
-        background: `repeating-linear-gradient(
-          to bottom,
-          rgba(29,78,216,0.07) 0vh,
-          rgba(29,78,216,0.07) 100vh,
-          rgba(185,28,28,0.07) 100vh,
-          rgba(185,28,28,0.07) 200vh
-        )`,
-        backgroundSize: "100% 200vh"
-      }} />
 
-      <section className="min-h-[90vh] flex items-start pt-16 px-6 max-w-7xl mx-auto">
+<section className="min-h-[90vh] flex items-start pt-16 px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-2 gap-8 md:gap-16 items-start w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
