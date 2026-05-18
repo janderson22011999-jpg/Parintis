@@ -1,17 +1,10 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X, Search, Archive, Info, MapPin, Calendar, ArrowRight, ChevronRight } from "lucide-react";
+import { Menu, X, Search, Archive, Info, MapPin, Calendar, ArrowRight, Users } from "lucide-react";
 import { cn } from "./lib/utils";
-import { heritageItems, HeritageItem, communityMembers, teamMembers } from "./data";
+import { heritageItems, HeritageItem, communityMembers, teamMembers, ritualImg } from "./data";
 import { ChatBot } from "./components/ChatBot";
-
-// --- Components ---
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -38,7 +31,6 @@ const Navbar = () => {
         </div>
       </Link>
 
-      {/* Desktop Nav */}
       <div className="hidden md:flex items-center gap-8">
         {navLinks.map((link) => (
           <Link
@@ -57,12 +49,10 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Toggle */}
       <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? <X /> : <Menu />}
       </button>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -125,35 +115,68 @@ const Footer = () => (
   </footer>
 );
 
-// --- Pages ---
-
 const Home = () => {
+  const [signatureCount, setSignatureCount] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    fetch("/api/signatures/count")
+      .then((r) => r.json())
+      .then((d) => setSignatureCount(d.count))
+      .catch(() => {});
+  }, []);
+
   return (
     <div className="pt-32">
-      <section className="min-h-[80vh] flex flex-col justify-center px-6 max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl"
-        >
-          <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-40 mb-6 block">Campanha Global</span>
-          <h1 className="text-7xl md:text-[10rem] font-serif leading-[0.8] tracking-tighter mb-12">
-            O <span className="serif-italic">Pulsar</span> de um <br />
-            Patrimônio <span className="serif-italic">Vivo</span>
-          </h1>
-          <div className="flex flex-col md:flex-row md:items-end gap-12">
-            <p className="text-xl opacity-70 max-w-md leading-relaxed">
-              Exigimos o reconhecimento da nossa ancestralidade. Junte-se ao movimento para elevar o Boi-Bumbá de Parintins ao status definitivo de Patrimônio Imaterial da Humanidade.
-            </p>
-            <Link to="/manifesto" className="inline-flex items-center gap-4 group mb-2">
-              <div className="w-14 h-14 rounded-full border border-heritage-ink bg-heritage-ink text-white flex items-center justify-center group-hover:bg-heritage-red group-hover:border-heritage-red transition-all duration-500">
-                <ArrowRight size={24} />
-              </div>
-              <span className="text-xs uppercase tracking-widest font-bold">Assinar Manifesto</span>
-            </Link>
-          </div>
-        </motion.div>
+      <section className="min-h-[90vh] flex items-center px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-xl pb-12"
+          >
+            <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-40 mb-6 block">Campanha Global</span>
+            <h1 className="text-7xl md:text-[10rem] font-serif leading-[0.8] tracking-tighter mb-12">
+              O <span className="serif-italic">Pulsar</span> <br />
+              de um <br />
+              Patrimônio <span className="serif-italic">Vivo</span>
+            </h1>
+            <div className="flex flex-col gap-10">
+              <p className="text-xl opacity-70 leading-relaxed max-w-md">
+                Exigimos o reconhecimento da nossa ancestralidade. Junte-se ao movimento para elevar o Boi-Bumbá de Parintins ao status definitivo de Patrimônio Imaterial da Humanidade.
+              </p>
+              {signatureCount !== null && (
+                <div className="flex items-center gap-3 text-sm font-semibold">
+                  <Users size={16} className="opacity-60" />
+                  <span><span className="text-heritage-red font-bold">{signatureCount.toLocaleString("pt-BR")}</span> assinaturas coletadas</span>
+                </div>
+              )}
+              <Link to="/manifesto" className="inline-flex items-center gap-4 group">
+                <div className="w-14 h-14 rounded-full border border-heritage-ink bg-heritage-ink text-white flex items-center justify-center group-hover:bg-heritage-red group-hover:border-heritage-red transition-all duration-500">
+                  <ArrowRight size={24} />
+                </div>
+                <span className="text-xs uppercase tracking-widest font-bold">Assinar Manifesto</span>
+              </Link>
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
+            className="relative h-[80vh] lg:h-[90vh] rounded-[2rem] overflow-hidden shadow-2xl"
+          >
+            <img
+              src={ritualImg}
+              alt="Ritual Parintins"
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-heritage-ink/40 to-transparent"></div>
+            <div className="absolute bottom-8 left-8">
+              <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/60 mb-2 block">Cultura Viva</span>
+              <h3 className="text-3xl font-serif text-white italic">O Pulsar da Floresta</h3>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
       <section className="mt-40 px-6 max-w-7xl mx-auto">
@@ -179,7 +202,6 @@ const Home = () => {
                     src={item.image}
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    referrerPolicy="no-referrer"
                   />
                   <div className="absolute top-4 right-4 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] text-white uppercase tracking-widest font-bold">
                     {item.category}
@@ -212,7 +234,7 @@ const ArchivePage = () => {
           <Link key={item.id} to={`/arquivo/${item.id}`} className="group border-b border-heritage-ink/10 pb-12 block">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="aspect-square overflow-hidden rounded-2xl">
-                <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+                <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               </div>
               <div className="flex flex-col justify-between py-4">
                 <div>
@@ -278,7 +300,7 @@ const VozesPage = () => (
       {communityMembers.map((member, i) => (
         <div key={member.id} className={cn("grid grid-cols-1 md:grid-cols-12 gap-16 items-center", i % 2 !== 0 && "md:flex-row-reverse")}>
           <div className={cn("md:col-span-7 overflow-hidden rounded-3xl", i % 2 !== 0 && "md:order-2")}>
-            <img src={member.image} alt={member.name} className="w-full h-[600px] object-cover grayscale hover:grayscale-0 transition-all duration-700" referrerPolicy="no-referrer" />
+            <img src={member.image} alt={member.name} className="w-full h-[600px] object-cover grayscale hover:grayscale-0 transition-all duration-700" />
           </div>
           <div className={cn("md:col-span-5", i % 2 !== 0 && "md:order-1 md:text-right")}>
             <span className="text-[12px] uppercase tracking-[0.3em] text-heritage-blue mb-4 block">{member.role}</span>
@@ -307,7 +329,7 @@ const CuradoriaPage = () => (
       {teamMembers.map((member) => (
         <div key={member.id} className="group">
           <div className="aspect-[4/5] bg-heritage-ink/5 overflow-hidden mb-8 rounded-2xl">
-            <img src={member.image} alt={member.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" referrerPolicy="no-referrer" />
+            <img src={member.image} alt={member.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
           </div>
           <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-heritage-red mb-2 block">{member.role}</span>
           <h3 className="font-serif text-3xl italic mb-4">{member.name}</h3>
@@ -319,44 +341,38 @@ const CuradoriaPage = () => (
 );
 
 const ManifestoPage = () => {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [city, setCity] = React.useState('');
-  const [status, setStatus] = React.useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMsg, setErrorMsg] = React.useState('');
-  const [count, setCount] = React.useState<number | null>(null);
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [status, setStatus] = React.useState<"idle" | "loading" | "success" | "error" | "duplicate">("idle");
+  const [signatureCount, setSignatureCount] = React.useState<number | null>(null);
 
   React.useEffect(() => {
-    fetch('/api/signatures/count')
+    fetch("/api/signatures/count")
       .then((r) => r.json())
-      .then((data) => setCount(data.count))
+      .then((d) => setSignatureCount(d.count))
       .catch(() => {});
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('loading');
-    setErrorMsg('');
-
+    setStatus("loading");
     try {
-      const res = await fetch('/api/signatures', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/signatures", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, city }),
       });
-      const data = await res.json();
-
-      if (!res.ok) {
-        setErrorMsg(data.error || 'Erro ao registrar assinatura.');
-        setStatus('error');
-        return;
+      if (res.status === 409) {
+        setStatus("duplicate");
+      } else if (res.ok) {
+        setStatus("success");
+        setSignatureCount((c) => (c !== null ? c + 1 : 1));
+      } else {
+        setStatus("error");
       }
-
-      setStatus('success');
-      setCount((c) => (c !== null ? c + 1 : null));
     } catch {
-      setErrorMsg('Erro de conexão. Tente novamente.');
-      setStatus('error');
+      setStatus("error");
     }
   };
 
@@ -365,9 +381,9 @@ const ManifestoPage = () => {
       <div className="text-center mb-24">
         <p className="text-[10px] uppercase tracking-[0.4em] text-heritage-red mb-8 font-bold">Ação Política e Cultural</p>
         <h1 className="text-6xl md:text-8xl font-serif mb-6">Assine o Manifesto <br /><span className="serif-italic">Global</span></h1>
-        {count !== null && (
-          <p className="text-sm uppercase tracking-widest opacity-50 mt-6">
-            <span className="text-heritage-red font-bold text-2xl">{count.toLocaleString('pt-BR')}</span> pessoas já assinaram
+        {signatureCount !== null && (
+          <p className="text-xl opacity-60 mt-4">
+            <span className="text-heritage-red font-bold">{signatureCount.toLocaleString("pt-BR")}</span> pessoas já assinaram
           </p>
         )}
       </div>
@@ -390,20 +406,12 @@ const ManifestoPage = () => {
           <p className="text-xs uppercase tracking-widest opacity-60">Reconhecimento como Patrimônio da Humanidade</p>
         </div>
 
-        {status === 'success' ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-12 space-y-6"
-          >
-            <div className="w-20 h-20 rounded-full border-2 border-heritage-cream/40 flex items-center justify-center mx-auto">
-              <span className="text-4xl">✓</span>
-            </div>
-            <h3 className="text-3xl font-serif">Obrigado, {name.split(' ')[0]}!</h3>
-            <p className="opacity-60 max-w-sm mx-auto leading-relaxed">
-              Sua assinatura foi registrada. Juntos ecoamos a voz da Amazônia até a UNESCO.
-            </p>
-          </motion.div>
+        {status === "success" ? (
+          <div className="text-center py-12 space-y-4">
+            <div className="text-5xl mb-4">🌿</div>
+            <h3 className="font-serif text-3xl italic">Obrigado pela sua voz!</h3>
+            <p className="opacity-60 text-sm">Sua assinatura foi registrada. Juntos chegamos mais longe.</p>
+          </div>
         ) : (
           <form className="space-y-8" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -441,15 +449,22 @@ const ManifestoPage = () => {
                 placeholder="Onde você está no mundo?"
               />
             </div>
-            {status === 'error' && (
-              <p className="text-red-400 text-sm text-center">{errorMsg}</p>
+            {status === "duplicate" && (
+              <p className="text-center text-sm opacity-70 bg-white/10 rounded-xl py-3 px-4">
+                Este e-mail já assinou o manifesto. Obrigado pelo seu apoio!
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-center text-sm opacity-70 bg-red-500/20 rounded-xl py-3 px-4">
+                Erro ao registrar. Tente novamente em instantes.
+              </p>
             )}
             <button
               type="submit"
-              disabled={status === 'loading'}
-              className="w-full py-6 bg-heritage-cream text-heritage-ink text-sm uppercase tracking-[0.3em] font-bold hover:bg-heritage-red hover:text-white transition-all duration-500 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={status === "loading"}
+              className="w-full py-6 bg-heritage-cream text-heritage-ink text-sm uppercase tracking-[0.3em] font-bold hover:bg-heritage-red hover:text-white transition-all duration-500 rounded-full disabled:opacity-50"
             >
-              {status === 'loading' ? 'Registrando...' : 'Assinar Agora'}
+              {status === "loading" ? "Registrando..." : "Assinar Agora"}
             </button>
           </form>
         )}
@@ -473,7 +488,7 @@ const ItemDetail = () => {
       <Link to="/arquivo" className="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold opacity-40 hover:opacity-100 mb-12">
         <ArrowRight size={12} className="rotate-180" /> Voltar ao Arquivo
       </Link>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
         <div>
           <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-40 mb-4 block">{item.category}</span>
@@ -497,7 +512,7 @@ const ItemDetail = () => {
         </div>
         <div className="space-y-8">
           <div className="aspect-[4/5] overflow-hidden rounded-[2rem]">
-            <img src={item.image} alt={item.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="aspect-square bg-heritage-ink/5 rounded-2xl flex items-center justify-center">
