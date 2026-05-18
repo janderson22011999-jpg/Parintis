@@ -65,8 +65,8 @@ export const heritageItems: HeritageItem[] = [
     id: "2",
     title: "Levantamento do Mastro",
     category: "Ritual",
-    description: "Abertura solene do período festivo com o levantamento do mastro, marcando o início das celebrações do Boi-Bumbá e reunindo toda a comunidade.",
-    image: artesanatoImg,
+    description: "Ato de fé e celebração comunitária que inaugura o período festivo. O mastro, ornamentado com fitas coloridas e símbolos do boi, é erguido ao som das toadas, convocando a cidade inteira para o maior espetáculo da Amazônia.",
+    image: img1152,
     year: 1966,
     location: "Parintins, AM"
   },
@@ -86,7 +86,7 @@ export const heritageItems: HeritageItem[] = [
     description: "Ritual sagrado de cura e comunhão com os espíritos da floresta, conduzido pelo Pajé no coração do espetáculo do Boi-Bumbá de Parintins.",
     image: dançaImg,
     year: 1975,
-    location: "Bumbódromo"
+    location: "Bumbódromo • Erick Beltrão / Caprichoso"
   }
 ];
 

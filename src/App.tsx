@@ -210,6 +210,7 @@ const Home = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
+            className="flex items-center justify-center"
           >
             <HeroCarousel />
           </motion.div>
