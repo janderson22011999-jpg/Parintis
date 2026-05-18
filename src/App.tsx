@@ -174,8 +174,8 @@ const Home = () => {
         backgroundSize: "100% 200vh"
       }} />
 
-      <section className="min-h-[90vh] flex items-center px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 gap-8 md:gap-16 items-stretch w-full">
+      <section className="min-h-[90vh] flex items-start pt-16 px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 gap-8 md:gap-16 items-start w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -210,7 +210,7 @@ const Home = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-            className="w-full flex items-center"
+            className="w-full"
           >
             <HeroCarousel />
           </motion.div>
