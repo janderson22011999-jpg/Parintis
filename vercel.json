@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npx prisma generate && npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/api/signatures/count", "destination": "/api/signatures/count" },
+    { "source": "/api/signatures", "destination": "/api/signatures/index" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
