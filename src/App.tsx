@@ -1,10 +1,46 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X, Search, Archive, Info, MapPin, Calendar, ArrowRight, Users } from "lucide-react";
+import { Menu, X, Search, Archive, Info, MapPin, Calendar, ArrowRight, Users, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "./lib/utils";
-import { heritageItems, HeritageItem, communityMembers, teamMembers, ritualImg } from "./data";
+import { heritageItems, HeritageItem, communityMembers, teamMembers, carouselImages } from "./data";
 import { ChatBot } from "./components/ChatBot";
+
+const HeroCarousel = () => {
+  const [current, setCurrent] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => setCurrent((c) => (c + 1) % carouselImages.length), 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="relative rounded-[2rem] overflow-hidden shadow-2xl self-center" style={{ height: "clamp(400px, 65vh, 700px)" }}>
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={current}
+          src={carouselImages[current]}
+          alt="Festival Parintins"
+          className="w-full h-full object-cover absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8 }}
+        />
+      </AnimatePresence>
+      <div className="absolute inset-0 bg-gradient-to-t from-heritage-ink/40 to-transparent" />
+      <div className="absolute bottom-8 left-8">
+        <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/60 mb-2 block">Cultura Viva</span>
+        <h3 className="text-3xl font-serif text-white italic">O Pulsar da Floresta</h3>
+      </div>
+      <div className="absolute bottom-8 right-8 flex gap-2">
+        {carouselImages.map((_, i) => (
+          <button key={i} onClick={() => setCurrent(i)} className={cn("w-2 h-2 rounded-full transition-all", i === current ? "bg-white scale-125" : "bg-white/40")} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -103,8 +139,7 @@ const Footer = () => (
       <div className="flex flex-col gap-4">
         <span className="text-[10px] uppercase tracking-widest font-bold opacity-40">Realização</span>
         <p className="text-sm opacity-60">
-          Comitê Pró-UNESCO Parintins<br />
-          Amazonas, Brasil
+          Coletivo Saber Caboclo
         </p>
       </div>
     </div>
@@ -127,10 +162,11 @@ const Home = () => {
 
   return (
     <div className="pt-32">
-      {/* Background color blocks — red left, blue right, never mixed */}
-      <div className="fixed inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-0 left-0 w-[18%] h-full" style={{ backgroundColor: "rgba(185,28,28,0.07)" }} />
-        <div className="absolute top-0 right-0 w-[18%] h-full" style={{ backgroundColor: "rgba(29,78,216,0.07)" }} />
+      {/* Background — horizontal alternating red/blue stripes, never mixed */}
+      <div className="fixed inset-0 -z-10 pointer-events-none flex flex-col">
+        {[...Array(10)].map((_, i) => (
+          <div key={i} className="flex-1 w-full" style={{ backgroundColor: i % 2 === 0 ? "rgba(185,28,28,0.05)" : "rgba(29,78,216,0.05)" }} />
+        ))}
       </div>
 
       <section className="min-h-[90vh] flex items-center px-6 max-w-7xl mx-auto">
@@ -169,19 +205,8 @@ const Home = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-            className="relative rounded-[2rem] overflow-hidden shadow-2xl self-center"
-            style={{ height: "clamp(400px, 65vh, 700px)" }}
           >
-            <img
-              src={ritualImg}
-              alt="Ritual Parintins"
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-heritage-ink/40 to-transparent"></div>
-            <div className="absolute bottom-8 left-8">
-              <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/60 mb-2 block">Cultura Viva</span>
-              <h3 className="text-3xl font-serif text-white italic">O Pulsar da Floresta</h3>
-            </div>
+            <HeroCarousel />
           </motion.div>
         </div>
       </section>
@@ -306,14 +331,14 @@ const VozesPage = () => (
     <section className="py-32 px-6 max-w-7xl mx-auto space-y-48">
       {communityMembers.map((member, i) => (
         <div key={member.id} className={cn("grid grid-cols-1 md:grid-cols-12 gap-16 items-center", i % 2 !== 0 && "md:flex-row-reverse")}>
-          <div className={cn("md:col-span-7 overflow-hidden rounded-3xl", i % 2 !== 0 && "md:order-2")}>
-            <img src={member.image} alt={member.name} className="w-full h-[600px] object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+          <div className={cn("md:col-span-5 overflow-hidden rounded-2xl", i % 2 !== 0 && "md:order-2")}>
+            <img src={member.image} alt={member.name} className="w-full h-[320px] object-cover grayscale hover:grayscale-0 transition-all duration-700" />
           </div>
-          <div className={cn("md:col-span-5", i % 2 !== 0 && "md:order-1 md:text-right")}>
-            <span className="text-[12px] uppercase tracking-[0.3em] text-heritage-blue mb-4 block">{member.role}</span>
-            <h2 className="text-4xl font-serif italic mb-8">"{member.quote}"</h2>
-            <div className={cn("h-px w-24 bg-heritage-ink/10 mb-6", i % 2 !== 0 && "ml-auto")}></div>
-            <p className="text-heritage-ink/60 leading-relaxed">{member.description}</p>
+          <div className={cn("md:col-span-7", i % 2 !== 0 && "md:order-1 md:text-right")}>
+            <span className="text-[11px] uppercase tracking-[0.3em] text-heritage-blue mb-3 block">{member.role}</span>
+            <h2 className="text-2xl font-serif italic mb-5">"{member.quote}"</h2>
+            <div className={cn("h-px w-20 bg-heritage-ink/10 mb-4", i % 2 !== 0 && "ml-auto")}></div>
+            <p className="text-sm text-heritage-ink/60 leading-relaxed">{member.description}</p>
           </div>
         </div>
       ))}

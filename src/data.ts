@@ -12,10 +12,18 @@ import ritualImg from "./assets/_MG_9261.jpg";
 
 export { ritualImg };
 
+export const carouselImages = [
+  ritualImg,
+  mestreImg,
+  poetaImg,
+  dançaImg,
+  toadaImg,
+];
+
 export interface HeritageItem {
   id: string;
   title: string;
-  category: "Ritual" | "Artesanato" | "Música" | "Dança";
+  category: "Ritual" | "Artesanato" | "Música" | "Dança" | "Manifestação";
   description: string;
   image: string;
   year: number;
@@ -51,27 +59,27 @@ export const heritageItems: HeritageItem[] = [
   },
   {
     id: "2",
-    title: "Toadas de Roda",
-    category: "Música",
-    description: "Cânticos ancestrais que narram as lendas da Amazônia e a vida ribeirinha, evoluindo para as toadas modernas dos bumbás.",
-    image: toadaImg,
+    title: "Levantamento do Mastro",
+    category: "Ritual",
+    description: "Abertura solene do período festivo com o levantamento do mastro, marcando o início das celebrações do Boi-Bumbá e reunindo toda a comunidade.",
+    image: artesanatoImg,
     year: 1966,
-    location: "Baixa do São José"
+    location: "Parintins, AM"
   },
   {
     id: "3",
-    title: "Artesanato em fibras de tucum",
-    category: "Artesanato",
-    description: "Técnicas tradicionais de tecelagem e escultura utilizando fibras naturais da palmeira de tucumã.",
-    image: artesanatoImg,
+    title: "Pajé do Boi Garantido",
+    category: "Manifestação",
+    description: "O Pajé é a figura central da espiritualidade indígena no espetáculo, incorporando a cosmogonia da floresta com indumentárias monumentais que expressam séculos de tradição.",
+    image: autoBoiImg,
     year: 1940,
-    location: "Vila Amazônia"
+    location: "Bumbódromo, AM"
   },
   {
     id: "4",
-    title: "Dança dos Tuxauas",
-    category: "Dança",
-    description: "Dança ritualística que homenageia os grandes chefes indígenas, com indumentárias monumentais que chegam a 5 metros de altura.",
+    title: "Pajelança",
+    category: "Ritual",
+    description: "Ritual sagrado de cura e comunhão com os espíritos da floresta, conduzido pelo Pajé no coração do espetáculo do Boi-Bumbá de Parintins.",
     image: dançaImg,
     year: 1975,
     location: "Bumbódromo"
