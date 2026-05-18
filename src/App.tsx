@@ -15,7 +15,7 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <div className="relative rounded-[2rem] overflow-hidden shadow-2xl self-center" style={{ height: "clamp(400px, 65vh, 700px)" }}>
+    <div className="relative rounded-[2rem] overflow-hidden shadow-2xl w-full" style={{ height: "clamp(400px, 65vh, 700px)" }}>
       <AnimatePresence mode="wait">
         <motion.img
           key={current}
@@ -175,7 +175,7 @@ const Home = () => {
       }} />
 
       <section className="min-h-[90vh] flex items-center px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 gap-8 md:gap-16 items-center w-full">
+        <div className="grid grid-cols-2 gap-8 md:gap-16 items-stretch w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -210,7 +210,7 @@ const Home = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-            className="flex items-center justify-center"
+            className="w-full flex items-center"
           >
             <HeroCarousel />
           </motion.div>
