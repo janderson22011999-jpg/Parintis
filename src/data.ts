@@ -3,6 +3,7 @@ import iraImg from "./assets/108089.jpg";
 import gilvanaImg from "./assets/108093.jpg";
 import rossyImg from "./assets/109943.jpg";
 import autoBoiImg from "./assets/choso.jpg";
+import boiGarantidoImg from "./assets/boi_garantido.jpg";
 import artesanatoImg from "./assets/artesanato.jpg";
 import toadaImg from "./assets/_MG_0628.jpg";
 import dançaImg from "./assets/_MG_2206.jpg";
@@ -84,7 +85,7 @@ export const heritageItems: HeritageItem[] = [
     title: "Pertencimento",
     category: "Manifestação",
     description: "Ser do Garantido ou do Caprichoso não é uma escolha — é uma identidade herdada, sentida e vivida. A alma do povo amazonense está entrelaçada ao Boi-Bumbá de forma indissociável: cada toada cantada, cada cor vestida e cada grito na arena é um ato de afirmação de quem se é e de onde se vem.",
-    image: autoBoiImg,
+    image: boiGarantidoImg,
     year: 1913,
     location: "Parintins, AM • Boi Garantido"
   }
