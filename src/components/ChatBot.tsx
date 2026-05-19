@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { MessageCircle, X, Send, User, Bot, Loader2, Phone } from "lucide-react";
+import { MessageCircle, X, Send, User, Bot, Loader2 } from "lucide-react";
 import { GoogleGenAI } from "@google/genai";
 import { cn } from "../lib/utils";
 
@@ -47,7 +47,7 @@ export const ChatBot = () => {
           { role: "user", parts: [{ text: userMessage }] }
         ],
         config: {
-          systemInstruction: `Seu nome é Tapiri e você é o assistente da campanha 'Bumbá Patrimônio Vivo'. Sua missão é ajudar usuários a navegar pelo site, fornecer informações sobre o Boi-Bumbá de Parintins (Garantido e Caprichoso) e engajá-los na petição pública para o reconhecimento oficial como Patrimônio Imaterial da Humanidade. O tom deve ser respeitoso, culturalmente sensível, porém argumentativo e firme sobre a importância deste título mundial para a Amazônia. Quando o usuário quiser entrar em contato com a campanha, falar com alguém da equipe, tirar dúvidas específicas, enviar sugestões ou demonstrar interesse em colaborar, indique sempre o WhatsApp oficial da campanha: ${WHATSAPP_URL}. Responda em Português do Brasil.`,
+          systemInstruction: `Seu nome é Tapiri e você é o assistente da campanha 'Bumbá Patrimônio Vivo'. Sua missão é ajudar usuários a navegar pelo site, fornecer informações sobre o Boi-Bumbá de Parintins (Garantido e Caprichoso) e engajá-los na petição pública para o reconhecimento oficial como Patrimônio Imaterial da Humanidade. O tom deve ser respeitoso, culturalmente sensível, porém argumentativo e firme sobre a importância deste título mundial para a Amazônia. Forneça o WhatsApp da campanha (${WHATSAPP_URL}) SOMENTE se o usuário pedir explicitamente para entrar em contato, falar com a equipe ou enviar mensagem direta — nunca de forma proativa. Responda em Português do Brasil.`,
         }
       });
 
@@ -69,7 +69,7 @@ export const ChatBot = () => {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="mb-4 w-[350px] md:w-[400px] h-[540px] bg-heritage-cream border border-heritage-ink/10 rounded-3xl shadow-2xl flex flex-col overflow-hidden"
+            className="mb-4 w-[350px] md:w-[400px] h-[500px] bg-heritage-cream border border-heritage-ink/10 rounded-3xl shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="bg-heritage-ink p-4 flex justify-between items-center text-heritage-cream">
@@ -129,17 +129,6 @@ export const ChatBot = () => {
                 </div>
               )}
             </div>
-
-            {/* WhatsApp CTA */}
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mx-4 mb-2 flex items-center justify-center gap-2 py-2 bg-green-600 hover:bg-green-700 text-white text-xs font-bold uppercase tracking-widest rounded-full transition-colors"
-            >
-              <Phone size={13} />
-              Falar com a Campanha no WhatsApp
-            </a>
 
             {/* Input */}
             <form
