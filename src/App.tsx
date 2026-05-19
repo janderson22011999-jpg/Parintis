@@ -309,9 +309,9 @@ const VozesPage = () => (
   <div className="pt-32">
     <section className="px-6 max-w-7xl mx-auto mb-32">
       <span className="text-[10px] uppercase tracking-[0.4em] text-heritage-red mb-6 block">Vozes da Luta</span>
-      <h1 className="text-8xl md:text-9xl leading-[0.9] font-serif tracking-tighter mb-8">Testemunho <br /><span className="serif-italic">Amazônico</span></h1>
+      <h1 className="text-8xl md:text-9xl leading-[0.9] font-serif tracking-tighter mb-8">Vozes que <br /><span className="serif-italic">Não Calam</span></h1>
       <p className="text-2xl italic font-light text-heritage-ink/60 max-w-2xl leading-relaxed">
-        Relatos daqueles que vivem o Patrimônio Imaterial da Humanidade e exigem o seu reconhecimento.
+        Relatos de quem nasceu dentro da tradição do Boi-Bumbá, carrega sua história no corpo e exige da UNESCO o reconhecimento que o mundo deve ao povo da Amazônia.
       </p>
     </section>
 
