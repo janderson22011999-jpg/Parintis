@@ -16,7 +16,7 @@ const HeroCarousel = () => {
 
   return (
     <div className="relative rounded-[2rem] overflow-hidden shadow-2xl w-full" style={{ height: "clamp(400px, 65vh, 700px)" }}>
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         <motion.img
           key={current}
           src={carouselImages[current]}
@@ -489,8 +489,8 @@ const ManifestoPage = () => {
             <motion.button
               type="submit"
               disabled={status === "loading"}
-              animate={{ backgroundColor: ["#b91c1c", "#1d4ed8", "#b91c1c"] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              animate={{ backgroundColor: ["#b91c1c", "#b91c1c", "#1d4ed8", "#1d4ed8", "#b91c1c"] }}
+              transition={{ duration: 60, times: [0, 0.4999, 0.5001, 0.9999, 1], repeat: Infinity, ease: "linear" }}
               className="w-full py-6 text-white text-sm uppercase tracking-[0.3em] font-bold rounded-full disabled:opacity-50"
             >
               {status === "loading" ? "Registrando..." : "Assinar Agora"}

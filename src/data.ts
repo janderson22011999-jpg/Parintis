@@ -63,9 +63,9 @@ export const heritageItems: HeritageItem[] = [
   },
   {
     id: "2",
-    title: "Levantamento do Mastro",
+    title: "Tradição Geracional",
     category: "Ritual",
-    description: "Ato de fé e celebração comunitária que inaugura o período festivo. O mastro, ornamentado com fitas coloridas e símbolos do boi, é erguido ao som das toadas, convocando a cidade inteira para o maior espetáculo da Amazônia.",
+    description: "De avós a netos, o Boi-Bumbá é transmitido como herança sagrada. As técnicas de escultura, as toadas, os bordados e os rituais de galpão passam de mão em mão há gerações, formando a espinha dorsal viva de um povo que recusa o esquecimento.",
     image: img1152,
     year: 1966,
     location: "Parintins, AM"
@@ -81,12 +81,12 @@ export const heritageItems: HeritageItem[] = [
   },
   {
     id: "4",
-    title: "Pajelança",
-    category: "Ritual",
-    description: "Ritual sagrado de cura e comunhão com os espíritos da floresta, conduzido pelo Pajé no coração do espetáculo do Boi-Bumbá de Parintins.",
-    image: dançaImg,
-    year: 1975,
-    location: "Bumbódromo • Erick Beltrão / Caprichoso"
+    title: "Pertencimento",
+    category: "Manifestação",
+    description: "Ser do Garantido ou do Caprichoso não é uma escolha — é uma identidade herdada, sentida e vivida. A alma do povo amazonense está entrelaçada ao Boi-Bumbá de forma indissociável: cada toada cantada, cada cor vestida e cada grito na arena é um ato de afirmação de quem se é e de onde se vem.",
+    image: autoBoiImg,
+    year: 1913,
+    location: "Parintins, AM • Boi Garantido"
   }
 ];
 
