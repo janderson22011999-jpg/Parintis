@@ -3,7 +3,7 @@ import iraImg from "./assets/108089.jpg";
 import gilvanaImg from "./assets/108093.jpg";
 import rossyImg from "./assets/109943.jpg";
 import autoBoiImg from "./assets/choso.jpg";
-import boiGarantidoImg from "./assets/boi_garantido.jpg";
+import boiGarantidoImg from "./assets/_MG_1501.jpg";
 import artesanatoImg from "./assets/artesanato.jpg";
 import toadaImg from "./assets/_MG_0628.jpg";
 import dançaImg from "./assets/_MG_2206.jpg";
