@@ -4,6 +4,7 @@
   "rewrites": [
     { "source": "/api/signatures/count", "destination": "/api/signatures/count" },
     { "source": "/api/signatures", "destination": "/api/signatures/index" },
+    { "source": "/api/chat", "destination": "/api/chat" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

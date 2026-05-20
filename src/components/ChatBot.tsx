@@ -1,10 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { MessageCircle, X, Send, User, Bot, Loader2 } from "lucide-react";
-import { GoogleGenAI } from "@google/genai";
 import { cn } from "../lib/utils";
-
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const WHATSAPP_URL = "https://wa.me/5592985002781";
 
@@ -37,21 +34,13 @@ export const ChatBot = () => {
     setIsLoading(true);
 
     try {
-      const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
-        contents: [
-          ...messages.map(m => ({
-            role: m.role === "user" ? "user" : "model",
-            parts: [{ text: m.content }]
-          })),
-          { role: "user", parts: [{ text: userMessage }] }
-        ],
-        config: {
-          systemInstruction: `Seu nome é Tapiri e você é o assistente da campanha 'Bumbá Patrimônio Vivo'. Sua missão é ajudar usuários a navegar pelo site, fornecer informações sobre o Boi-Bumbá de Parintins (Garantido e Caprichoso) e engajá-los na petição pública para o reconhecimento oficial como Patrimônio Imaterial da Humanidade. O tom deve ser respeitoso, culturalmente sensível, porém argumentativo e firme sobre a importância deste título mundial para a Amazônia. Forneça o WhatsApp da campanha (${WHATSAPP_URL}) SOMENTE se o usuário pedir explicitamente para entrar em contato, falar com a equipe ou enviar mensagem direta — nunca de forma proativa. Responda em Português do Brasil.`,
-        }
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages, userMessage }),
       });
-
-      const botReply = response.text || "Desculpe, não consegui processar sua solicitação agora.";
+      const data = await res.json();
+      const botReply = data.reply || "Desculpe, não consegui processar sua solicitação agora.";
       setMessages((prev) => [...prev, { role: "bot", content: botReply }]);
     } catch (error) {
       console.error("ChatBot error:", error);
