@@ -10,34 +10,18 @@ import { FormTaxa } from "./components/FormTaxa";
 import { SubmissionPanel } from "./components/SubmissionPanel";
 import { EstudoMercadoForm } from "./types";
 import { INITIAL_FORM_STATE, validateSection } from "./utils";
-import { ChevronRight, ChevronLeft, RotateCcw, AlertCircle, Layers } from "lucide-react";
+import { ChevronRight, ChevronLeft, RotateCcw, AlertCircle } from "lucide-react";
 
-/* ── Logo vector matching the Cuenca Putumayo Içá brand ── */
 function ProjectLogo({ className = "w-12 h-14" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Left figure — tail at top, head at bottom */}
-      {/* Tail rays */}
       <line x1="28" y1="22" x2="14" y2="8"  stroke="currentColor" strokeWidth="2.8" strokeLinecap="round"/>
       <line x1="30" y1="20" x2="22" y2="5"  stroke="currentColor" strokeWidth="2.8" strokeLinecap="round"/>
       <line x1="33" y1="19" x2="28" y2="4"  stroke="currentColor" strokeWidth="2.8" strokeLinecap="round"/>
-      {/* Body */}
-      <path
-        d="M 31,21 C 34,30 34,42 30,54 C 27,63 24,70 24,78 C 24,86 34,87 35,78 C 36,68 38,58 36,44 C 34,32 34,24 31,21 Z"
-        stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" fill="none"
-      />
-      {/* Eye */}
+      <path d="M 31,21 C 34,30 34,42 30,54 C 27,63 24,70 24,78 C 24,86 34,87 35,78 C 36,68 38,58 36,44 C 34,32 34,24 31,21 Z" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" fill="none"/>
       <circle cx="28" cy="78" r="2.8" fill="currentColor"/>
-
-      {/* Right figure — head at top, tail at bottom */}
-      {/* Eye */}
       <circle cx="52" cy="22" r="2.8" fill="currentColor"/>
-      {/* Body */}
-      <path
-        d="M 49,21 C 46,32 44,44 46,58 C 48,68 44,78 45,86 C 46,94 56,93 55,84 C 54,76 56,64 54,54 C 50,42 46,30 49,21 Z"
-        stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" fill="none"
-      />
-      {/* Tail rays */}
+      <path d="M 49,21 C 46,32 44,44 46,58 C 48,68 44,78 45,86 C 46,94 56,93 55,84 C 54,76 56,64 54,54 C 50,42 46,30 49,21 Z" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" fill="none"/>
       <line x1="49" y1="84" x2="38" y2="96" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round"/>
       <line x1="52" y1="86" x2="46" y2="98" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round"/>
       <line x1="55" y1="85" x2="52" y2="98" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round"/>
@@ -45,14 +29,23 @@ function ProjectLogo({ className = "w-12 h-14" }: { className?: string }) {
   );
 }
 
+const STEPS = [
+  { key: "identificacao",       label: "Identificação",       short: "01" },
+  { key: "formacao",            label: "Formação",            short: "02" },
+  { key: "experienciaGeral",    label: "Exp. Geral",          short: "03" },
+  { key: "experienciaEspecifica", label: "Exp. Específica",   short: "04" },
+  { key: "outrosCriterios",     label: "Critérios",           short: "05" },
+  { key: "honorarios",          label: "Honorários",          short: "06" },
+  { key: "taxa",                label: "Taxa & Declaração",   short: "07" },
+  { key: "submission",          label: "Envio",               short: "08" },
+];
+
 export default function App() {
   const [formData, setFormData] = useState<EstudoMercadoForm>(() => {
     try {
       const saved = localStorage.getItem("ngutapa_survey_data");
       if (saved) return JSON.parse(saved);
-    } catch (e) {
-      console.warn("Falha ao recuperar dados do localStorage", e);
-    }
+    } catch {}
     return INITIAL_FORM_STATE;
   });
 
@@ -61,23 +54,14 @@ export default function App() {
   const [sectionErrors, setSectionErrors] = useState<string[]>([]);
 
   useEffect(() => {
-    try {
-      localStorage.setItem("ngutapa_survey_data", JSON.stringify(formData));
-    } catch (e) {
-      console.error("Falha ao gravar no localStorage", e);
-    }
+    try { localStorage.setItem("ngutapa_survey_data", JSON.stringify(formData)); } catch {}
   }, [formData]);
 
-  const updateIdentificacao = (u: any) => setFormData(p => ({ ...p, identificacao: { ...p.identificacao, ...u } }));
-  const updateFormacao = (u: any) => setFormData(p => ({ ...p, formacao: { ...p.formacao, ...u } }));
-  const updateExperienciaGeral = (u: any) => setFormData(p => ({ ...p, experienciaGeral: { ...p.experienciaGeral, ...u } }));
-  const updateExperienciaEspecifica = (u: any) => setFormData(p => ({ ...p, experienciaEspecifica: { ...p.experienciaEspecifica, ...u } }));
-  const updateOutrosCriterios = (u: any) => setFormData(p => ({ ...p, outrosCriterios: { ...p.outrosCriterios, ...u } }));
-  const updateHonorarios = (u: any) => setFormData(p => ({ ...p, honorarios: { ...p.honorarios, ...u } }));
-  const updateTaxa = (u: any) => setFormData(p => ({ ...p, taxaAdministrativa: { ...p.taxaAdministrativa, ...u } }));
+  const upd = (key: keyof EstudoMercadoForm) => (u: any) =>
+    setFormData(p => ({ ...p, [key]: { ...(p[key] as any), ...u } }));
 
   const handleClearForm = () => {
-    if (window.confirm("Deseja realmente limpar todos os campos e reiniciar o formulário?")) {
+    if (window.confirm("Deseja realmente limpar todos os campos?")) {
       setFormData(INITIAL_FORM_STATE);
       setActiveStep(0);
       setSectionErrors([]);
@@ -85,272 +69,218 @@ export default function App() {
     }
   };
 
-  const stepsList = [
-    { key: "identificacao", label: "Identificação" },
-    { key: "formacao", label: "Formação" },
-    { key: "experienciaGeral", label: "Exp. Geral" },
-    { key: "experienciaEspecifica", label: "Exp. Específica" },
-    { key: "outrosCriterios", label: "Outros Critérios" },
-    { key: "honorarios", label: "Honorários" },
-    { key: "taxa", label: "Taxa & Decl." },
-    { key: "submission", label: "Enviar" },
-  ];
-
-  const handleNextStep = () => {
-    const errors = validateSection(stepsList[activeStep].key, formData);
+  const handleNext = () => {
+    const errors = validateSection(STEPS[activeStep].key, formData);
     if (errors.length > 0) { setSectionErrors(errors); return; }
     setSectionErrors([]);
-    if (activeStep < stepsList.length - 1) setActiveStep(p => p + 1);
+    if (activeStep < STEPS.length - 1) setActiveStep(p => p + 1);
   };
 
-  const handlePrevStep = () => {
-    setSectionErrors([]);
-    if (activeStep > 0) setActiveStep(p => p - 1);
+  const handlePrev = () => { setSectionErrors([]); if (activeStep > 0) setActiveStep(p => p - 1); };
+
+  const handleJump = (i: number) => {
+    if (i < activeStep) { setSectionErrors([]); setActiveStep(i); return; }
+    const errors = validateSection(STEPS[activeStep].key, formData);
+    if (errors.length > 0) setSectionErrors(errors);
+    else { setSectionErrors([]); setActiveStep(i); }
   };
 
-  const handleJumpToStep = (index: number) => {
-    if (index < activeStep) { setSectionErrors([]); setActiveStep(index); return; }
-    const errors = validateSection(stepsList[activeStep].key, formData);
-    if (errors.length > 0) { setSectionErrors(errors); }
-    else { setSectionErrors([]); setActiveStep(index); }
-  };
+  const progress = ((activeStep + 1) / STEPS.length) * 100;
 
   return (
-    <div className="min-h-screen bg-[#f4f7f4] text-slate-800 selection:bg-green-600/20" id="main-app-container">
+    <div style={{ minHeight: "100vh", backgroundColor: "#f0f4f0", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <style>{`
         @media print {
-          body { background: white !important; padding: 0 !important; }
-          #tdr-section, #nav-progress-bar, #controls-bar, #btn-auto-calc-totals,
-          #pf-disabled-warning, #compliance-badge, #specific-compliance-badge,
-          #view-toggle-bar, #header-banner, #clear-survey-wrapper,
-          #print-hide { display: none !important; }
+          #header-banner, #nav-bar, #controls-bar, #view-toggle, #clear-btn { display: none !important; }
           #print-letterhead { display: block !important; }
-          .bg-white, .bg-slate-50 { background: transparent !important; border: none !important; box-shadow: none !important; }
-          input, textarea { border: none !important; border-bottom: 1px solid #ccc !important; background: transparent !important; font-size: 11px !important; }
         }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(5px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
-        .animate-fadeIn { animation: fadeIn 0.22s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .fade-up { animation: fadeUp 0.25s ease forwards; }
+        input:focus, textarea:focus, select:focus {
+          outline: none;
+          border-color: #2d6a4f !important;
+          box-shadow: 0 0 0 3px rgba(45,106,79,0.12);
+        }
+        .step-btn:hover { background-color: rgba(255,255,255,0.12); }
       `}</style>
 
       {/* Print letterhead */}
-      <div id="print-letterhead" className="hidden p-8">
-        <div className="flex items-center justify-between border-b-2 border-green-950 pb-5 mb-6">
-          <div className="space-y-1">
-            <h1 className="text-base font-bold uppercase tracking-wide text-green-950">Instituto de Etno Desenvolvimento NGUTAPA</h1>
-            <p className="text-xs text-slate-500 uppercase">Vila Bethania SAI, Santo Antônio do Içá – AM</p>
-            <p className="text-sm font-bold text-slate-800 mt-2">PESQUISA DE MERCADO / COTAÇÃO — ANTROPÓLOGO(A)</p>
-            <p className="text-[10px] text-slate-500">Projeto GEF Putumayo-Içá · Banco Mundial</p>
+      <div id="print-letterhead" style={{ display: "none", padding: 32 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "2px solid #1a3d2b", paddingBottom: 20, marginBottom: 24 }}>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, textTransform: "uppercase", color: "#1a3d2b" }}>Instituto de Etno Desenvolvimento NGUTAPA</div>
+            <div style={{ fontSize: 11, color: "#666", marginTop: 4 }}>PESQUISA DE MERCADO / COTAÇÃO — ANTROPÓLOGO(A)</div>
+            <div style={{ fontSize: 10, color: "#999", marginTop: 2 }}>Projeto GEF Putumayo-Içá · Banco Mundial</div>
           </div>
-          <div className="flex items-center gap-2.5 border border-slate-200 p-2.5 rounded-xl bg-slate-50">
-            <ProjectLogo className="w-8 h-10 text-green-900" />
-            <div className="flex flex-col leading-tight text-green-950">
-              <span className="text-[8px] font-medium tracking-wide uppercase text-slate-500">Cuenca</span>
-              <span className="text-xs font-extrabold">Putumayo</span>
-              <span className="text-[10px] font-semibold text-green-700">Içá</span>
-            </div>
-          </div>
+          <ProjectLogo className="w-10 h-12" />
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 md:px-6 py-8 space-y-6 print:max-w-none">
+      {/* ══ HEADER ══ */}
+      <header id="header-banner" style={{ backgroundColor: "#1a3d2b", position: "relative", overflow: "hidden" }}>
+        {/* Decorative background elements */}
+        <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} viewBox="0 0 1200 280" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="glow" cx="80%" cy="50%" r="60%">
+              <stop offset="0%" stopColor="#2d6a4f" stopOpacity="0.6"/>
+              <stop offset="100%" stopColor="#1a3d2b" stopOpacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="1200" height="280" fill="url(#glow)"/>
+          <path d="M 0,200 C 200,80 450,240 700,120 C 900,20 1050,160 1200,80 L 1200,280 L 0,280 Z" fill="white" fillOpacity="0.03"/>
+          <circle cx="950" cy="60" r="200" fill="white" fillOpacity="0.02"/>
+          <path d="M 100,240 C 300,100 550,260 800,100 C 980,0 1100,140 1250,60" stroke="#d4a820" strokeWidth="1.5" strokeOpacity="0.3" fill="none"/>
+          <path d="M 0,260 C 200,160 400,280 600,180 C 750,100 900,200 1200,140" stroke="#d4a820" strokeWidth="0.8" strokeOpacity="0.15" fill="none"/>
+        </svg>
 
-        {/* ── Header ── */}
-        <header id="header-banner" className="relative bg-[#1a3d2b] rounded-2xl overflow-hidden shadow-lg">
-          {/* Background wave */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 900 220" fill="none" preserveAspectRatio="none">
-            <path d="M 0,160 C 180,60 360,200 560,80 C 700,-20 800,120 900,40 L 900,220 L 0,220 Z" fill="#ffffff" fillOpacity="0.03"/>
-            <path d="M -20,180 C 180,50 400,200 600,70 C 730,-30 840,130 940,30" stroke="#d4a820" strokeWidth="1.5" strokeOpacity="0.35"/>
-          </svg>
+        <div style={{ position: "relative", zIndex: 10, maxWidth: 900, margin: "0 auto", padding: "40px 24px 32px" }}>
+          {/* Top label */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 100, padding: "5px 14px", marginBottom: 20 }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#d4a820", display: "inline-block" }}></span>
+            <span style={{ color: "#a8d5b8", fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" }}>Pesquisa de Mercado · Antropólogo(a)</span>
+          </div>
 
-          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 p-6 md:p-8">
-            {/* Brand block */}
-            <div className="flex items-center gap-5">
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-3.5 rounded-2xl border border-white/15 select-none shrink-0">
-                <ProjectLogo className="w-10 h-12 text-white" />
-                <div className="flex flex-col leading-tight">
-                  <span className="text-[10px] font-medium tracking-widest uppercase text-green-300">Cuenca</span>
-                  <span className="text-sm font-extrabold tracking-tight text-white">Putumayo</span>
-                  <span className="text-xs font-bold text-amber-400">Içá</span>
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 32 }}>
+            {/* Left: branding */}
+            <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+              <div style={{ backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 20, padding: "14px 18px", display: "flex", alignItems: "center", gap: 12 }}>
+                <ProjectLogo className="w-10 h-12" style={{ color: "white" }} />
+                <div style={{ lineHeight: 1.2 }}>
+                  <div style={{ color: "#a8d5b8", fontSize: 9, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase" }}>Cuenca</div>
+                  <div style={{ color: "white", fontSize: 16, fontWeight: 800, letterSpacing: "-0.02em" }}>Putumayo</div>
+                  <div style={{ color: "#d4a820", fontSize: 12, fontWeight: 700 }}>Içá</div>
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <div className="inline-flex items-center gap-1.5 bg-green-800/60 text-green-300 text-[10px] font-mono uppercase tracking-widest font-semibold px-2.5 py-1 rounded-full border border-green-700/40">
-                  Estudo de Mercado · Antropólogo(a)
-                </div>
-                <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white leading-tight">
-                  Projeto GEF Putumayo-Içá
+              <div>
+                <h1 style={{ color: "white", fontSize: 26, fontWeight: 800, lineHeight: 1.15, letterSpacing: "-0.02em", margin: 0 }}>
+                  Projeto GEF<br />Putumayo-Içá
                 </h1>
-                <p className="text-green-200 text-xs leading-relaxed max-w-md">
-                  <em>Utü'ü y Itchá</em> — O Encantado Içá: renovação da pesquisa e fortalecimento do conhecimento tradicional dos povos da floresta.
+                <p style={{ color: "#a8d5b8", fontSize: 12, marginTop: 6, lineHeight: 1.5, maxWidth: 340 }}>
+                  <em>Utü'ü y Itchá</em> — O Encantado Içá: fortalecimento do conhecimento tradicional dos povos da floresta amazônica.
                 </p>
-                <p className="text-green-400/70 text-[10px] font-mono">
+                <p style={{ color: "rgba(168,213,184,0.55)", fontSize: 10, marginTop: 6 }}>
                   Instituto de Etno Desenvolvimento NGUTAPA · Santo Antônio do Içá – AM
                 </p>
               </div>
             </div>
 
-            {/* Deadline badge */}
-            <div className="shrink-0 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4 text-center md:text-right">
-              <p className="text-[10px] uppercase font-mono tracking-widest text-green-300 font-semibold mb-1">Prazo Limite</p>
-              <p className="text-base font-bold text-white">05/06/2026</p>
-              <p className="text-xs text-green-200 font-sans">às 23h59 · Horário do Amazonas</p>
+            {/* Right: deadline */}
+            <div style={{ backgroundColor: "rgba(212,168,32,0.12)", border: "1px solid rgba(212,168,32,0.3)", borderRadius: 16, padding: "16px 24px", textAlign: "center", minWidth: 160 }}>
+              <div style={{ color: "#d4a820", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 4 }}>Prazo Limite</div>
+              <div style={{ color: "white", fontSize: 22, fontWeight: 800, lineHeight: 1 }}>05/06/2026</div>
+              <div style={{ color: "#a8d5b8", fontSize: 11, marginTop: 4 }}>às 23h59 · Horário do Amazonas</div>
             </div>
           </div>
-        </header>
+        </div>
+      </header>
 
-        {/* ── View Toggle ── */}
-        <div className="flex flex-col sm:flex-row justify-between items-center bg-white px-4 py-3 border border-green-100 rounded-xl gap-3 shadow-sm" id="view-toggle-bar">
-          <div className="flex items-center gap-2 text-slate-600">
-            <Layers className="w-4 h-4 text-green-600" />
-            <span className="text-xs font-medium text-slate-600">Modo de Preenchimento:</span>
-          </div>
-          <div className="flex rounded-lg overflow-hidden border border-green-200 bg-green-50 shrink-0">
-            <button
-              onClick={() => { setIsSinglePage(false); setSectionErrors([]); }}
-              className={`px-4 py-1.5 text-xs font-semibold transition-all cursor-pointer ${!isSinglePage ? "bg-green-700 text-white" : "text-green-800 hover:text-green-950"}`}
-            >
-              Passo a Passo
-            </button>
-            <button
-              onClick={() => { setIsSinglePage(true); setSectionErrors([]); }}
-              className={`px-4 py-1.5 text-xs font-semibold transition-all cursor-pointer ${isSinglePage ? "bg-green-700 text-white" : "text-green-800 hover:text-green-950"}`}
-            >
-              Página Única
-            </button>
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "28px 24px 60px" }}>
+
+        {/* ══ TdR ══ */}
+        <TermsOfReference />
+
+        {/* ══ VIEW TOGGLE ══ */}
+        <div id="view-toggle" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: "white", border: "1px solid #e2ebe4", borderRadius: 12, padding: "10px 16px", marginTop: 20, boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}>
+          <span style={{ fontSize: 12, color: "#6b7280", fontWeight: 500 }}>Modo de preenchimento</span>
+          <div style={{ display: "flex", backgroundColor: "#f0f4f0", borderRadius: 8, padding: 3, gap: 2 }}>
+            {[["Passo a Passo", false], ["Página Única", true]].map(([label, val]) => (
+              <button key={String(label)} type="button" onClick={() => { setIsSinglePage(val as boolean); setSectionErrors([]); }}
+                style={{ padding: "5px 14px", borderRadius: 6, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600, transition: "all 0.15s",
+                  backgroundColor: isSinglePage === val ? "#2d6a4f" : "transparent",
+                  color: isSinglePage === val ? "white" : "#4b7a60" }}>
+                {label as string}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* ── TdR ── */}
-        <TermsOfReference />
-
-        {/* ── Progress bar ── */}
+        {/* ══ PROGRESS BAR (step mode) ══ */}
         {!isSinglePage && (
-          <div className="bg-white border border-green-100 rounded-xl px-5 py-4 shadow-sm" id="nav-progress-bar">
-            {/* Desktop */}
-            <div className="hidden md:flex justify-between items-start relative">
-              <div className="absolute left-5 right-5 h-px bg-green-100 top-4 z-0" />
-              {stepsList.map((step, index) => {
-                const isCompleted = index < activeStep;
-                const isActive = index === activeStep;
+          <div id="nav-bar" style={{ marginTop: 20, backgroundColor: "white", border: "1px solid #e2ebe4", borderRadius: 16, padding: "20px 24px", boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}>
+            {/* Bar */}
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#2d6a4f", minWidth: 60 }}>
+                {activeStep + 1} / {STEPS.length}
+              </span>
+              <div style={{ flex: 1, height: 6, backgroundColor: "#e8f0ea", borderRadius: 99, overflow: "hidden" }}>
+                <div style={{ height: "100%", width: `${progress}%`, backgroundColor: "#2d6a4f", borderRadius: 99, transition: "width 0.4s ease" }} />
+              </div>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "#6b7280", minWidth: 80, textAlign: "right" }}>
+                {STEPS[activeStep].label}
+              </span>
+            </div>
+            {/* Step bubbles — desktop */}
+            <div style={{ display: "flex", justifyContent: "space-between", position: "relative" }}>
+              <div style={{ position: "absolute", left: 16, right: 16, top: 14, height: 1, backgroundColor: "#e8f0ea", zIndex: 0 }} />
+              {STEPS.map((step, i) => {
+                const done   = i < activeStep;
+                const active = i === activeStep;
                 return (
-                  <button
-                    key={step.key}
-                    onClick={() => handleJumpToStep(index)}
-                    className="flex flex-col items-center text-center relative z-10 group cursor-pointer focus:outline-none"
-                  >
-                    <span className={`w-8 h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all border-2 ${
-                      isActive
-                        ? "bg-green-700 text-white border-green-700 scale-110 shadow-md shadow-green-200"
-                        : isCompleted
-                        ? "bg-green-900 text-white border-green-900"
-                        : "bg-white text-slate-400 border-slate-200 group-hover:border-green-300"
-                    }`}>
-                      {isCompleted ? "✓" : index + 1}
-                    </span>
-                    <span className={`text-[10px] font-semibold mt-1.5 tracking-tight leading-tight max-w-[60px] transition-colors ${
-                      isActive ? "text-green-700" : "text-slate-400 group-hover:text-slate-700"
-                    }`}>
+                  <button key={step.key} type="button" className="step-btn" onClick={() => handleJump(i)}
+                    style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, position: "relative", zIndex: 1, background: "none", border: "none", cursor: "pointer", padding: "0 4px" }}>
+                    <span style={{
+                      width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                      fontSize: 11, fontWeight: 700, transition: "all 0.2s",
+                      backgroundColor: active ? "#2d6a4f" : done ? "#1a3d2b" : "white",
+                      color: active || done ? "white" : "#9ca3af",
+                      border: active ? "2px solid #2d6a4f" : done ? "2px solid #1a3d2b" : "2px solid #d1d5db",
+                      transform: active ? "scale(1.15)" : "scale(1)",
+                      boxShadow: active ? "0 0 0 4px rgba(45,106,79,0.15)" : "none",
+                    }}>{done ? "✓" : i + 1}</span>
+                    <span style={{ fontSize: 9, fontWeight: 600, color: active ? "#2d6a4f" : "#9ca3af", textAlign: "center", maxWidth: 52, lineHeight: 1.2 }}>
                       {step.label}
                     </span>
                   </button>
                 );
               })}
             </div>
-            {/* Mobile */}
-            <div className="flex md:hidden justify-between items-center gap-3">
-              <span className="text-xs font-mono text-slate-400 uppercase tracking-wide shrink-0">
-                {activeStep + 1}/{stepsList.length}
-              </span>
-              <div className="flex-1 h-1.5 bg-green-100 rounded-full overflow-hidden">
-                <div className="h-full bg-green-700 transition-all duration-300" style={{ width: `${((activeStep + 1) / stepsList.length) * 100}%` }} />
-              </div>
-              <span className="text-xs font-semibold text-green-700 shrink-0">{stepsList[activeStep].label}</span>
-            </div>
           </div>
         )}
 
-        {/* ── Form body ── */}
-        <div className="bg-white border border-green-100 rounded-2xl p-6 md:p-8 shadow-sm print:shadow-none print:border-none">
+        {/* ══ FORM CARD ══ */}
+        <div style={{ marginTop: 20, backgroundColor: "white", border: "1px solid #e2ebe4", borderRadius: 20, padding: "36px 40px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
           {isSinglePage ? (
-            <div className="space-y-12 select-text">
-              <FormIdentificacao data={formData.identificacao} onChange={updateIdentificacao} />
-              <div className="border-t border-green-50 pt-10"><FormFormacao data={formData.formacao} onChange={updateFormacao} /></div>
-              <div className="border-t border-green-50 pt-10"><FormExperienciaGeral data={formData.experienciaGeral} onChange={updateExperienciaGeral} /></div>
-              <div className="border-t border-green-50 pt-10"><FormExperienciaEspecifica data={formData.experienciaEspecifica} onChange={updateExperienciaEspecifica} /></div>
-              <div className="border-t border-green-50 pt-10"><FormOutrosCriterios data={formData.outrosCriterios} onChange={updateOutrosCriterios} /></div>
-              <div className="border-t border-green-50 pt-10"><FormHonorarios data={formData.honorarios} onChange={updateHonorarios} /></div>
-              <div className="border-t border-green-50 pt-10"><FormTaxa data={formData.taxaAdministrativa} onChange={updateTaxa} /></div>
+            <div className="fade-up" style={{ display: "flex", flexDirection: "column", gap: 48 }}>
+              <FormIdentificacao data={formData.identificacao} onChange={upd("identificacao")} />
+              <div style={{ borderTop: "1px solid #f0f4f0", paddingTop: 40 }}><FormFormacao data={formData.formacao} onChange={upd("formacao")} /></div>
+              <div style={{ borderTop: "1px solid #f0f4f0", paddingTop: 40 }}><FormExperienciaGeral data={formData.experienciaGeral} onChange={upd("experienciaGeral")} /></div>
+              <div style={{ borderTop: "1px solid #f0f4f0", paddingTop: 40 }}><FormExperienciaEspecifica data={formData.experienciaEspecifica} onChange={upd("experienciaEspecifica")} /></div>
+              <div style={{ borderTop: "1px solid #f0f4f0", paddingTop: 40 }}><FormOutrosCriterios data={formData.outrosCriterios} onChange={upd("outrosCriterios")} /></div>
+              <div style={{ borderTop: "1px solid #f0f4f0", paddingTop: 40 }}><FormHonorarios data={formData.honorarios} onChange={upd("honorarios")} /></div>
+              <div style={{ borderTop: "1px solid #f0f4f0", paddingTop: 40 }}><FormTaxa data={formData.taxaAdministrativa} onChange={upd("taxaAdministrativa")} /></div>
 
-              {/* Declaration */}
-              <div className="border-t border-green-50 pt-10 space-y-4">
-                <h4 className="text-sm font-sans font-bold text-green-950 flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-green-700 text-white flex items-center justify-center text-[10px]">✓</span>
-                  Declaração de Veracidade
-                </h4>
-                <label htmlFor="checkbox-decl-single" className="flex items-start gap-3 p-4 bg-green-50 border border-green-200 rounded-xl cursor-pointer hover:bg-green-100/50 transition-colors">
-                  <input
-                    type="checkbox" id="checkbox-decl-single"
-                    checked={formData.concordoDeclaracao}
-                    onChange={(e) => setFormData(p => ({ ...p, concordoDeclaracao: e.target.checked }))}
-                    className="mt-0.5 h-4 w-4 accent-green-600 cursor-pointer shrink-0"
-                  />
-                  <div className="text-xs text-slate-600 space-y-1.5 leading-relaxed">
-                    <p className="font-semibold text-green-900">Ao assinalar, o(a) profissional declara que:</p>
-                    <ul className="list-disc pl-4 space-y-1 text-slate-500">
-                      <li>Todas as informações prestadas são verdadeiras e podem ser comprovadas mediante solicitação.</li>
-                      <li>Os honorários informados refletem coerentemente sua prática habitual de mercado para o escopo descrito no TdR.</li>
-                      <li>Este formulário é utilizado exclusivamente para fins de pesquisa de mercado e <strong>não constitui proposta de contratação imediata</strong>.</li>
-                    </ul>
-                  </div>
-                </label>
+              <div style={{ borderTop: "1px solid #f0f4f0", paddingTop: 40 }}>
+                <Declaration checked={formData.concordoDeclaracao} id="decl-single"
+                  onChange={v => setFormData(p => ({ ...p, concordoDeclaracao: v }))} />
               </div>
 
-              <div className="border-t border-green-50 pt-10">
-                {formData.concordoDeclaracao ? (
-                  <SubmissionPanel data={formData} onClear={handleClearForm} />
-                ) : (
-                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 text-center">
-                    <p className="text-xs font-semibold text-amber-800">Preencha as seções acima e marque a Declaração de Veracidade para desbloquear as opções de envio.</p>
-                  </div>
-                )}
+              <div style={{ borderTop: "1px solid #f0f4f0", paddingTop: 40 }}>
+                {formData.concordoDeclaracao
+                  ? <SubmissionPanel data={formData} onClear={handleClearForm} />
+                  : <div style={{ backgroundColor: "#fffbeb", border: "1px solid #fde68a", borderRadius: 12, padding: 20, textAlign: "center" }}>
+                      <p style={{ color: "#92400e", fontSize: 13, fontWeight: 600 }}>Preencha as seções acima e marque a Declaração de Veracidade para desbloquear o envio.</p>
+                    </div>
+                }
               </div>
             </div>
           ) : (
-            <div className="animate-fadeIn">
-              {activeStep === 0 && <FormIdentificacao data={formData.identificacao} onChange={updateIdentificacao} />}
-              {activeStep === 1 && <FormFormacao data={formData.formacao} onChange={updateFormacao} />}
-              {activeStep === 2 && <FormExperienciaGeral data={formData.experienciaGeral} onChange={updateExperienciaGeral} />}
-              {activeStep === 3 && <FormExperienciaEspecifica data={formData.experienciaEspecifica} onChange={updateExperienciaEspecifica} />}
-              {activeStep === 4 && <FormOutrosCriterios data={formData.outrosCriterios} onChange={updateOutrosCriterios} />}
-              {activeStep === 5 && <FormHonorarios data={formData.honorarios} onChange={updateHonorarios} />}
+            <div className="fade-up">
+              {activeStep === 0 && <FormIdentificacao data={formData.identificacao} onChange={upd("identificacao")} />}
+              {activeStep === 1 && <FormFormacao data={formData.formacao} onChange={upd("formacao")} />}
+              {activeStep === 2 && <FormExperienciaGeral data={formData.experienciaGeral} onChange={upd("experienciaGeral")} />}
+              {activeStep === 3 && <FormExperienciaEspecifica data={formData.experienciaEspecifica} onChange={upd("experienciaEspecifica")} />}
+              {activeStep === 4 && <FormOutrosCriterios data={formData.outrosCriterios} onChange={upd("outrosCriterios")} />}
+              {activeStep === 5 && <FormHonorarios data={formData.honorarios} onChange={upd("honorarios")} />}
               {activeStep === 6 && (
-                <div className="space-y-6">
-                  <FormTaxa data={formData.taxaAdministrativa} onChange={updateTaxa} />
-                  <div className="border-t border-green-50 pt-6">
-                    <h4 className="text-xs font-mono uppercase tracking-wider text-slate-500 mb-3 font-semibold flex items-center gap-2">
-                      <span className="w-4 h-4 rounded-full bg-green-700 text-white flex items-center justify-center text-[9px]">✓</span>
-                      Declaração de Veracidade
-                    </h4>
-                    <label htmlFor="checkbox-decl-step" className="flex items-start gap-3 p-4 bg-green-50 border border-green-200 rounded-xl cursor-pointer hover:bg-green-100/50 transition-colors">
-                      <input
-                        type="checkbox" id="checkbox-decl-step"
-                        checked={formData.concordoDeclaracao}
-                        onChange={(e) => setFormData(p => ({ ...p, concordoDeclaracao: e.target.checked }))}
-                        className="mt-0.5 h-4 w-4 accent-green-600 cursor-pointer shrink-0"
-                      />
-                      <div className="text-xs text-slate-600 space-y-1.5 leading-relaxed">
-                        <p className="font-semibold text-green-900">Ao assinalar, o(a) profissional declara que:</p>
-                        <ul className="list-disc pl-4 space-y-1 text-slate-500">
-                          <li>Todas as informações prestadas são verdadeiras e podem ser comprovadas a qualquer momento.</li>
-                          <li>Os honorários propostos refletem as médias e a razoabilidade da minha prática profissional.</li>
-                          <li>Compreendo que este envio é uma cotação informativa e não constitui contrato automático.</li>
-                        </ul>
-                      </div>
-                    </label>
+                <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+                  <FormTaxa data={formData.taxaAdministrativa} onChange={upd("taxaAdministrativa")} />
+                  <div style={{ borderTop: "1px solid #f0f4f0", paddingTop: 28 }}>
+                    <Declaration checked={formData.concordoDeclaracao} id="decl-step"
+                      onChange={v => setFormData(p => ({ ...p, concordoDeclaracao: v }))} />
                   </div>
                 </div>
               )}
@@ -359,46 +289,67 @@ export default function App() {
           )}
         </div>
 
-        {/* ── Navigation ── */}
+        {/* ══ NAVIGATION ══ */}
         {!isSinglePage && (
-          <div className="flex justify-between items-center" id="controls-bar">
-            {activeStep > 0 ? (
-              <button type="button" onClick={handlePrevStep}
-                className="px-5 py-2.5 bg-white hover:bg-green-50 border border-green-200 rounded-xl text-xs font-semibold text-green-800 hover:text-green-950 transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
-              >
-                <ChevronLeft className="w-4 h-4" /> Voltar
-              </button>
-            ) : <div />}
+          <div id="controls-bar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16 }}>
+            {activeStep > 0
+              ? <button type="button" onClick={handlePrev} style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 20px", backgroundColor: "white", border: "1px solid #d1d5db", borderRadius: 10, fontSize: 13, fontWeight: 600, color: "#374151", cursor: "pointer" }}>
+                  <ChevronLeft size={16} /> Voltar
+                </button>
+              : <div />
+            }
 
             {sectionErrors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 text-red-800 px-3 py-2 rounded-xl max-w-xs flex gap-2 items-center text-xs animate-fadeIn">
-                <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
-                <span className="font-semibold">
+              <div style={{ display: "flex", alignItems: "center", gap: 8, backgroundColor: "#fef2f2", border: "1px solid #fecaca", borderRadius: 10, padding: "8px 14px", maxWidth: 340 }}>
+                <AlertCircle size={15} color="#ef4444" style={{ flexShrink: 0 }} />
+                <span style={{ fontSize: 12, fontWeight: 600, color: "#b91c1c" }}>
                   {sectionErrors[0]}{sectionErrors.length > 1 ? ` (+${sectionErrors.length - 1})` : ""}
                 </span>
               </div>
             )}
 
-            {activeStep < stepsList.length - 1 ? (
-              <button type="button" onClick={handleNextStep}
-                className="px-6 py-2.5 bg-green-700 hover:bg-green-800 text-white rounded-xl text-xs font-bold tracking-wide transition-all cursor-pointer flex items-center gap-1.5 shadow-sm shadow-green-200"
-              >
-                Avançar <ChevronRight className="w-4 h-4" />
-              </button>
-            ) : <div />}
+            {activeStep < STEPS.length - 1
+              ? <button type="button" onClick={handleNext} style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 24px", backgroundColor: "#2d6a4f", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, color: "white", cursor: "pointer", boxShadow: "0 2px 8px rgba(45,106,79,0.3)" }}>
+                  Avançar <ChevronRight size={16} />
+                </button>
+              : <div />
+            }
           </div>
         )}
 
-        {/* ── Footer ── */}
-        <footer className="flex justify-between items-center text-slate-400 text-[11px] pt-4 border-t border-green-100" id="clear-survey-wrapper">
-          <p>© 2026 Instituto NGUTAPA · Projeto GEF Putumayo-Içá · Banco Mundial</p>
-          <button type="button" onClick={handleClearForm}
-            className="text-slate-400 hover:text-red-600 transition-all font-semibold flex items-center gap-1.5 hover:bg-red-50 px-3 py-1.5 rounded-lg border border-transparent hover:border-red-200 cursor-pointer"
-          >
-            <RotateCcw className="w-3.5 h-3.5" /> Limpar Formulário
+        {/* ══ FOOTER ══ */}
+        <div id="clear-btn" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 32, paddingTop: 20, borderTop: "1px solid #e2ebe4" }}>
+          <p style={{ fontSize: 11, color: "#9ca3af" }}>© 2026 Instituto NGUTAPA · Projeto GEF Putumayo-Içá · Banco Mundial</p>
+          <button type="button" onClick={handleClearForm} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "#9ca3af", background: "none", border: "none", cursor: "pointer", padding: "4px 8px", borderRadius: 6 }}
+            onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.color = "#ef4444"; }}
+            onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.color = "#9ca3af"; }}>
+            <RotateCcw size={12} /> Limpar Formulário
           </button>
-        </footer>
+        </div>
       </div>
+    </div>
+  );
+}
+
+function Declaration({ checked, id, onChange }: { checked: boolean; id: string; onChange: (v: boolean) => void }) {
+  return (
+    <div>
+      <h4 style={{ fontSize: 14, fontWeight: 700, color: "#1a3d2b", marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
+        <span style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: "#2d6a4f", color: "white", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 11 }}>✓</span>
+        Declaração de Veracidade
+      </h4>
+      <label htmlFor={id} style={{ display: "flex", gap: 14, padding: "18px 20px", backgroundColor: "#f6faf7", border: `2px solid ${checked ? "#2d6a4f" : "#d1fae5"}`, borderRadius: 14, cursor: "pointer", transition: "all 0.15s" }}>
+        <input type="checkbox" id={id} checked={checked} onChange={e => onChange(e.target.checked)}
+          style={{ width: 18, height: 18, accentColor: "#2d6a4f", cursor: "pointer", flexShrink: 0, marginTop: 1 }} />
+        <div style={{ fontSize: 13, color: "#374151", lineHeight: 1.6 }}>
+          <p style={{ fontWeight: 700, color: "#1a3d2b", marginBottom: 6 }}>Ao assinalar, o(a) profissional declara que:</p>
+          <ul style={{ paddingLeft: 18, color: "#6b7280", display: "flex", flexDirection: "column", gap: 4 }}>
+            <li>Todas as informações prestadas são verdadeiras e podem ser comprovadas mediante solicitação.</li>
+            <li>Os honorários informados refletem coerentemente sua prática habitual de mercado para o escopo descrito no TdR.</li>
+            <li>Este formulário é utilizado exclusivamente para fins de pesquisa de mercado e <strong style={{ color: "#374151" }}>não constitui proposta de contratação imediata</strong>.</li>
+          </ul>
+        </div>
+      </label>
     </div>
   );
 }
