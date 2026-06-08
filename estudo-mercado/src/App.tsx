@@ -6,9 +6,29 @@ import { FormFormacao } from "./components/FormFormacao";
 import { FormExperiencia } from "./components/FormExperiencia";
 import { FormRequisitos } from "./components/FormRequisitos";
 import { PainelEnvio } from "./components/PainelEnvio";
-import { AlertCircle, RotateCcw, Fish, MapPin, Clock, DollarSign, Users, Award } from "lucide-react";
+import { AlertCircle, RotateCcw, Fish, MapPin, Clock, Users, Award, FileText, Download } from "lucide-react";
 
 const STORAGE_KEY = "ngutapa_eng_pesca_2026_v2";
+
+function NgutapaLogo() {
+  return (
+    <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+      {/* Ícone geométrico estilizado */}
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="36" height="36" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" strokeWidth="1"/>
+        {/* Figura estilizada do guerreiro */}
+        <circle cx="19" cy="10" r="3.5" fill="rgba(255,255,255,0.85)"/>
+        <path d="M19 14 L14 24 L19 21 L24 24 Z" fill="rgba(255,255,255,0.75)"/>
+        <path d="M14 24 L11 31 M24 24 L27 31" stroke="rgba(255,255,255,0.75)" strokeWidth="2" strokeLinecap="round"/>
+        <path d="M11 18 L14 22 M27 18 L24 22" stroke="#d4a820" strokeWidth="1.8" strokeLinecap="round"/>
+      </svg>
+      <div style={{ lineHeight:1.15 }}>
+        <div style={{ color:"#a8d5b8", fontSize:8, fontWeight:600, letterSpacing:"0.18em", textTransform:"uppercase" }}>Instituto</div>
+        <div style={{ color:"white", fontSize:16, fontWeight:900, letterSpacing:"0.04em" }}>NGUTAPA</div>
+      </div>
+    </div>
+  );
+}
 
 function ProjectLogo({ color = "white" }: { color?: string }) {
   return (
@@ -94,12 +114,18 @@ export default function App() {
         </svg>
         <div style={{ position:"relative",zIndex:10,maxWidth:960,margin:"0 auto",padding:"28px 24px 26px",display:"flex",flexWrap:"wrap",justifyContent:"space-between",alignItems:"center",gap:24 }}>
           <div style={{ display:"flex",alignItems:"center",gap:16 }}>
-            <div style={{ backgroundColor:"rgba(255,255,255,.08)",border:"1px solid rgba(255,255,255,.14)",borderRadius:16,padding:"12px 16px",display:"flex",alignItems:"center",gap:12 }}>
+            {/* Logo NGUTAPA */}
+            <div style={{ backgroundColor:"rgba(255,255,255,.08)",border:"1px solid rgba(255,255,255,.14)",borderRadius:16,padding:"10px 14px",display:"flex",alignItems:"center",gap:10 }}>
+              <NgutapaLogo/>
+            </div>
+            {/* Divisor */}
+            <div style={{ width:1,height:40,backgroundColor:"rgba(255,255,255,.15)" }}/>
+            <div style={{ backgroundColor:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.1)",borderRadius:14,padding:"10px 14px",display:"flex",alignItems:"center",gap:10 }}>
               <ProjectLogo color="white"/>
               <div style={{ lineHeight:1.2 }}>
                 <div style={{ color:"#a8d5b8",fontSize:9,fontWeight:600,letterSpacing:"0.15em",textTransform:"uppercase" }}>Cuenca</div>
-                <div style={{ color:"white",fontSize:15,fontWeight:800 }}>Putumayo</div>
-                <div style={{ color:"#d4a820",fontSize:12,fontWeight:700 }}>Içá</div>
+                <div style={{ color:"white",fontSize:14,fontWeight:800 }}>Putumayo</div>
+                <div style={{ color:"#d4a820",fontSize:11,fontWeight:700 }}>Içá</div>
               </div>
             </div>
             <div>
@@ -121,23 +147,34 @@ export default function App() {
 
       <div style={{ maxWidth:960,margin:"0 auto",padding:"24px 24px 60px" }}>
 
-        {/* ══ PROCESS BADGE ══ */}
-        <div style={{ backgroundColor:"#1a3d2b",borderRadius:12,padding:"12px 20px",marginBottom:20,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8 }}>
-          <div>
-            <span style={{ color:"#a8d5b8",fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em" }}>Processo · </span>
-            <span style={{ color:"white",fontSize:13,fontWeight:700 }}>SDC-NGUTUPA-C2-ENG-01-2026</span>
+        {/* ══ TdR PDF LINK ══ */}
+        <a
+          href="https://drive.google.com/file/d/SEU-LINK-AQUI/view"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12,backgroundColor:"#1a3d2b",borderRadius:12,padding:"14px 22px",marginBottom:20,textDecoration:"none",cursor:"pointer",transition:"background .15s" }}
+          onMouseOver={e => (e.currentTarget as HTMLAnchorElement).style.backgroundColor="#2d6a4f"}
+          onMouseOut={e => (e.currentTarget as HTMLAnchorElement).style.backgroundColor="#1a3d2b"}
+        >
+          <div style={{ display:"flex",alignItems:"center",gap:12 }}>
+            <div style={{ backgroundColor:"rgba(212,168,32,.2)",borderRadius:9,padding:"8px 10px",display:"flex",alignItems:"center" }}>
+              <FileText size={18} color="#d4a820"/>
+            </div>
+            <div>
+              <div style={{ color:"white",fontSize:13,fontWeight:700 }}>Termo de Referência Completo — SDC-NGUTUPA-C2-ENG-01-2026</div>
+              <div style={{ color:"#a8d5b8",fontSize:11,marginTop:2 }}>Clique para acessar o documento oficial em PDF · Engenheiro(a) de Pesca</div>
+            </div>
           </div>
-          <div style={{ display:"flex",gap:16,flexWrap:"wrap" }}>
-            <span style={{ color:"#a8d5b8",fontSize:12 }}>Subprojeto: Guardiões dos Peixes do Rio Içá</span>
-            <span style={{ color:"#6b9e7e",fontSize:12 }}>Atividade POA 2.2.2</span>
+          <div style={{ display:"flex",alignItems:"center",gap:6,backgroundColor:"rgba(212,168,32,.15)",border:"1px solid rgba(212,168,32,.35)",borderRadius:8,padding:"7px 14px" }}>
+            <Download size={13} color="#d4a820"/>
+            <span style={{ color:"#d4a820",fontSize:12,fontWeight:700 }}>Abrir PDF</span>
           </div>
-        </div>
+        </a>
 
         {/* ══ EDITAL CARDS ══ */}
         <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:12,marginBottom:20 }}>
           {[
             { icon: <Clock size={16} color="#d4a820"/>, label:"Duração", value:"8 meses", sub:"Jul/2026 – Fev/2027" },
-            { icon: <DollarSign size={16} color="#d4a820"/>, label:"Valor do Contrato", value:"USD 8.170,00", sub:"Pago em BRL na data da NF" },
             { icon: <Users size={16} color="#d4a820"/>, label:"Tipo de Contrato", value:"Pessoa Física (CPF)", sub:"RPA · Seleção aberta e competitiva" },
             { icon: <MapPin size={16} color="#d4a820"/>, label:"Local de Execução", value:"Santo Antônio do Içá", sub:"Vila Betânia SAI – AM" },
             { icon: <Fish size={16} color="#d4a820"/>, label:"Comunidades", value:"14 comunidades", sub:"Bacia do Rio Içá" },
