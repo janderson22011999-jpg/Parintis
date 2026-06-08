@@ -8,7 +8,7 @@ import { FormRequisitos } from "./components/FormRequisitos";
 import { PainelEnvio } from "./components/PainelEnvio";
 import { AlertCircle, RotateCcw, Fish, MapPin, Clock, DollarSign, Users, Award } from "lucide-react";
 
-const STORAGE_KEY = "ngutapa_eng_pesca_2026";
+const STORAGE_KEY = "ngutapa_eng_pesca_2026_v2";
 
 function ProjectLogo({ color = "white" }: { color?: string }) {
   return (
