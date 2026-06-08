@@ -1,124 +1,120 @@
-import { CotacaoForm, Lote, LOTE_A_ITEMS, LOTE_B_ITEMS } from "./types";
+import { CandidatoForm, EMPTY_FORM } from "./types";
 
-const emptyItem = () => ({ marcaModelo: "", precoUnitarioBRL: "", precoUnitarioUSD: "", observacoes: "" });
-
-export function makeInitialState(lote: Lote): CotacaoForm {
-  const items = lote === "A" ? LOTE_A_ITEMS : LOTE_B_ITEMS;
-  return {
-    lote,
-    fornecedor: {
-      razaoSocial: "", cnpj: "", responsavel: "", email: "",
-      telefone: "", cidadeEstado: "", dataCotacao: new Date().toISOString().split("T")[0],
-    },
-    itens: items.map(() => emptyItem()),
-    condicoes: {
-      prazoEntrega: "30 dias corridos", validadeProposta: "60 dias",
-      incluiImpostos: false, incluiFrete: false, observacoesGerais: "",
-      concordaDeclaracao: false,
-    },
-  };
+export function makeInitialState(): CandidatoForm {
+  return JSON.parse(JSON.stringify(EMPTY_FORM));
 }
 
-export function parseBRL(val: string): number {
-  return parseFloat(val.replace(/[^\d.,]/g, "").replace(",", ".")) || 0;
-}
-
-export function calcTotalBRL(form: CotacaoForm): number {
-  const items = form.lote === "A" ? LOTE_A_ITEMS : LOTE_B_ITEMS;
-  return form.itens.reduce((sum, it, i) => sum + parseBRL(it.precoUnitarioBRL) * items[i].quantidade, 0);
-}
-
-export function calcTotalUSD(form: CotacaoForm): number {
-  const items = form.lote === "A" ? LOTE_A_ITEMS : LOTE_B_ITEMS;
-  return form.itens.reduce((sum, it, i) => sum + parseBRL(it.precoUnitarioUSD) * items[i].quantidade, 0);
-}
-
-export function formatBRL(val: number): string {
-  return val.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-export function validateForm(form: CotacaoForm): string[] {
+export function validateForm(form: CandidatoForm): string[] {
   const errors: string[] = [];
-  const f = form.fornecedor;
-  if (!f.razaoSocial.trim()) errors.push("Razão social é obrigatória.");
-  if (!f.cnpj.trim()) errors.push("CNPJ é obrigatório.");
-  if (!f.responsavel.trim()) errors.push("Nome do responsável é obrigatório.");
-  if (!f.email.trim()) errors.push("E-mail é obrigatório.");
-  const items = form.lote === "A" ? LOTE_A_ITEMS : LOTE_B_ITEMS;
-  form.itens.forEach((it, i) => {
-    if (!it.marcaModelo.trim()) errors.push(`Item ${items[i].id}: informe a marca/modelo.`);
-    if (!it.precoUnitarioBRL.trim()) errors.push(`Item ${items[i].id}: informe o preço unitário em BRL.`);
-  });
-  if (!form.condicoes.concordaDeclaracao) errors.push("É necessário concordar com a declaração de veracidade.");
+  const id = form.identificacao;
+  if (!id.nomeCompleto.trim()) errors.push("Nome completo é obrigatório.");
+  if (!id.cpf.trim()) errors.push("CPF é obrigatório.");
+  if (!id.email.trim()) errors.push("E-mail é obrigatório.");
+  if (!id.telefone.trim()) errors.push("Telefone / WhatsApp é obrigatório.");
+  if (!id.cidadeEstado.trim()) errors.push("Cidade/Estado de residência é obrigatório.");
+
+  const fo = form.formacao;
+  if (!fo.cursoGraduacao.trim()) errors.push("Curso de graduação é obrigatório.");
+  if (!fo.instituicaoGraduacao.trim()) errors.push("Instituição de graduação é obrigatória.");
+  if (!fo.anoConclusaoGraduacao.trim()) errors.push("Ano de conclusão da graduação é obrigatório.");
+
+  const eg = form.experienciaGeral;
+  if (!eg.totalMesesExperiencia.trim()) errors.push("Informe o total de meses de experiência profissional.");
+  else if (Number(eg.totalMesesExperiencia) < 6) errors.push("É necessário ter pelo menos 6 meses de experiência profissional (mínimo do TdR).");
+  if (!eg.descricaoExperiencias.trim()) errors.push("Descreva sua experiência profissional.");
+
+  const ee = form.experienciaEspecifica;
+  if (!ee.possuiExperienciaEspecifica) errors.push("Informe se possui experiência específica em manejo pesqueiro comunitário na Amazônia.");
+  if (ee.possuiExperienciaEspecifica === "Sim") {
+    if (!ee.totalMesesEspecifica.trim()) errors.push("Informe o total de meses de experiência específica.");
+    if (!ee.descricaoEspecifica.trim()) errors.push("Descreva sua experiência específica em manejo pesqueiro / Pirarucu.");
+  }
+
+  const d = form.declaracoes;
+  if (!d.aceitaTermos) errors.push("Você deve aceitar os Termos de Referência.");
+  if (!d.informacoesAutenticas) errors.push("Você deve declarar que as informações são autênticas e verificáveis.");
+  if (!d.aceitaPoliticasFraude) errors.push("Você deve aceitar as Políticas de Fraude e Corrupção do Banco Mundial.");
+
   return errors;
 }
 
-export function formatToEmail(form: CotacaoForm): string {
-  const items = form.lote === "A" ? LOTE_A_ITEMS : LOTE_B_ITEMS;
-  const numero = form.lote === "A" ? "SDC-NGUTUPA-C1-011A-2026" : "SDC-NGUTUPA-C1-011B-2026";
-  const nomeLote = form.lote === "A"
-    ? "Lote A — Informática, Comunicação e Energia"
-    : "Lote B — Audiovisual, Iluminação e Segurança";
+export function formatToEmail(form: CandidatoForm): string {
+  const id = form.identificacao;
+  const fo = form.formacao;
+  const eg = form.experienciaGeral;
+  const ee = form.experienciaEspecifica;
+  const re = form.requisitos;
   const sep = "=".repeat(58);
-  const f = form.fornecedor;
 
-  const linhasItens = items.map((item, i) => {
-    const cot = form.itens[i];
-    const totalBRL = parseBRL(cot.precoUnitarioBRL) * item.quantidade;
-    const totalUSD = parseBRL(cot.precoUnitarioUSD) * item.quantidade;
-    return [
-      `Item ${String(item.id).padStart(2, "0")} — ${item.descricao}`,
-      `  Qtd: ${item.quantidade} ${item.unidade}`,
-      `  Marca/Modelo Ofertado: ${cot.marcaModelo || "—"}`,
-      `  Preço Unitário (BRL): R$ ${cot.precoUnitarioBRL || "—"}`,
-      `  Preço Total (BRL):    R$ ${formatBRL(totalBRL)}`,
-      totalUSD > 0 ? `  Preço Unitário (USD): US$ ${cot.precoUnitarioUSD}` : "",
-      totalUSD > 0 ? `  Preço Total (USD):    US$ ${formatBRL(totalUSD)}` : "",
-      cot.observacoes ? `  Observações: ${cot.observacoes}` : "",
-    ].filter(Boolean).join("\n");
-  }).join("\n\n");
+  const posGradLabel: Record<string, string> = {
+    Nao: "Não possui",
+    Especializacao: "Especialização",
+    Mestrado: "Mestrado",
+    Doutorado: "Doutorado",
+  };
 
-  return `COTAÇÃO DE EQUIPAMENTOS — NGUTAPA
-${nomeLote}
-Processo: ${numero}
-Data: ${f.dataCotacao}
+  const checkMark = (v: boolean) => (v ? "Sim" : "Não");
+
+  return `MANIFESTAÇÃO DE INTERESSE — NGUTAPA
+Vaga: Engenheiro(a) de Pesca
+Processo: SDC-NGUTUPA-C2-ENG-01-2026
+Subprojeto: Guardiões dos Peixes do Rio Içá
 
 ${sep}
-DADOS DO FORNECEDOR
+IDENTIFICAÇÃO DO CANDIDATO
 ${sep}
-Razão Social: ${f.razaoSocial}
-CNPJ: ${f.cnpj}
-Responsável: ${f.responsavel}
-E-mail: ${f.email}
-Telefone: ${f.telefone}
-Cidade/Estado: ${f.cidadeEstado}
+Nome Completo: ${id.nomeCompleto}
+CPF: ${id.cpf}
+E-mail: ${id.email}
+Telefone / WhatsApp: ${id.telefone}
+Cidade / Estado de Residência: ${id.cidadeEstado}
+${id.linkedinLattes ? `LinkedIn / Lattes: ${id.linkedinLattes}` : ""}
 
 ${sep}
-ITENS COTADOS
+FORMAÇÃO ACADÊMICA
 ${sep}
-${linhasItens}
+Curso de Graduação: ${fo.cursoGraduacao}
+Instituição: ${fo.instituicaoGraduacao}
+Ano de Conclusão: ${fo.anoConclusaoGraduacao}
+Pós-graduação: ${posGradLabel[fo.posGraduacao] ?? fo.posGraduacao}
+${fo.posGraduacao !== "Nao" ? `Área: ${fo.areaPosGraduacao}` : ""}
+${fo.posGraduacao !== "Nao" ? `Instituição Pós: ${fo.instituicaoPosGraduacao}` : ""}
+${fo.posGraduacao !== "Nao" && fo.anoConclusaoPosGraduacao ? `Ano Conclusão Pós: ${fo.anoConclusaoPosGraduacao}` : ""}
 
 ${sep}
-VALOR TOTAL ESTIMADO
+EXPERIÊNCIA PROFISSIONAL GERAL
 ${sep}
-Total Geral (BRL): R$ ${formatBRL(calcTotalBRL(form))}
-${calcTotalUSD(form) > 0 ? `Total Geral (USD): US$ ${formatBRL(calcTotalUSD(form))}` : ""}
+Total de Meses de Experiência (desde diploma): ${eg.totalMesesExperiencia} meses
+Descrição:
+${eg.descricaoExperiencias}
 
 ${sep}
-CONDIÇÕES
+EXPERIÊNCIA ESPECÍFICA EM MANEJO PESQUEIRO
 ${sep}
-Prazo de Entrega: ${form.condicoes.prazoEntrega}
-Validade da Proposta: ${form.condicoes.validadeProposta}
-Preços incluem impostos: ${form.condicoes.incluiImpostos ? "Sim" : "Não"}
-Preços incluem frete até Vila Bethania SAI: ${form.condicoes.incluiFrete ? "Sim" : "Não"}
-${form.condicoes.observacoesGerais ? `Observações Gerais: ${form.condicoes.observacoesGerais}` : ""}
+Possui experiência em manejo de Pirarucu / pesca comunitária com povos indígenas na Amazônia: ${ee.possuiExperienciaEspecifica === "Sim" ? "Sim" : "Não"}
+${ee.possuiExperienciaEspecifica === "Sim" ? `Total de Meses de Experiência Específica: ${ee.totalMesesEspecifica} meses` : ""}
+${ee.possuiExperienciaEspecifica === "Sim" && ee.regiaoAtuacao ? `Região de Atuação: ${ee.regiaoAtuacao}` : ""}
+${ee.possuiExperienciaEspecifica === "Sim" ? `Descrição:\n${ee.descricaoEspecifica}` : ""}
 
 ${sep}
-DECLARAÇÃO
+REQUISITOS ADICIONAIS
 ${sep}
-O fornecedor declara que os preços cotados refletem os valores reais praticados
-no mercado e que os equipamentos atendem às especificações técnicas mínimas
-exigidas no processo ${numero}.
-Concordância: SIM — assinada eletronicamente.
+Disponibilidade para deslocamentos fluviais em áreas remotas: ${checkMark(re.disponibilidadeFluvial)}
+Domínio de ferramentas de coleta de dados em campo: ${checkMark(re.dominioColetaDados)}
+Domínio do pacote Office: ${checkMark(re.dominioOffice)}
+Capacidade de coordenação de equipes comunitárias: ${checkMark(re.coordenacaoEquipes)}
+Manuseio de equipamentos eletrônicos: ${checkMark(re.manuseioEquipamentos)}
+${re.observacoesAdicionais ? `Observações: ${re.observacoesAdicionais}` : ""}
+
+${sep}
+DECLARAÇÕES
+${sep}
+Aceita os Termos de Referência: Sim
+Declara que as informações são autênticas: Sim
+Aceita as Políticas de Fraude e Corrupção do Banco Mundial (BIRD): Sim
+
+Com o envio desta manifestação, o(a) candidato(a) declara que todas as
+informações fornecidas são autênticas e pode apresentar os comprovantes
+respectivos, caso sejam solicitados.
 `;
 }
