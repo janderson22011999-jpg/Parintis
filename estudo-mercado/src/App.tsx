@@ -12,21 +12,19 @@ const STORAGE_KEY = "ngutapa_eng_pesca_2026_v2";
 
 function NgutapaLogo() {
   return (
-    <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-      {/* Ícone geométrico estilizado */}
-      <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="1" y="1" width="36" height="36" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" strokeWidth="1"/>
-        {/* Figura estilizada do guerreiro */}
-        <circle cx="19" cy="10" r="3.5" fill="rgba(255,255,255,0.85)"/>
-        <path d="M19 14 L14 24 L19 21 L24 24 Z" fill="rgba(255,255,255,0.75)"/>
-        <path d="M14 24 L11 31 M24 24 L27 31" stroke="rgba(255,255,255,0.75)" strokeWidth="2" strokeLinecap="round"/>
-        <path d="M11 18 L14 22 M27 18 L24 22" stroke="#d4a820" strokeWidth="1.8" strokeLinecap="round"/>
-      </svg>
-      <div style={{ lineHeight:1.15 }}>
-        <div style={{ color:"#a8d5b8", fontSize:8, fontWeight:600, letterSpacing:"0.18em", textTransform:"uppercase" }}>Instituto</div>
-        <div style={{ color:"white", fontSize:16, fontWeight:900, letterSpacing:"0.04em" }}>NGUTAPA</div>
-      </div>
-    </div>
+    <img
+      src="https://brasil.amazonteam.org/wp-content/uploads/2025/03/NGUTAPA-logo.png"
+      alt="Instituto NGUTAPA"
+      style={{ height: 52, width: "auto", display: "block", filter: "brightness(0) invert(1)" }}
+      onError={e => {
+        const el = e.currentTarget as HTMLImageElement;
+        el.style.display = "none";
+        const parent = el.parentElement;
+        if (parent) {
+          parent.innerHTML = `<div style="line-height:1.15"><div style="color:#a8d5b8;font-size:8px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase">Instituto</div><div style="color:white;font-size:16px;font-weight:900;letter-spacing:0.04em">NGUTAPA</div></div>`;
+        }
+      }}
+    />
   );
 }
 
