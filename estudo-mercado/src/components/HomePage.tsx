@@ -29,7 +29,7 @@ const OPORTUNIDADES: Oportunidade[] = [
     status: "aberto",
     descricao: "Prestação de suporte técnico especializado para implementação do manejo pesqueiro sustentável e governança comunitária em 14 comunidades indígenas da bacia do Rio Içá.",
     temFormulario: true,
-    linkTdr: "https://drive.google.com/file/d/SEU-LINK-AQUI/view",
+    linkTdr: "https://drive.google.com/file/d/11koVEbI9IYcyJvU0lkE5gLZpqnLDOOp4/view?usp=drive_link",
   },
 ];
 
@@ -225,7 +225,7 @@ function CardOportunidade({ op, onAbrirFormulario }: { op: Oportunidade; onAbrir
 
       {/* Ações */}
       <div style={{ padding:"12px 20px 16px",borderTop:"1px solid #f0f4f0",display:"flex",gap:8 }}>
-        {op.linkTdr && op.linkTdr !== "https://drive.google.com/file/d/SEU-LINK-AQUI/view" && (
+        {op.linkTdr && (
           <a href={op.linkTdr} target="_blank" rel="noopener noreferrer"
             style={{ display:"inline-flex",alignItems:"center",gap:5,padding:"8px 14px",border:"1.5px solid #d1d5db",borderRadius:8,fontSize:12,fontWeight:600,color:"#374151",textDecoration:"none",backgroundColor:"white" }}>
             <ExternalLink size={12}/> TdR
