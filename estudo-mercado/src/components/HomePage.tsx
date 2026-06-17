@@ -1,5 +1,5 @@
-import React from "react";
-import { Calendar, MapPin, Clock, ChevronRight, Fish, BookOpen, ExternalLink } from "lucide-react";
+import React, { useState } from "react";
+import { ExternalLink, Share2, Check } from "lucide-react";
 
 interface Oportunidade {
   id: string;
@@ -37,9 +37,9 @@ interface Props {
   onAbrirFormulario: (id: string) => void;
 }
 
-function ProjectLogo({ color = "white" }: { color?: string }) {
+function ProjectLogo({ color = "#1a3d2b" }: { color?: string }) {
   return (
-    <svg width="36" height="44" viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="32" height="40" viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
       <line x1="28" y1="22" x2="14" y2="8" stroke={color} strokeWidth="2.8" strokeLinecap="round"/>
       <line x1="30" y1="20" x2="22" y2="5" stroke={color} strokeWidth="2.8" strokeLinecap="round"/>
       <line x1="33" y1="19" x2="28" y2="4" stroke={color} strokeWidth="2.8" strokeLinecap="round"/>
@@ -54,15 +54,10 @@ function ProjectLogo({ color = "white" }: { color?: string }) {
   );
 }
 
-const STATUS_CONFIG = {
-  aberto:     { label: "Inscrições Abertas", bg: "#dcfce7", color: "#15803d", dot: "#16a34a" },
-  encerrado:  { label: "Encerrado",          bg: "#f3f4f6", color: "#6b7280", dot: "#9ca3af" },
-  em_breve:   { label: "Em Breve",           bg: "#fef9c3", color: "#854d0e", dot: "#ca8a04" },
-};
-
-const CATEGORIA_ICON: Record<string, React.ReactNode> = {
-  "Consultoria Individual": <Fish size={15}/>,
-  "Emprego":               <BookOpen size={15}/>,
+const STATUS_LABEL: Record<string, string> = {
+  aberto:    "Inscrições Abertas",
+  encerrado: "Encerrado",
+  em_breve:  "Em Breve",
 };
 
 export function HomePage({ onAbrirFormulario }: Props) {
@@ -70,179 +65,203 @@ export function HomePage({ onAbrirFormulario }: Props) {
   const restantes = OPORTUNIDADES.filter(o => o.status !== "aberto");
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f0f4f0", fontFamily: "system-ui,-apple-system,sans-serif" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "#f5f3ef", fontFamily: "Georgia, 'Times New Roman', serif" }}>
 
       {/* ══ HEADER ══ */}
-      <header style={{ backgroundColor: "#1a3d2b", position: "relative", overflow: "hidden" }}>
-        <svg style={{ position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none" }} viewBox="0 0 1200 180" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <radialGradient id="rg" cx="75%" cy="50%" r="55%">
-              <stop offset="0%" stopColor="#2d6a4f" stopOpacity="0.7"/>
-              <stop offset="100%" stopColor="#1a3d2b" stopOpacity="0"/>
-            </radialGradient>
-          </defs>
-          <rect width="1200" height="180" fill="url(#rg)"/>
-          <path d="M0,120 C200,40 450,160 700,70 C900,0 1050,110 1200,50 L1200,180 L0,180Z" fill="white" fillOpacity="0.03"/>
-          <path d="M80,155 C280,65 530,165 780,75 C960,5 1080,115 1240,45" stroke="#d4a820" strokeWidth="1.5" strokeOpacity="0.25" fill="none"/>
-        </svg>
-        <div style={{ position:"relative",zIndex:10,maxWidth:1060,margin:"0 auto",padding:"22px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:20,flexWrap:"wrap" }}>
-          <div style={{ display:"flex",alignItems:"center",gap:14 }}>
-            {/* Logo NGUTAPA */}
+      <header style={{ backgroundColor: "#1a3d2b", borderBottom: "4px solid #d4a820" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto", padding: "20px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             <img
               src="https://brasil.amazonteam.org/wp-content/uploads/2025/03/NGUTAPA-logo.png"
               alt="Instituto NGUTAPA"
-              style={{ height:48,width:"auto",filter:"brightness(0) invert(1)" }}
-              onError={e => { (e.currentTarget as HTMLImageElement).style.display="none"; }}
+              style={{ height: 52, width: "auto", filter: "brightness(0) invert(1)" }}
+              onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
             />
-            <div style={{ width:1,height:36,backgroundColor:"rgba(255,255,255,.2)" }}/>
-            <div style={{ display:"flex",alignItems:"center",gap:10,backgroundColor:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.1)",borderRadius:12,padding:"8px 12px" }}>
-              <ProjectLogo color="white"/>
-              <div style={{ lineHeight:1.2 }}>
-                <div style={{ color:"#a8d5b8",fontSize:9,fontWeight:600,letterSpacing:"0.14em",textTransform:"uppercase" }}>Projeto GEF</div>
-                <div style={{ color:"white",fontSize:13,fontWeight:800 }}>Putumayo-Içá</div>
+            <div style={{ width: 1, height: 40, backgroundColor: "rgba(255,255,255,.25)" }}/>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <ProjectLogo color="rgba(255,255,255,.7)"/>
+              <div>
+                <div style={{ color: "#a8d5b8", fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", fontFamily: "system-ui,sans-serif" }}>Projeto GEF</div>
+                <div style={{ color: "white", fontSize: 14, fontWeight: 700, fontFamily: "system-ui,sans-serif" }}>Putumayo-Içá</div>
               </div>
             </div>
           </div>
-          <div style={{ textAlign:"right" }}>
-            <div style={{ color:"white",fontSize:18,fontWeight:800,lineHeight:1.2 }}>Editais e Oportunidades</div>
-            <div style={{ color:"#a8d5b8",fontSize:12,marginTop:3 }}>Instituto de Etno Desenvolvimento NGUTAPA · Santo Antônio do Içá – AM</div>
+          <div style={{ textAlign: "right" }}>
+            <div style={{ color: "white", fontSize: 20, fontWeight: 700, letterSpacing: "0.01em" }}>Editais e Oportunidades</div>
+            <div style={{ color: "#a8d5b8", fontSize: 12, marginTop: 4, fontFamily: "system-ui,sans-serif" }}>Instituto de Etnodesenvolvimento NGUTAPA · Santo Antônio do Içá – AM</div>
           </div>
         </div>
       </header>
 
-      {/* ══ HERO BAND ══ */}
-      <div style={{ backgroundColor:"#2d6a4f",padding:"14px 24px" }}>
-        <div style={{ maxWidth:1060,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:10 }}>
-          <p style={{ color:"#c6e8d4",fontSize:12,margin:0,lineHeight:1.6 }}>
-            Processos seletivos abertos e competitivos — financiados pelo <strong style={{ color:"white" }}>Fundo para o Meio Ambiente Global (GEF)</strong> via Banco Mundial · Doação TF0B8254-6L
+      {/* ══ FAIXA GEF ══ */}
+      <div style={{ backgroundColor: "#fff", borderBottom: "1px solid #e0dbd0" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto", padding: "10px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+          <p style={{ color: "#6b6b6b", fontSize: 12, margin: 0, fontFamily: "system-ui,sans-serif", lineHeight: 1.6 }}>
+            Processos seletivos abertos e competitivos financiados pelo <strong style={{ color: "#1a3d2b" }}>Fundo para o Meio Ambiente Global (GEF)</strong> via Banco Mundial · Doação TF0B8254-6L
           </p>
-          <span style={{ backgroundColor:"rgba(255,255,255,.1)",border:"1px solid rgba(255,255,255,.2)",borderRadius:20,padding:"4px 14px",color:"white",fontSize:11,fontWeight:700,whiteSpace:"nowrap" }}>
+          <span style={{ backgroundColor: "#f0faf4", border: "1px solid #a7d4b8", borderRadius: 4, padding: "3px 12px", color: "#1a3d2b", fontSize: 11, fontWeight: 700, fontFamily: "system-ui,sans-serif", whiteSpace: "nowrap" }}>
             {abertas.length} vaga{abertas.length !== 1 ? "s" : ""} aberta{abertas.length !== 1 ? "s" : ""}
           </span>
         </div>
       </div>
 
-      <div style={{ maxWidth:1060,margin:"0 auto",padding:"32px 24px 64px" }}>
+      {/* ══ CONTEÚDO ══ */}
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "40px 32px 80px" }}>
 
         {/* Abertas */}
         {abertas.length > 0 && (
-          <section style={{ marginBottom:40 }}>
-            <h2 style={{ fontSize:13,fontWeight:700,color:"#374151",textTransform:"uppercase",letterSpacing:"0.12em",margin:"0 0 16px",display:"flex",alignItems:"center",gap:8 }}>
-              <span style={{ display:"inline-block",width:8,height:8,borderRadius:"50%",backgroundColor:"#16a34a" }}/>
-              Inscrições Abertas
-            </h2>
-            <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(360px,1fr))",gap:16 }}>
-              {abertas.map(op => <CardOportunidade key={op.id} op={op} onAbrirFormulario={onAbrirFormulario}/>)}
+          <section style={{ marginBottom: 48 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24, paddingBottom: 12, borderBottom: "2px solid #1a3d2b" }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: "#2d6a4f", display: "inline-block", flexShrink: 0 }}/>
+              <h2 style={{ fontSize: 11, fontWeight: 700, color: "#1a3d2b", textTransform: "uppercase", letterSpacing: "0.18em", margin: 0, fontFamily: "system-ui,sans-serif" }}>
+                Inscrições Abertas
+              </h2>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+              {abertas.map((op, i) => (
+                <CardOportunidade key={op.id} op={op} onAbrirFormulario={onAbrirFormulario} last={i === abertas.length - 1}/>
+              ))}
             </div>
           </section>
         )}
 
-        {/* Encerradas / Em breve */}
+        {/* Encerradas */}
         {restantes.length > 0 && (
           <section>
-            <h2 style={{ fontSize:13,fontWeight:700,color:"#9ca3af",textTransform:"uppercase",letterSpacing:"0.12em",margin:"0 0 16px",display:"flex",alignItems:"center",gap:8 }}>
-              <span style={{ display:"inline-block",width:8,height:8,borderRadius:"50%",backgroundColor:"#d1d5db" }}/>
-              Outras Oportunidades
-            </h2>
-            <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(360px,1fr))",gap:16 }}>
-              {restantes.map(op => <CardOportunidade key={op.id} op={op} onAbrirFormulario={onAbrirFormulario}/>)}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24, paddingBottom: 12, borderBottom: "1px solid #ccc" }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: "#ccc", display: "inline-block", flexShrink: 0 }}/>
+              <h2 style={{ fontSize: 11, fontWeight: 700, color: "#888", textTransform: "uppercase", letterSpacing: "0.18em", margin: 0, fontFamily: "system-ui,sans-serif" }}>
+                Outras Oportunidades
+              </h2>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+              {restantes.map((op, i) => (
+                <CardOportunidade key={op.id} op={op} onAbrirFormulario={onAbrirFormulario} last={i === restantes.length - 1}/>
+              ))}
             </div>
           </section>
         )}
 
-        {/* Rodapé informativo */}
-        <div style={{ marginTop:48,backgroundColor:"white",border:"1.5px solid #e2ebe4",borderRadius:16,padding:"22px 28px",display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:20 }}>
+        {/* Informações */}
+        <div style={{ marginTop: 56, display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 0, borderTop: "1px solid #d0ccc4", paddingTop: 32 }}>
           {[
-            { titulo:"Processo Seletivo", texto:"Os processos seguem os Regulamentos de Aquisições do Banco Mundial para Mutuários em Projetos de Investimento (edição 2020)." },
-            { titulo:"Dúvidas", texto:"Encaminhe para Institutongutapatikuna@gmail.com indicando no assunto o número do processo e seu nome." },
-            { titulo:"Confidencialidade", texto:"Todas as informações obtidas no processo são consideradas confidenciais e não podem ser divulgadas sem autorização expressa do NGUTAPA." },
-          ].map(i => (
-            <div key={i.titulo}>
-              <div style={{ fontSize:12,fontWeight:700,color:"#1a3d2b",marginBottom:6 }}>{i.titulo}</div>
-              <div style={{ fontSize:12,color:"#6b7280",lineHeight:1.65 }}>{i.texto}</div>
+            { titulo: "Processo Seletivo", texto: "Os processos seguem os Regulamentos de Aquisições do Banco Mundial para Mutuários em Projetos de Investimento (edição 2020)." },
+            { titulo: "Dúvidas", texto: "Encaminhe para Institutongutapatikuna@gmail.com indicando o número do processo e seu nome completo no assunto." },
+            { titulo: "Confidencialidade", texto: "As informações obtidas no processo são confidenciais e não podem ser divulgadas sem autorização expressa do NGUTAPA." },
+          ].map((item, i) => (
+            <div key={item.titulo} style={{ paddingRight: 32, paddingBottom: 8, borderLeft: i > 0 ? "1px solid #d0ccc4" : "none", paddingLeft: i > 0 ? 32 : 0 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#1a3d2b", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8, fontFamily: "system-ui,sans-serif" }}>{item.titulo}</div>
+              <div style={{ fontSize: 13, color: "#555", lineHeight: 1.7 }}>{item.texto}</div>
             </div>
           ))}
         </div>
       </div>
 
       {/* ══ FOOTER ══ */}
-      <footer style={{ backgroundColor:"#1a3d2b",padding:"20px 24px" }}>
-        <div style={{ maxWidth:1060,margin:"0 auto",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12 }}>
-          <p style={{ color:"#6b9e7e",fontSize:11,margin:0 }}>© 2026 Instituto NGUTAPA · Projeto GEF Putumayo-Içá · Banco Mundial (GEF TF0B8254-6L)</p>
-          <p style={{ color:"#6b9e7e",fontSize:11,margin:0 }}>Santo Antônio do Içá – AM · Institutongutapatikuna@gmail.com</p>
+      <footer style={{ backgroundColor: "#1a3d2b", borderTop: "4px solid #d4a820", padding: "20px 32px" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+          <p style={{ color: "#7ab898", fontSize: 12, margin: 0, fontFamily: "system-ui,sans-serif" }}>
+            © 2026 Instituto NGUTAPA · Projeto GEF Putumayo-Içá · Banco Mundial (GEF TF0B8254-6L)
+          </p>
+          <p style={{ color: "#7ab898", fontSize: 12, margin: 0, fontFamily: "system-ui,sans-serif" }}>
+            Santo Antônio do Içá – AM · Institutongutapatikuna@gmail.com
+          </p>
         </div>
       </footer>
     </div>
   );
 }
 
-function CardOportunidade({ op, onAbrirFormulario }: { op: Oportunidade; onAbrirFormulario: (id: string) => void }) {
-  const st = STATUS_CONFIG[op.status];
+function CardOportunidade({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormulario: (id: string) => void; last: boolean }) {
+  const [copiado, setCopiado] = useState(false);
   const encerrado = op.status === "encerrado";
 
+  const handleCompartilhar = async () => {
+    const url = `${window.location.origin}${window.location.pathname}?edital=${op.id}`;
+    try { await navigator.clipboard.writeText(url); } catch { }
+    setCopiado(true);
+    setTimeout(() => setCopiado(false), 2500);
+  };
+
   return (
-    <div style={{ backgroundColor:"white",border:"1.5px solid #e2ebe4",borderRadius:16,overflow:"hidden",display:"flex",flexDirection:"column",opacity:encerrado ? 0.7 : 1,transition:"box-shadow .15s",boxShadow:"0 1px 4px rgba(0,0,0,.04)" }}
-      onMouseOver={e => { if (!encerrado) (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 16px rgba(0,0,0,.09)"; }}
-      onMouseOut={e => (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(0,0,0,.04)"}
+    <div style={{
+      backgroundColor: "white",
+      border: "1px solid #d8d4cc",
+      borderBottom: last ? "1px solid #d8d4cc" : "none",
+      padding: "28px 32px",
+      display: "flex",
+      flexDirection: "column",
+      gap: 14,
+      opacity: encerrado ? 0.65 : 1,
+      transition: "background .15s",
+    }}
+      onMouseOver={e => { if (!encerrado) (e.currentTarget as HTMLDivElement).style.backgroundColor = "#fafaf8"; }}
+      onMouseOut={e => (e.currentTarget as HTMLDivElement).style.backgroundColor = "white"}
     >
-      {/* Topo colorido */}
-      <div style={{ backgroundColor:"#1a3d2b",padding:"16px 20px 14px" }}>
-        <div style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:8,marginBottom:8 }}>
-          <span style={{ display:"inline-flex",alignItems:"center",gap:5,backgroundColor:"rgba(255,255,255,.1)",border:"1px solid rgba(255,255,255,.15)",borderRadius:20,padding:"3px 10px",fontSize:10,color:"#a8d5b8",fontWeight:600 }}>
-            {CATEGORIA_ICON[op.categoria] ?? null}
-            {op.categoria}
-          </span>
-          <span style={{ display:"inline-flex",alignItems:"center",gap:4,backgroundColor:st.bg,borderRadius:20,padding:"3px 10px",fontSize:10,fontWeight:700,color:st.color,flexShrink:0 }}>
-            <span style={{ width:6,height:6,borderRadius:"50%",backgroundColor:st.dot,display:"inline-block" }}/>
-            {st.label}
-          </span>
-        </div>
-        <h3 style={{ color:"white",fontSize:17,fontWeight:800,margin:"0 0 4px",lineHeight:1.25 }}>{op.titulo}</h3>
-        <p style={{ color:"#a8d5b8",fontSize:11,margin:0 }}>{op.processo}</p>
+      {/* Categoria */}
+      <div style={{ fontSize: 11, fontWeight: 700, color: "#2d6a4f", textTransform: "uppercase", letterSpacing: "0.15em", fontFamily: "system-ui,sans-serif", display: "flex", alignItems: "center", gap: 12 }}>
+        {op.categoria}
+        <span style={{
+          fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "system-ui,sans-serif",
+          color: op.status === "aberto" ? "#166534" : op.status === "em_breve" ? "#854d0e" : "#6b7280",
+          backgroundColor: op.status === "aberto" ? "#f0faf4" : op.status === "em_breve" ? "#fef9c3" : "#f3f4f6",
+          border: `1px solid ${op.status === "aberto" ? "#a7d4b8" : op.status === "em_breve" ? "#fde68a" : "#e5e7eb"}`,
+          borderRadius: 3, padding: "2px 8px",
+        }}>
+          {STATUS_LABEL[op.status]}
+        </span>
       </div>
 
-      {/* Corpo */}
-      <div style={{ padding:"16px 20px",flex:1,display:"flex",flexDirection:"column",gap:12 }}>
-        <p style={{ fontSize:12,color:"#4b5563",lineHeight:1.65,margin:0 }}>{op.descricao}</p>
+      {/* Título */}
+      <h3 style={{ fontSize: 20, fontWeight: 700, color: "#1a1a1a", margin: 0, lineHeight: 1.3 }}>
+        {op.titulo}
+      </h3>
 
-        <div style={{ display:"flex",flexDirection:"column",gap:7 }}>
-          <div style={{ display:"flex",alignItems:"center",gap:7 }}>
-            <MapPin size={13} color="#9ca3af"/>
-            <span style={{ fontSize:12,color:"#6b7280" }}>{op.local}</span>
-          </div>
-          <div style={{ display:"flex",alignItems:"center",gap:7 }}>
-            <Clock size={13} color="#9ca3af"/>
-            <span style={{ fontSize:12,color:"#6b7280" }}>Duração: {op.duracao}</span>
-          </div>
-          <div style={{ display:"flex",alignItems:"center",gap:7 }}>
-            <Calendar size={13} color={op.status === "aberto" ? "#dc2626" : "#9ca3af"}/>
-            <span style={{ fontSize:12,color:op.status === "aberto" ? "#dc2626" : "#6b7280",fontWeight:op.status === "aberto" ? 700 : 400 }}>
-              Prazo: {op.prazo} às 23h59 (horário do Amazonas)
-            </span>
-          </div>
-        </div>
+      {/* Descrição */}
+      <p style={{ fontSize: 14, color: "#444", lineHeight: 1.75, margin: 0 }}>
+        {op.descricao}
+      </p>
+
+      {/* Meta */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 24px", fontSize: 12, color: "#777", fontFamily: "system-ui,sans-serif" }}>
+        <span><strong style={{ color: "#333" }}>Subprojeto:</strong> {op.subprojeto}</span>
+        <span><strong style={{ color: "#333" }}>Local:</strong> {op.local}</span>
+        <span><strong style={{ color: "#333" }}>Duração:</strong> {op.duracao}</span>
+        <span style={{ color: op.status === "aberto" ? "#b91c1c" : "#777", fontWeight: op.status === "aberto" ? 700 : 400 }}>
+          <strong style={{ color: op.status === "aberto" ? "#b91c1c" : "#333" }}>Prazo:</strong> {op.prazo} às 23h59 (Horário do Amazonas)
+        </span>
       </div>
 
-      {/* Ações */}
-      <div style={{ padding:"12px 20px 16px",borderTop:"1px solid #f0f4f0",display:"flex",gap:8 }}>
+      {/* Botões */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 4, flexWrap: "wrap" }}>
         {op.linkTdr && (
           <a href={op.linkTdr} target="_blank" rel="noopener noreferrer"
-            style={{ display:"inline-flex",alignItems:"center",gap:5,padding:"8px 14px",border:"1.5px solid #d1d5db",borderRadius:8,fontSize:12,fontWeight:600,color:"#374151",textDecoration:"none",backgroundColor:"white" }}>
-            <ExternalLink size={12}/> TdR
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 20px", border: "1.5px solid #1a3d2b", backgroundColor: "white", color: "#1a3d2b", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.08em", textDecoration: "none", textTransform: "uppercase", transition: "all .15s", cursor: "pointer" }}
+            onMouseOver={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.backgroundColor = "#1a3d2b"; el.style.color = "white"; }}
+            onMouseOut={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.backgroundColor = "white"; el.style.color = "#1a3d2b"; }}
+          >
+            <ExternalLink size={12}/> Ver TdR
           </a>
         )}
         {op.temFormulario && op.status === "aberto" && (
           <button type="button" onClick={() => onAbrirFormulario(op.id)}
-            style={{ flex:1,display:"inline-flex",alignItems:"center",justifyContent:"center",gap:6,padding:"9px 16px",backgroundColor:"#2d6a4f",border:"none",borderRadius:8,fontSize:13,fontWeight:700,color:"white",cursor:"pointer",boxShadow:"0 2px 6px rgba(45,106,79,.25)" }}>
-            Inscrever-se <ChevronRight size={14}/>
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 24px", border: "1.5px solid #1a3d2b", backgroundColor: "#1a3d2b", color: "white", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.08em", textTransform: "uppercase", cursor: "pointer", transition: "all .15s" }}
+            onMouseOver={e => { const el = e.currentTarget as HTMLButtonElement; el.style.backgroundColor = "#2d6a4f"; el.style.borderColor = "#2d6a4f"; }}
+            onMouseOut={e => { const el = e.currentTarget as HTMLButtonElement; el.style.backgroundColor = "#1a3d2b"; el.style.borderColor = "#1a3d2b"; }}
+          >
+            Inscrever-se
           </button>
         )}
-        {!op.temFormulario && op.status === "aberto" && (
-          <span style={{ flex:1,textAlign:"center",fontSize:12,color:"#9ca3af",padding:"9px 0" }}>Enviar CV por e-mail</span>
-        )}
         {encerrado && (
-          <span style={{ flex:1,textAlign:"center",fontSize:12,color:"#9ca3af",padding:"9px 0" }}>Processo encerrado</span>
+          <span style={{ fontSize: 12, color: "#9ca3af", fontFamily: "system-ui,sans-serif", padding: "9px 0" }}>Processo encerrado</span>
         )}
+
+        {/* Compartilhar */}
+        <button type="button" onClick={handleCompartilhar}
+          title="Copiar link desta oportunidade"
+          style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 14px", border: "1px solid #d0ccc4", backgroundColor: "white", color: copiado ? "#166534" : "#777", fontSize: 11, fontWeight: 600, fontFamily: "system-ui,sans-serif", letterSpacing: "0.06em", cursor: "pointer", transition: "all .15s", borderColor: copiado ? "#a7d4b8" : "#d0ccc4", backgroundColor: copiado ? "#f0faf4" : "white" as any }}>
+          {copiado ? <><Check size={12}/> Link copiado!</> : <><Share2 size={12}/> Compartilhar</>}
+        </button>
       </div>
     </div>
   );

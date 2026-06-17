@@ -48,8 +48,16 @@ function ProjectLogo({ color = "white" }: { color?: string }) {
 
 type Pagina = "home" | "formulario";
 
+function getInitialPage(): Pagina {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("edital")) return "formulario";
+  } catch {}
+  return "home";
+}
+
 export default function App() {
-  const [pagina, setPagina] = useState<Pagina>("home");
+  const [pagina, setPagina] = useState<Pagina>(getInitialPage);
   const [form, setForm] = useState<CandidatoForm>(() => {
     try {
       const s = localStorage.getItem(STORAGE_KEY);
@@ -91,6 +99,7 @@ export default function App() {
   const handleVoltar = () => {
     setPagina("home");
     setErrors([]);
+    window.history.pushState({}, "", window.location.pathname);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -99,7 +108,11 @@ export default function App() {
 
   // ── PÁGINA INICIAL ──────────────────────────────────────────
   if (pagina === "home") {
-    return <HomePage onAbrirFormulario={() => { setPagina("formulario"); window.scrollTo({ top: 0, behavior: "smooth" }); }}/>;
+    return <HomePage onAbrirFormulario={(id) => {
+      window.history.pushState({}, "", `?edital=${id}`);
+      setPagina("formulario");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }}/>;
   }
 
   // ── FORMULÁRIO DE INSCRIÇÃO ──────────────────────────────────
