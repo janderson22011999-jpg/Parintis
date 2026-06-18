@@ -1,5 +1,5 @@
-import React from "react";
-import { ExternalLink } from "lucide-react";
+import React, { useState } from "react";
+import { ExternalLink, Share2, Check } from "lucide-react";
 
 // v3 — design institucional limpo
 
@@ -169,7 +169,15 @@ export function HomePage({ onAbrirFormulario }: Props) {
 }
 
 function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormulario: (id: string) => void; last: boolean }) {
+  const [copiado, setCopiado] = useState(false);
   const encerrado = op.status === "encerrado";
+
+  const copiarLink = async () => {
+    const url = `${window.location.origin}${window.location.pathname}?edital=${op.id}`;
+    try { await navigator.clipboard.writeText(url); } catch {}
+    setCopiado(true);
+    setTimeout(() => setCopiado(false), 2500);
+  };
 
   const statusLabel: Record<string, string> = { aberto: "Inscrições Abertas", encerrado: "Encerrado", em_breve: "Em Breve" };
   const statusColor: Record<string, string> = { aberto: "#166534", encerrado: "#6b7280", em_breve: "#854d0e" };
@@ -238,6 +246,12 @@ function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormul
         {encerrado && (
           <span style={{ fontSize: 12, color: "#aaa", fontFamily: "system-ui,sans-serif" }}>Processo encerrado</span>
         )}
+
+        <button type="button" onClick={copiarLink} className="btn-share"
+          title="Copiar link desta oportunidade"
+          style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 14px", border: `1px solid ${copiado ? "#a7d4b8" : "#d4cfc6"}`, backgroundColor: copiado ? "#f0faf4" : "white", color: copiado ? "#166534" : "#888", fontSize: 11, fontWeight: 600, fontFamily: "system-ui,sans-serif", cursor: "pointer" }}>
+          {copiado ? <><Check size={12}/> Copiado!</> : <><Share2 size={12}/> Compartilhar</>}
+        </button>
       </div>
     </div>
   );
