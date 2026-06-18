@@ -38,7 +38,7 @@ export function validateForm(form: CandidatoForm): string[] {
   return errors;
 }
 
-export function formatToEmail(form: CandidatoForm): string {
+export function formatToEmail(form: CandidatoForm, curriculoNome?: string): string {
   const id = form.identificacao;
   const fo = form.formacao;
   const eg = form.experienciaGeral;
@@ -116,5 +116,12 @@ Aceita as Políticas de Fraude e Corrupção do Banco Mundial (BIRD): Sim
 Com o envio desta manifestação, o(a) candidato(a) declara que todas as
 informações fornecidas são autênticas e pode apresentar os comprovantes
 respectivos, caso sejam solicitados.
+
+${sep}
+CURRÍCULO
+${sep}
+${curriculoNome
+  ? `Arquivo: ${curriculoNome}\n⚠ ATENÇÃO: Anexar o arquivo de currículo a este e-mail antes de enviar.`
+  : "Nenhum arquivo de currículo foi indicado neste formulário."}
 `;
 }

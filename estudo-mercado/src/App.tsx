@@ -7,7 +7,7 @@ import { FormExperiencia } from "./components/FormExperiencia";
 import { FormRequisitos } from "./components/FormRequisitos";
 import { PainelEnvio } from "./components/PainelEnvio";
 import { HomePage } from "./components/HomePage";
-import { AlertCircle, RotateCcw, ArrowLeft, Fish, MapPin, Clock, Users, Award, FileText, Download } from "lucide-react";
+import { AlertCircle, RotateCcw, ArrowLeft, Fish, MapPin, Clock, Users, Award, FileText, Download, Upload, Paperclip } from "lucide-react";
 
 const STORAGE_KEY = "ngutapa_eng_pesca_2026_v2";
 
@@ -67,6 +67,7 @@ export default function App() {
   });
   const [errors, setErrors] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [curriculoNome, setCurriculoNome] = useState("");
 
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(form)); } catch {}
@@ -160,7 +161,7 @@ export default function App() {
           </div>
           <div style={{ backgroundColor:"rgba(212,168,32,.12)",border:"1px solid rgba(212,168,32,.3)",borderRadius:14,padding:"12px 18px",textAlign:"center" }}>
             <div style={{ color:"#d4a820",fontSize:9,fontWeight:700,letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:3 }}>Prazo de Inscrição</div>
-            <div style={{ color:"white",fontSize:20,fontWeight:800 }}>15/06/2026</div>
+            <div style={{ color:"white",fontSize:20,fontWeight:800 }}>01/07/2026</div>
             <div style={{ color:"#a8d5b8",fontSize:11,marginTop:2 }}>às 23h59 · Horário do Amazonas</div>
           </div>
         </div>
@@ -272,10 +273,46 @@ export default function App() {
             <FormRequisitos data={form.requisitos} onChange={updateReq}/>
           </div>
 
-          {/* ══ DECLARAÇÕES ══ */}
+          {/* ══ CURRÍCULO ══ */}
           <div style={{ borderTop:"1px solid #f0f4f0",paddingTop:36 }}>
             <div style={{ display:"flex",alignItems:"center",gap:12,paddingBottom:14,borderBottom:"2px solid #f0faf4",marginBottom:20 }}>
               <div style={{ width:32,height:32,borderRadius:"50%",backgroundColor:"#1a3d2b",color:"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:800,flexShrink:0 }}>6</div>
+              <h2 style={{ fontSize:16,fontWeight:700,color:"#1a3d2b",margin:0 }}>Currículo</h2>
+            </div>
+            <div style={{ backgroundColor:"#f8fafc",border:"1.5px solid #e2ebe4",borderRadius:12,padding:"20px 24px" }}>
+              <p style={{ fontSize:13,color:"#4b5563",marginBottom:16,lineHeight:1.6 }}>
+                Selecione seu currículo (PDF ou Word, máx. 5 MB). O arquivo deverá ser <strong>anexado manualmente ao e-mail</strong> ao enviar sua candidatura.
+              </p>
+              <label style={{ display:"inline-flex",alignItems:"center",gap:10,padding:"11px 22px",border:"1.5px dashed #2d6a4f",borderRadius:10,cursor:"pointer",backgroundColor:"white",transition:"background .15s" }}>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  style={{ display:"none" }}
+                  onChange={e => setCurriculoNome(e.target.files?.[0]?.name || "")}
+                />
+                <Upload size={16} color="#2d6a4f"/>
+                <span style={{ fontSize:13,fontWeight:600,color:"#2d6a4f" }}>
+                  {curriculoNome ? curriculoNome : "Selecionar arquivo (PDF ou Word)"}
+                </span>
+              </label>
+              {curriculoNome && (
+                <div style={{ display:"flex",alignItems:"center",gap:8,marginTop:12,padding:"10px 14px",backgroundColor:"#f0faf4",border:"1.5px solid #a7d4b8",borderRadius:9 }}>
+                  <Paperclip size={14} color="#2d6a4f"/>
+                  <span style={{ fontSize:12,color:"#166534",fontWeight:600 }}>Arquivo selecionado: {curriculoNome}</span>
+                </div>
+              )}
+              {!curriculoNome && (
+                <p style={{ fontSize:11,color:"#9ca3af",marginTop:10 }}>
+                  ⚠ Recomendado: candidatos sem currículo anexado podem ser desclassificados na etapa de análise documental.
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* ══ DECLARAÇÕES ══ */}
+          <div style={{ borderTop:"1px solid #f0f4f0",paddingTop:36 }}>
+            <div style={{ display:"flex",alignItems:"center",gap:12,paddingBottom:14,borderBottom:"2px solid #f0faf4",marginBottom:20 }}>
+              <div style={{ width:32,height:32,borderRadius:"50%",backgroundColor:"#1a3d2b",color:"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:800,flexShrink:0 }}>7</div>
               <h2 style={{ fontSize:16,fontWeight:700,color:"#1a3d2b",margin:0 }}>Declarações</h2>
             </div>
             <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
@@ -302,7 +339,7 @@ export default function App() {
           </div>
 
           {submitted
-            ? (<div style={{ borderTop:"1px solid #f0f4f0",paddingTop:36 }}><PainelEnvio data={form} onClear={handleClear}/></div>)
+            ? (<div style={{ borderTop:"1px solid #f0f4f0",paddingTop:36 }}><PainelEnvio data={form} onClear={handleClear} curriculoNome={curriculoNome}/></div>)
             : (
               <div style={{ borderTop:"1px solid #f0f4f0",paddingTop:28,display:"flex",justifyContent:"flex-end",alignItems:"center",gap:16 }}>
                 <p style={{ fontSize:12,color:"#9ca3af",margin:0 }}>Campos com <span style={{ color:"#dc2626" }}>*</span> são obrigatórios.</p>

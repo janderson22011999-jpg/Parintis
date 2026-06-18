@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { CandidatoForm } from "../types";
 import { formatToEmail } from "../utils";
-import { Mail, Copy, Check, Printer, CheckCircle2, AlertCircle } from "lucide-react";
+import { Mail, Copy, Check, Printer, CheckCircle2, AlertCircle, Paperclip } from "lucide-react";
 
-interface Props { data: CandidatoForm; onClear: () => void; }
+interface Props { data: CandidatoForm; onClear: () => void; curriculoNome?: string; }
 
-export function PainelEnvio({ data, onClear }: Props) {
+export function PainelEnvio({ data, onClear, curriculoNome }: Props) {
   const [copied, setCopied] = useState(false);
-  const texto = formatToEmail(data);
+  const texto = formatToEmail(data, curriculoNome);
 
   const mesesGeral = Number(data.experienciaGeral.totalMesesExperiencia) || 0;
   const mesesEsp   = Number(data.experienciaEspecifica.totalMesesEspecifica) || 0;
@@ -38,6 +38,12 @@ export function PainelEnvio({ data, onClear }: Props) {
       okMsg: data.formacao.posGraduacao === "Mestrado" ? "Mestrado → +12 pontos" : data.formacao.posGraduacao === "Doutorado" ? "Doutorado → pontuação de mestrado" : "Especialização → +8 pontos",
       failMsg: "Sem pós-graduação. Não há pontuação extra neste critério.",
     },
+    {
+      label: "Currículo selecionado",
+      ok: !!curriculoNome,
+      okMsg: curriculoNome || "",
+      failMsg: "Nenhum arquivo selecionado. Lembre-se de anexar o currículo ao e-mail.",
+    },
   ];
 
   const handleEmail = () => {
@@ -58,6 +64,17 @@ export function PainelEnvio({ data, onClear }: Props) {
         <p style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>
           Revise sua qualificação e utilize as opções abaixo para concluir a manifestação de interesse.
         </p>
+      </div>
+
+      {/* Lembrete currículo */}
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, backgroundColor: curriculoNome ? "#f0faf4" : "#fffbeb", border: `1.5px solid ${curriculoNome ? "#a7d4b8" : "#fde68a"}`, borderRadius: 10, padding: "12px 16px", marginBottom: 20 }}>
+        <Paperclip size={16} color={curriculoNome ? "#2d6a4f" : "#92400e"} style={{ flexShrink: 0, marginTop: 1 }}/>
+        <div>
+          {curriculoNome
+            ? <><span style={{ fontSize: 12, fontWeight: 700, color: "#166534" }}>Currículo pronto para anexar: </span><span style={{ fontSize: 12, color: "#166534" }}>{curriculoNome}</span><span style={{ fontSize: 11, color: "#4b5563", display: "block", marginTop: 2 }}>Lembre-se de anexar este arquivo ao e-mail antes de enviar.</span></>
+            : <><span style={{ fontSize: 12, fontWeight: 700, color: "#92400e" }}>Atenção: nenhum currículo foi selecionado.</span><span style={{ fontSize: 11, color: "#78350f", display: "block", marginTop: 2 }}>Volte à seção 6 e selecione seu arquivo, depois annexe-o manualmente ao e-mail.</span></>
+          }
+        </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 20 }}>
@@ -92,7 +109,7 @@ export function PainelEnvio({ data, onClear }: Props) {
 
           <div style={{ backgroundColor: "#1a3d2b", borderRadius: 10, padding: "12px 14px" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#a8d5b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Prazo de Inscrição</div>
-            <div style={{ fontSize: 18, fontWeight: 800, color: "white" }}>15/06/2026</div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: "white" }}>01/07/2026</div>
             <div style={{ fontSize: 11, color: "#a8d5b8" }}>às 23h59 · Horário do Amazonas</div>
           </div>
         </div>
