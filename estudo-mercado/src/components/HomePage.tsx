@@ -101,7 +101,7 @@ export function HomePage({ onAbrirFormulario }: Props) {
       <div style={{ backgroundColor: "#fff", borderBottom: "1px solid #ddd9d0" }}>
         <div style={{ maxWidth: 960, margin: "0 auto", padding: "9px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
           <p style={{ color: "#555", fontSize: 12, margin: 0, fontFamily: "system-ui,sans-serif", lineHeight: 1.5 }}>
-            Processos seletivos abertos e competitivos · <strong style={{ color: "#1a3d2b" }}>Fundo para o Meio Ambiente Global (GEF)</strong> via Banco Mundial · Doação TF0B8254-6L
+            Processos seletivos abertos e competitivos · <strong style={{ color: "#1a3d2b" }}>MANEJO INTEGRADO DA BACIA PUTUMAYO-IÇÁ</strong> via Banco Mundial · Doação TF0B8254-6L
           </p>
           {abertas.length > 0 && (
             <span style={{ backgroundColor: "#f0faf4", border: "1px solid #a7d4b8", padding: "3px 12px", color: "#166534", fontSize: 11, fontWeight: 700, fontFamily: "system-ui,sans-serif" }}>
