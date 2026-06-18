@@ -174,7 +174,7 @@ export default function App() {
             style={{ display:"inline-flex",alignItems:"center",gap:6,padding:"8px 16px",backgroundColor:"white",border:"1.5px solid #d1d5db",borderRadius:8,fontSize:12,fontWeight:600,color:"#374151",cursor:"pointer" }}>
             <ArrowLeft size={13}/> Voltar às Oportunidades
           </button>
-          <a href="https://drive.google.com/file/d/11koVEbI9IYcyJvU0lkE5gLZpqnLDOOp4/view?usp=drive_link" target="_blank" rel="noopener noreferrer"
+          <a href="https://drive.google.com/file/d/13V2KXA4jS0KtPsZQvyiWP_yyTDrpf6KC/view?usp=sharing" target="_blank" rel="noopener noreferrer"
             style={{ display:"inline-flex",alignItems:"center",gap:7,padding:"8px 16px",backgroundColor:"#1a3d2b",border:"none",borderRadius:8,fontSize:12,fontWeight:600,color:"white",textDecoration:"none",cursor:"pointer" }}>
             <FileText size={13} color="#d4a820"/> TdR Completo em PDF <Download size={11} color="#a8d5b8"/>
           </a>

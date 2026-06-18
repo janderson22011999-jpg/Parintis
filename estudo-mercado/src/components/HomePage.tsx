@@ -29,7 +29,7 @@ const OPORTUNIDADES: Oportunidade[] = [
     status: "aberto",
     descricao: "Prestação de suporte técnico especializado para implementação do manejo pesqueiro sustentável e governança comunitária em 14 comunidades indígenas da bacia do Rio Içá.",
     temFormulario: true,
-    linkTdr: "https://drive.google.com/file/d/11koVEbI9IYcyJvU0lkE5gLZpqnLDOOp4/view?usp=drive_link",
+    linkTdr: "https://drive.google.com/file/d/13V2KXA4jS0KtPsZQvyiWP_yyTDrpf6KC/view?usp=sharing",
   },
 ];
 
