@@ -147,8 +147,8 @@ export default function App() {
             <div style={{ display:"flex",alignItems:"center",gap:10,backgroundColor:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.1)",borderRadius:12,padding:"8px 12px" }}>
               <ProjectLogo color="white"/>
               <div style={{ lineHeight:1.2 }}>
-                <div style={{ color:"#a8d5b8",fontSize:9,fontWeight:600,letterSpacing:"0.14em",textTransform:"uppercase" }}>Projeto GEF</div>
-                <div style={{ color:"white",fontSize:13,fontWeight:800 }}>Putumayo-Içá</div>
+                <div style={{ color:"#a8d5b8",fontSize:9,fontWeight:600,letterSpacing:"0.14em",textTransform:"uppercase" }}>Cuenca</div>
+                <div style={{ color:"white",fontSize:13,fontWeight:800 }}>Putumayo Içá</div>
               </div>
             </div>
             <div>
@@ -188,7 +188,7 @@ export default function App() {
             { icon: <Users size={15} color="#d4a820"/>, label:"Tipo de Contrato", value:"Pessoa Física (CPF)", sub:"RPA · Seleção competitiva" },
             { icon: <MapPin size={15} color="#d4a820"/>, label:"Local de Execução", value:"Santo Antônio do Içá", sub:"Vila Betânia SAI – AM" },
             { icon: <Fish size={15} color="#d4a820"/>, label:"Comunidades", value:"14 comunidades", sub:"Bacia do Rio Içá" },
-            { icon: <Award size={15} color="#d4a820"/>, label:"Financiamento", value:"GEF · Banco Mundial", sub:"Doação TF0B8254-6L" },
+            { icon: <Award size={15} color="#d4a820"/>, label:"Projeto", value:"Cuenca Putumayo Içá", sub:"Manejo Integrado da Bacia" },
           ].map(c => (
             <div key={c.label} style={{ backgroundColor:"white",border:"1.5px solid #e2ebe4",borderRadius:12,padding:"12px 16px" }}>
               <div style={{ display:"flex",alignItems:"center",gap:6,marginBottom:5 }}>
@@ -354,7 +354,7 @@ export default function App() {
 
         {/* ══ FOOTER ══ */}
         <div id="footer-bar" style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:28,paddingTop:16,borderTop:"1px solid #e2ebe4" }}>
-          <p style={{ fontSize:11,color:"#9ca3af",margin:0 }}>© 2026 Instituto NGUTAPA · Projeto GEF Putumayo-Içá · Banco Mundial (GEF TF0B8254-6L)</p>
+          <p style={{ fontSize:11,color:"#9ca3af",margin:0 }}>© 2026 Instituto NGUTAPA · Cuenca Putumayo Içá</p>
           <button type="button" onClick={handleClear}
             style={{ display:"flex",alignItems:"center",gap:5,fontSize:11,color:"#9ca3af",background:"none",border:"none",cursor:"pointer",padding:"4px 8px",borderRadius:6 }}
             onMouseOver={e=>(e.currentTarget as HTMLButtonElement).style.color="#ef4444"}

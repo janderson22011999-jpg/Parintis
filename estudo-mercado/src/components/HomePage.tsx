@@ -85,8 +85,8 @@ export function HomePage({ onAbrirFormulario }: Props) {
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <GefLogo/>
               <div>
-                <div style={{ color: "#a8d5b8", fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", fontFamily: "system-ui,sans-serif" }}>Projeto GEF</div>
-                <div style={{ color: "white", fontSize: 13, fontWeight: 700, fontFamily: "system-ui,sans-serif" }}>Putumayo-Içá</div>
+                <div style={{ color: "#a8d5b8", fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", fontFamily: "system-ui,sans-serif" }}>Cuenca</div>
+                <div style={{ color: "white", fontSize: 13, fontWeight: 700, fontFamily: "system-ui,sans-serif" }}>Putumayo Içá</div>
               </div>
             </div>
           </div>
@@ -160,7 +160,7 @@ export function HomePage({ onAbrirFormulario }: Props) {
       {/* FOOTER */}
       <footer style={{ backgroundColor: "#1a3d2b", borderTop: "3px solid #c8a01a", padding: "18px 32px" }}>
         <div style={{ maxWidth: 960, margin: "0 auto", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
-          <span style={{ color: "#7ab898", fontSize: 11, fontFamily: "system-ui,sans-serif" }}>© 2026 Instituto NGUTAPA · Projeto GEF Putumayo-Içá · Banco Mundial TF0B8254-6L</span>
+          <span style={{ color: "#7ab898", fontSize: 11, fontFamily: "system-ui,sans-serif" }}>© 2026 Instituto NGUTAPA · Cuenca Putumayo Içá</span>
           <span style={{ color: "#7ab898", fontSize: 11, fontFamily: "system-ui,sans-serif" }}>Santo Antônio do Içá – AM · Institutongutapatikuna@gmail.com</span>
         </div>
       </footer>
