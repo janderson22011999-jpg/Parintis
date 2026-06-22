@@ -69,9 +69,9 @@ export function FormFormacao({ data, onChange }: Props) {
                   onClick={() => onChange({ posGraduacao: opt })}
                   style={{
                     padding: "8px 18px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer",
-                    border: `2px solid ${active ? "#2d6a4f" : "#d1d5db"}`,
-                    backgroundColor: active ? "#f0faf4" : "white",
-                    color: active ? "#1a3d2b" : "#6b7280",
+                    border: `2px solid ${active ? "#4aa07c" : "#d1d5db"}`,
+                    backgroundColor: active ? "#e8f7ef" : "white",
+                    color: active ? "#2d6b4c" : "#6b7280",
                   }}
                 >
                   {labels[opt]}

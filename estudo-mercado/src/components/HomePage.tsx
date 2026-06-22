@@ -64,15 +64,15 @@ export function HomePage({ onAbrirFormulario }: Props) {
         .oport-card { transition: box-shadow .18s, border-color .18s; }
         .oport-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.08) !important; border-color: #b0aa9e !important; }
         .btn-borda { transition: background .15s, color .15s; }
-        .btn-borda:hover { background: #1a3d2b !important; color: white !important; }
+        .btn-borda:hover { background: #2d6b4c !important; color: white !important; }
         .btn-fill { transition: background .15s; }
-        .btn-fill:hover { background: #2d6a4f !important; }
+        .btn-fill:hover { background: #4aa07c !important; }
         .btn-share { transition: background .15s, border-color .15s; }
-        .btn-share:hover { background: #f0faf4 !important; border-color: #a7d4b8 !important; }
+        .btn-share:hover { background: #e8f7ef !important; border-color: #96d4b5 !important; }
       `}</style>
 
       {/* HEADER */}
-      <header style={{ backgroundColor: "#1a3d2b", borderBottom: "3px solid #c8a01a" }}>
+      <header style={{ backgroundColor: "#2d6b4c", borderBottom: "3px solid #c8a01a" }}>
         <div style={{ maxWidth: 960, margin: "0 auto", padding: "18px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             <img
@@ -85,14 +85,14 @@ export function HomePage({ onAbrirFormulario }: Props) {
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <GefLogo/>
               <div>
-                <div style={{ color: "#a8d5b8", fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", fontFamily: "system-ui,sans-serif" }}>Cuenca</div>
+                <div style={{ color: "#b8e0c8", fontSize: 9, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", fontFamily: "system-ui,sans-serif" }}>Cuenca</div>
                 <div style={{ color: "white", fontSize: 13, fontWeight: 700, fontFamily: "system-ui,sans-serif" }}>Putumayo Içá</div>
               </div>
             </div>
           </div>
           <div style={{ textAlign: "right" }}>
             <div style={{ color: "white", fontSize: 22, fontWeight: 400, letterSpacing: "0.01em" }}>Editais e Oportunidades</div>
-            <div style={{ color: "#a8d5b8", fontSize: 11, marginTop: 4, fontFamily: "system-ui,sans-serif", letterSpacing: "0.02em" }}>Instituto de Etnodesenvolvimento NGUTAPA · Santo Antônio do Içá – AM</div>
+            <div style={{ color: "#b8e0c8", fontSize: 11, marginTop: 4, fontFamily: "system-ui,sans-serif", letterSpacing: "0.02em" }}>Instituto de Etnodesenvolvimento NGUTAPA · Santo Antônio do Içá – AM</div>
           </div>
         </div>
       </header>
@@ -101,10 +101,10 @@ export function HomePage({ onAbrirFormulario }: Props) {
       <div style={{ backgroundColor: "#fff", borderBottom: "1px solid #ddd9d0" }}>
         <div style={{ maxWidth: 960, margin: "0 auto", padding: "9px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
           <p style={{ color: "#555", fontSize: 12, margin: 0, fontFamily: "system-ui,sans-serif", lineHeight: 1.5 }}>
-            Processos seletivos abertos e competitivos · <strong style={{ color: "#1a3d2b" }}>MANEJO INTEGRADO DA BACIA PUTUMAYO-IÇÁ</strong>
+            Processos seletivos abertos e competitivos · <strong style={{ color: "#2d6b4c" }}>MANEJO INTEGRADO DA BACIA PUTUMAYO-IÇÁ</strong>
           </p>
           {abertas.length > 0 && (
-            <span style={{ backgroundColor: "#f0faf4", border: "1px solid #a7d4b8", padding: "3px 12px", color: "#166534", fontSize: 11, fontWeight: 700, fontFamily: "system-ui,sans-serif" }}>
+            <span style={{ backgroundColor: "#e8f7ef", border: "1px solid #96d4b5", padding: "3px 12px", color: "#1a7c40", fontSize: 11, fontWeight: 700, fontFamily: "system-ui,sans-serif" }}>
               {abertas.length} vaga{abertas.length !== 1 ? "s" : ""} aberta{abertas.length !== 1 ? "s" : ""}
             </span>
           )}
@@ -116,9 +116,9 @@ export function HomePage({ onAbrirFormulario }: Props) {
 
         {abertas.length > 0 && (
           <section style={{ marginBottom: 52 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24, paddingBottom: 10, borderBottom: "2px solid #1a3d2b" }}>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: "#2d6a4f", display: "inline-block" }}/>
-              <h2 style={{ fontSize: 11, fontWeight: 700, color: "#1a3d2b", textTransform: "uppercase", letterSpacing: "0.2em", margin: 0, fontFamily: "system-ui,sans-serif" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24, paddingBottom: 10, borderBottom: "2px solid #2d6b4c" }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: "#4aa07c", display: "inline-block" }}/>
+              <h2 style={{ fontSize: 11, fontWeight: 700, color: "#2d6b4c", textTransform: "uppercase", letterSpacing: "0.2em", margin: 0, fontFamily: "system-ui,sans-serif" }}>
                 Inscrições Abertas
               </h2>
             </div>
@@ -150,7 +150,7 @@ export function HomePage({ onAbrirFormulario }: Props) {
             { t: "Confidencialidade", d: "Informações obtidas no processo são confidenciais e não podem ser divulgadas sem autorização expressa do NGUTAPA." },
           ].map((item, i) => (
             <div key={item.t} style={{ paddingBottom: 16, borderLeft: i > 0 ? "1px solid #ccc8bf" : "none", paddingLeft: i > 0 ? 40 : 0 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, color: "#1a3d2b", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 8, fontFamily: "system-ui,sans-serif" }}>{item.t}</div>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#2d6b4c", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 8, fontFamily: "system-ui,sans-serif" }}>{item.t}</div>
               <div style={{ fontSize: 13, color: "#555", lineHeight: 1.75 }}>{item.d}</div>
             </div>
           ))}
@@ -158,10 +158,10 @@ export function HomePage({ onAbrirFormulario }: Props) {
       </div>
 
       {/* FOOTER */}
-      <footer style={{ backgroundColor: "#1a3d2b", borderTop: "3px solid #c8a01a", padding: "18px 32px" }}>
+      <footer style={{ backgroundColor: "#2d6b4c", borderTop: "3px solid #c8a01a", padding: "18px 32px" }}>
         <div style={{ maxWidth: 960, margin: "0 auto", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
-          <span style={{ color: "#7ab898", fontSize: 11, fontFamily: "system-ui,sans-serif" }}>© 2026 Instituto NGUTAPA · Cuenca Putumayo Içá</span>
-          <span style={{ color: "#7ab898", fontSize: 11, fontFamily: "system-ui,sans-serif" }}>Santo Antônio do Içá – AM · Institutongutapatikuna@gmail.com</span>
+          <span style={{ color: "#92c9ab", fontSize: 11, fontFamily: "system-ui,sans-serif" }}>© 2026 Instituto NGUTAPA · Cuenca Putumayo Içá</span>
+          <span style={{ color: "#92c9ab", fontSize: 11, fontFamily: "system-ui,sans-serif" }}>Santo Antônio do Içá – AM · Institutongutapatikuna@gmail.com</span>
         </div>
       </footer>
     </div>
@@ -180,9 +180,9 @@ function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormul
   };
 
   const statusLabel: Record<string, string> = { aberto: "Inscrições Abertas", encerrado: "Encerrado", em_breve: "Em Breve" };
-  const statusColor: Record<string, string> = { aberto: "#166534", encerrado: "#6b7280", em_breve: "#854d0e" };
-  const statusBg:    Record<string, string> = { aberto: "#f0faf4",  encerrado: "#f3f4f6", em_breve: "#fef9c3" };
-  const statusBorder:Record<string, string> = { aberto: "#a7d4b8",  encerrado: "#e5e7eb", em_breve: "#fde68a" };
+  const statusColor: Record<string, string> = { aberto: "#1a7c40", encerrado: "#6b7280", em_breve: "#854d0e" };
+  const statusBg:    Record<string, string> = { aberto: "#e8f7ef",  encerrado: "#f3f4f6", em_breve: "#fef9c3" };
+  const statusBorder:Record<string, string> = { aberto: "#96d4b5",  encerrado: "#e5e7eb", em_breve: "#fde68a" };
 
   return (
     <div className="oport-card" style={{
@@ -194,7 +194,7 @@ function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormul
     }}>
       {/* Linha superior: categoria + status */}
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 14, fontFamily: "system-ui,sans-serif" }}>
-        <span style={{ fontSize: 11, fontWeight: 700, color: "#2d6a4f", textTransform: "uppercase", letterSpacing: "0.16em" }}>
+        <span style={{ fontSize: 11, fontWeight: 700, color: "#4aa07c", textTransform: "uppercase", letterSpacing: "0.16em" }}>
           {op.categoria}
         </span>
         <span style={{
@@ -231,14 +231,14 @@ function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormul
       <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
         {op.linkTdr && (
           <a href={op.linkTdr} target="_blank" rel="noopener noreferrer" className="btn-borda"
-            style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 22px", border: "1.5px solid #1a3d2b", backgroundColor: "white", color: "#1a3d2b", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textDecoration: "none", textTransform: "uppercase" }}>
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 22px", border: "1.5px solid #2d6b4c", backgroundColor: "white", color: "#2d6b4c", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textDecoration: "none", textTransform: "uppercase" }}>
             <ExternalLink size={12}/> Ver TdR
           </a>
         )}
 
         {op.temFormulario && op.status === "aberto" && (
           <button type="button" onClick={() => onAbrirFormulario(op.id)} className="btn-fill"
-            style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 28px", border: "1.5px solid #1a3d2b", backgroundColor: "#1a3d2b", color: "white", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer" }}>
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 28px", border: "1.5px solid #2d6b4c", backgroundColor: "#2d6b4c", color: "white", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer" }}>
             Inscrever-se
           </button>
         )}
@@ -249,7 +249,7 @@ function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormul
 
         <button type="button" onClick={copiarLink} className="btn-share"
           title="Copiar link desta oportunidade"
-          style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 14px", border: `1px solid ${copiado ? "#a7d4b8" : "#d4cfc6"}`, backgroundColor: copiado ? "#f0faf4" : "white", color: copiado ? "#166534" : "#888", fontSize: 11, fontWeight: 600, fontFamily: "system-ui,sans-serif", cursor: "pointer" }}>
+          style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 14px", border: `1px solid ${copiado ? "#96d4b5" : "#d4cfc6"}`, backgroundColor: copiado ? "#e8f7ef" : "white", color: copiado ? "#1a7c40" : "#888", fontSize: 11, fontWeight: 600, fontFamily: "system-ui,sans-serif", cursor: "pointer" }}>
           {copiado ? <><Check size={12}/> Copiado!</> : <><Share2 size={12}/> Compartilhar</>}
         </button>
       </div>

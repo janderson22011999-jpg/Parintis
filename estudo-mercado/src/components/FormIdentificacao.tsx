@@ -58,11 +58,11 @@ export function FormIdentificacao({ data, onChange }: Props) {
 
 export function SectionTitle({ num, title }: { num: string; title: string }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 12, paddingBottom: 14, borderBottom: "2px solid #f0faf4" }}>
-      <div style={{ width: 32, height: 32, borderRadius: "50%", backgroundColor: "#1a3d2b", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 800, flexShrink: 0 }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 12, paddingBottom: 14, borderBottom: "2px solid #e8f7ef" }}>
+      <div style={{ width: 32, height: 32, borderRadius: "50%", backgroundColor: "#2d6b4c", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 800, flexShrink: 0 }}>
         {num}
       </div>
-      <h2 style={{ fontSize: 16, fontWeight: 700, color: "#1a3d2b", margin: 0 }}>{title}</h2>
+      <h2 style={{ fontSize: 16, fontWeight: 700, color: "#2d6b4c", margin: 0 }}>{title}</h2>
     </div>
   );
 }

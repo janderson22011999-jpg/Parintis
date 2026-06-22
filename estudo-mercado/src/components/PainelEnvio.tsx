@@ -59,19 +59,19 @@ export function PainelEnvio({ data, onClear, curriculoNome }: Props) {
 
   return (
     <div>
-      <div style={{ borderBottom: "2px solid #e8f0ea", paddingBottom: 12, marginBottom: 24 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 700, color: "#1a3d2b", margin: 0 }}>Candidatura Pronta — Envio</h2>
+      <div style={{ borderBottom: "2px solid #dceee5", paddingBottom: 12, marginBottom: 24 }}>
+        <h2 style={{ fontSize: 16, fontWeight: 700, color: "#2d6b4c", margin: 0 }}>Candidatura Pronta — Envio</h2>
         <p style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>
           Revise sua qualificação e utilize as opções abaixo para concluir a manifestação de interesse.
         </p>
       </div>
 
       {/* Lembrete currículo */}
-      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, backgroundColor: curriculoNome ? "#f0faf4" : "#fffbeb", border: `1.5px solid ${curriculoNome ? "#a7d4b8" : "#fde68a"}`, borderRadius: 10, padding: "12px 16px", marginBottom: 20 }}>
-        <Paperclip size={16} color={curriculoNome ? "#2d6a4f" : "#92400e"} style={{ flexShrink: 0, marginTop: 1 }}/>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, backgroundColor: curriculoNome ? "#e8f7ef" : "#fffbeb", border: `1.5px solid ${curriculoNome ? "#96d4b5" : "#fde68a"}`, borderRadius: 10, padding: "12px 16px", marginBottom: 20 }}>
+        <Paperclip size={16} color={curriculoNome ? "#4aa07c" : "#92400e"} style={{ flexShrink: 0, marginTop: 1 }}/>
         <div>
           {curriculoNome
-            ? <><span style={{ fontSize: 12, fontWeight: 700, color: "#166534" }}>Currículo pronto para anexar: </span><span style={{ fontSize: 12, color: "#166534" }}>{curriculoNome}</span><span style={{ fontSize: 11, color: "#4b5563", display: "block", marginTop: 2 }}>Lembre-se de anexar este arquivo ao e-mail antes de enviar.</span></>
+            ? <><span style={{ fontSize: 12, fontWeight: 700, color: "#1a7c40" }}>Currículo pronto para anexar: </span><span style={{ fontSize: 12, color: "#1a7c40" }}>{curriculoNome}</span><span style={{ fontSize: 11, color: "#4b5563", display: "block", marginTop: 2 }}>Lembre-se de anexar este arquivo ao e-mail antes de enviar.</span></>
             : <><span style={{ fontSize: 12, fontWeight: 700, color: "#92400e" }}>Atenção: nenhum currículo foi selecionado.</span><span style={{ fontSize: 11, color: "#78350f", display: "block", marginTop: 2 }}>Volte à seção 6 e selecione seu arquivo, depois annexe-o manualmente ao e-mail.</span></>
           }
         </div>
@@ -87,49 +87,49 @@ export function PainelEnvio({ data, onClear, curriculoNome }: Props) {
             <div
               key={c.label}
               style={{
-                backgroundColor: c.ok ? "#f0faf4" : "#fef2f2",
-                border: `1.5px solid ${c.ok ? "#a7d4b8" : "#fca5a5"}`,
+                backgroundColor: c.ok ? "#e8f7ef" : "#fef2f2",
+                border: `1.5px solid ${c.ok ? "#96d4b5" : "#fca5a5"}`,
                 borderRadius: 10, padding: "10px 14px",
                 display: "flex", gap: 10, alignItems: "flex-start",
               }}
             >
               <div style={{ marginTop: 1, flexShrink: 0 }}>
                 {c.ok
-                  ? <CheckCircle2 size={15} color="#16a34a" />
+                  ? <CheckCircle2 size={15} color="#22b857" />
                   : <AlertCircle size={15} color="#dc2626" />}
               </div>
               <div>
-                <span style={{ fontSize: 11, fontWeight: 700, color: c.ok ? "#15803d" : "#b91c1c", display: "block" }}>{c.label}</span>
-                <span style={{ fontSize: 10, color: c.ok ? "#166534" : "#991b1b", lineHeight: 1.5, display: "block", marginTop: 2 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: c.ok ? "#1d944a" : "#b91c1c", display: "block" }}>{c.label}</span>
+                <span style={{ fontSize: 10, color: c.ok ? "#1a7c40" : "#991b1b", lineHeight: 1.5, display: "block", marginTop: 2 }}>
                   {c.ok ? c.okMsg : c.failMsg}
                 </span>
               </div>
             </div>
           ))}
 
-          <div style={{ backgroundColor: "#1a3d2b", borderRadius: 10, padding: "12px 14px" }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: "#a8d5b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Prazo de Inscrição</div>
+          <div style={{ backgroundColor: "#2d6b4c", borderRadius: 10, padding: "12px 14px" }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: "#b8e0c8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Prazo de Inscrição</div>
             <div style={{ fontSize: 18, fontWeight: 800, color: "white" }}>01/07/2026</div>
-            <div style={{ fontSize: 11, color: "#a8d5b8" }}>às 23h59 · Horário do Amazonas</div>
+            <div style={{ fontSize: 11, color: "#b8e0c8" }}>às 23h59 · Horário do Amazonas</div>
           </div>
         </div>
 
         {/* Ações */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <div style={{ backgroundColor: "#1a3d2b", borderRadius: 14, padding: 20 }}>
+          <div style={{ backgroundColor: "#2d6b4c", borderRadius: 14, padding: 20 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-              <Mail size={18} color="#a8d5b8" />
+              <Mail size={18} color="#b8e0c8" />
               <span style={{ fontWeight: 700, color: "white", fontSize: 14 }}>Enviar Manifestação de Interesse</span>
             </div>
-            <p style={{ fontSize: 12, color: "#a8d5b8", marginBottom: 4, lineHeight: 1.5 }}>
+            <p style={{ fontSize: 12, color: "#b8e0c8", marginBottom: 4, lineHeight: 1.5 }}>
               Destinatário oficial: <strong style={{ color: "#d4a820" }}>Institutongutapatikuna@gmail.com</strong>
             </p>
-            <p style={{ fontSize: 11, color: "#6b9e7e", marginBottom: 16 }}>
+            <p style={{ fontSize: 11, color: "#7db898", marginBottom: 16 }}>
               Assunto gerado automaticamente: "TDR Engenheiro de Pesca – {data.identificacao.nomeCompleto || "[seu nome]"}"
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
               <button type="button" onClick={handleEmail}
-                style={{ flex: 1, minWidth: 130, padding: "10px 16px", backgroundColor: "#2d6a4f", border: "none", borderRadius: 8, color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+                style={{ flex: 1, minWidth: 130, padding: "10px 16px", backgroundColor: "#4aa07c", border: "none", borderRadius: 8, color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
                 <Mail size={14} /> Abrir E-mail
               </button>
               <button type="button" onClick={handleCopy}

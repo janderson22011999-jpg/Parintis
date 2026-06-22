@@ -45,7 +45,7 @@ export function FormExperiencia({ geral, especifica, onChangeGeral, onChangeEspe
               min={0} placeholder="Ex.: 18"
               style={{ ...inputStyle, borderColor: geral.totalMesesExperiencia && !geralOk ? "#f87171" : "#d1d5db" }}
             />
-            <p style={{ fontSize: 11, marginTop: 4, color: geralOk ? "#16a34a" : "#9ca3af" }}>
+            <p style={{ fontSize: 11, marginTop: 4, color: geralOk ? "#22b857" : "#9ca3af" }}>
               {geral.totalMesesExperiencia
                 ? geralOk
                   ? `✓ ${mesesGeral} meses — requisito mínimo de 6 meses atendido.`
@@ -90,9 +90,9 @@ export function FormExperiencia({ geral, especifica, onChangeGeral, onChangeEspe
                     onClick={() => onChangeEspecifica({ possuiExperienciaEspecifica: opt })}
                     style={{
                       padding: "10px 32px", borderRadius: 9, fontSize: 13, fontWeight: 700, cursor: "pointer",
-                      border: `2px solid ${active ? (opt === "Sim" ? "#2d6a4f" : "#f87171") : "#d1d5db"}`,
-                      backgroundColor: active ? (opt === "Sim" ? "#f0faf4" : "#fef2f2") : "white",
-                      color: active ? (opt === "Sim" ? "#1a3d2b" : "#b91c1c") : "#6b7280",
+                      border: `2px solid ${active ? (opt === "Sim" ? "#4aa07c" : "#f87171") : "#d1d5db"}`,
+                      backgroundColor: active ? (opt === "Sim" ? "#e8f7ef" : "#fef2f2") : "white",
+                      color: active ? (opt === "Sim" ? "#2d6b4c" : "#b91c1c") : "#6b7280",
                     }}
                   >
                     {opt === "Sim" ? "Sim" : "Não"}
@@ -115,7 +115,7 @@ export function FormExperiencia({ geral, especifica, onChangeGeral, onChangeEspe
                   min={0} placeholder="Ex.: 12"
                   style={{ ...inputStyle, borderColor: especifica.totalMesesEspecifica && !especificaOk ? "#f87171" : "#d1d5db" }}
                 />
-                <p style={{ fontSize: 11, marginTop: 4, color: especificaOk ? "#16a34a" : "#9ca3af" }}>
+                <p style={{ fontSize: 11, marginTop: 4, color: especificaOk ? "#22b857" : "#9ca3af" }}>
                   {especifica.totalMesesEspecifica
                     ? especificaOk
                       ? `✓ ${mesesEsp} meses — requisito mínimo de 6 meses atendido.`

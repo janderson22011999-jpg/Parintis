@@ -36,8 +36,8 @@ export function FormRequisitos({ data, onChange }: Props) {
               key={String(item.key)}
               style={{
                 display: "flex", gap: 14, padding: "14px 18px", cursor: "pointer",
-                backgroundColor: checked ? "#f0faf4" : "#f9fafb",
-                border: `1.5px solid ${checked ? "#a7d4b8" : "#e5e7eb"}`,
+                backgroundColor: checked ? "#e8f7ef" : "#f9fafb",
+                border: `1.5px solid ${checked ? "#96d4b5" : "#e5e7eb"}`,
                 borderRadius: 10, transition: "all .15s",
               }}
             >
@@ -45,10 +45,10 @@ export function FormRequisitos({ data, onChange }: Props) {
                 type="checkbox"
                 checked={checked}
                 onChange={e => onChange({ [item.key]: e.target.checked })}
-                style={{ width: 17, height: 17, accentColor: "#2d6a4f", cursor: "pointer", flexShrink: 0, marginTop: 2 }}
+                style={{ width: 17, height: 17, accentColor: "#4aa07c", cursor: "pointer", flexShrink: 0, marginTop: 2 }}
               />
               <div>
-                <span style={{ fontSize: 13, fontWeight: 700, color: checked ? "#1a3d2b" : "#374151", display: "block" }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: checked ? "#2d6b4c" : "#374151", display: "block" }}>
                   {item.label}
                 </span>
                 <span style={{ fontSize: 12, color: "#6b7280", lineHeight: 1.5, display: "block", marginTop: 2 }}>

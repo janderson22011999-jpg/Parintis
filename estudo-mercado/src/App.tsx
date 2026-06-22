@@ -22,7 +22,7 @@ function NgutapaLogo() {
         el.style.display = "none";
         const parent = el.parentElement;
         if (parent) {
-          parent.innerHTML = `<div style="line-height:1.15"><div style="color:#a8d5b8;font-size:8px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase">Instituto</div><div style="color:white;font-size:16px;font-weight:900;letter-spacing:0.04em">NGUTAPA</div></div>`;
+          parent.innerHTML = `<div style="line-height:1.15"><div style="color:#b8e0c8;font-size:8px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase">Instituto</div><div style="color:white;font-size:16px;font-weight:900;letter-spacing:0.04em">NGUTAPA</div></div>`;
         }
       }}
     />
@@ -120,7 +120,7 @@ export default function App() {
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f0f4f0", fontFamily: "system-ui,-apple-system,sans-serif" }}>
       <style>{`
-        input:focus,textarea:focus,select:focus{outline:none;border-color:#2d6a4f!important;box-shadow:0 0 0 3px rgba(45,106,79,.13);}
+        input:focus,textarea:focus,select:focus{outline:none;border-color:#4aa07c!important;box-shadow:0 0 0 3px rgba(45,106,79,.13);}
         button:focus{outline:none;}
         @media print{#header-ban,#act-bar,#footer-bar,#btn-voltar{display:none!important;}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -128,12 +128,12 @@ export default function App() {
       `}</style>
 
       {/* ══ HEADER ══ */}
-      <header id="header-ban" style={{ backgroundColor: "#1a3d2b", position: "relative", overflow: "hidden" }}>
+      <header id="header-ban" style={{ backgroundColor: "#2d6b4c", position: "relative", overflow: "hidden" }}>
         <svg style={{ position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none" }} viewBox="0 0 1200 220" preserveAspectRatio="xMidYMid slice">
           <defs>
             <radialGradient id="rg" cx="75%" cy="50%" r="55%">
-              <stop offset="0%" stopColor="#2d6a4f" stopOpacity="0.7"/>
-              <stop offset="100%" stopColor="#1a3d2b" stopOpacity="0"/>
+              <stop offset="0%" stopColor="#4aa07c" stopOpacity="0.7"/>
+              <stop offset="100%" stopColor="#2d6b4c" stopOpacity="0"/>
             </radialGradient>
           </defs>
           <rect width="1200" height="220" fill="url(#rg)"/>
@@ -147,22 +147,22 @@ export default function App() {
             <div style={{ display:"flex",alignItems:"center",gap:10,backgroundColor:"rgba(255,255,255,.06)",border:"1px solid rgba(255,255,255,.1)",borderRadius:12,padding:"8px 12px" }}>
               <ProjectLogo color="white"/>
               <div style={{ lineHeight:1.2 }}>
-                <div style={{ color:"#a8d5b8",fontSize:9,fontWeight:600,letterSpacing:"0.14em",textTransform:"uppercase" }}>Cuenca</div>
+                <div style={{ color:"#b8e0c8",fontSize:9,fontWeight:600,letterSpacing:"0.14em",textTransform:"uppercase" }}>Cuenca</div>
                 <div style={{ color:"white",fontSize:13,fontWeight:800 }}>Putumayo Içá</div>
               </div>
             </div>
             <div>
               <div style={{ display:"inline-block",backgroundColor:"rgba(255,255,255,.08)",border:"1px solid rgba(255,255,255,.14)",borderRadius:100,padding:"3px 12px",marginBottom:6 }}>
-                <span style={{ color:"#a8d5b8",fontSize:10,fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase" }}>Chamada Pública · Consultoria Individual</span>
+                <span style={{ color:"#b8e0c8",fontSize:10,fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase" }}>Chamada Pública · Consultoria Individual</span>
               </div>
               <h1 style={{ color:"white",fontSize:20,fontWeight:800,margin:0,lineHeight:1.2 }}>Edital de Manifestação de Interesse</h1>
-              <p style={{ color:"#a8d5b8",fontSize:12,margin:"4px 0 0",fontWeight:600 }}>Engenheiro(a) de Pesca — Guardiões dos Peixes do Rio Içá</p>
+              <p style={{ color:"#b8e0c8",fontSize:12,margin:"4px 0 0",fontWeight:600 }}>Engenheiro(a) de Pesca — Guardiões dos Peixes do Rio Içá</p>
             </div>
           </div>
           <div style={{ backgroundColor:"rgba(212,168,32,.12)",border:"1px solid rgba(212,168,32,.3)",borderRadius:14,padding:"12px 18px",textAlign:"center" }}>
             <div style={{ color:"#d4a820",fontSize:9,fontWeight:700,letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:3 }}>Prazo de Inscrição</div>
             <div style={{ color:"white",fontSize:20,fontWeight:800 }}>01/07/2026</div>
-            <div style={{ color:"#a8d5b8",fontSize:11,marginTop:2 }}>às 23h59 · Horário do Amazonas</div>
+            <div style={{ color:"#b8e0c8",fontSize:11,marginTop:2 }}>às 23h59 · Horário do Amazonas</div>
           </div>
         </div>
       </header>
@@ -176,8 +176,8 @@ export default function App() {
             <ArrowLeft size={13}/> Voltar às Oportunidades
           </button>
           <a href="https://drive.google.com/file/d/13V2KXA4jS0KtPsZQvyiWP_yyTDrpf6KC/view?usp=sharing" target="_blank" rel="noopener noreferrer"
-            style={{ display:"inline-flex",alignItems:"center",gap:7,padding:"8px 16px",backgroundColor:"#1a3d2b",border:"none",borderRadius:8,fontSize:12,fontWeight:600,color:"white",textDecoration:"none",cursor:"pointer" }}>
-            <FileText size={13} color="#d4a820"/> TdR Completo em PDF <Download size={11} color="#a8d5b8"/>
+            style={{ display:"inline-flex",alignItems:"center",gap:7,padding:"8px 16px",backgroundColor:"#2d6b4c",border:"none",borderRadius:8,fontSize:12,fontWeight:600,color:"white",textDecoration:"none",cursor:"pointer" }}>
+            <FileText size={13} color="#d4a820"/> TdR Completo em PDF <Download size={11} color="#b8e0c8"/>
           </a>
         </div>
 
@@ -195,7 +195,7 @@ export default function App() {
                 {c.icon}
                 <span style={{ fontSize:10,fontWeight:700,color:"#6b7280",textTransform:"uppercase",letterSpacing:"0.08em" }}>{c.label}</span>
               </div>
-              <div style={{ fontSize:13,fontWeight:800,color:"#1a3d2b" }}>{c.value}</div>
+              <div style={{ fontSize:13,fontWeight:800,color:"#2d6b4c" }}>{c.value}</div>
               <div style={{ fontSize:11,color:"#9ca3af",marginTop:2 }}>{c.sub}</div>
             </div>
           ))}
@@ -203,7 +203,7 @@ export default function App() {
 
         {/* ══ PERFIL MÍNIMO ══ */}
         <div style={{ backgroundColor:"white",border:"1.5px solid #e2ebe4",borderRadius:16,padding:"20px 24px",marginBottom:20 }}>
-          <h2 style={{ fontSize:13,fontWeight:700,color:"#1a3d2b",margin:"0 0 14px",display:"flex",alignItems:"center",gap:8 }}>
+          <h2 style={{ fontSize:13,fontWeight:700,color:"#2d6b4c",margin:"0 0 14px",display:"flex",alignItems:"center",gap:8 }}>
             <span style={{ display:"inline-block",width:6,height:6,borderRadius:"50%",backgroundColor:"#d4a820",marginBottom:1 }}/>
             Perfil Mínimo dos Candidatos
           </h2>
@@ -214,8 +214,8 @@ export default function App() {
               { title:"Experiência Específica", text:"Mínimo de 6 meses em manejo participativo de Pirarucu (Arapaima gigas) e/ou manejo comunitário com povos indígenas na Amazônia." },
               { title:"Desejável", text:"Manuseio de equipamentos eletrônicos, deslocamentos fluviais em áreas remotas, coleta de dados em campo, pacote Office e coordenação de equipes." },
             ].map(r => (
-              <div key={r.title} style={{ backgroundColor:"#f6faf7",borderRadius:9,padding:"12px 14px",borderLeft:"3px solid #2d6a4f" }}>
-                <div style={{ fontSize:12,fontWeight:700,color:"#1a3d2b",marginBottom:4 }}>{r.title}</div>
+              <div key={r.title} style={{ backgroundColor:"#eaf7f1",borderRadius:9,padding:"12px 14px",borderLeft:"3px solid #4aa07c" }}>
+                <div style={{ fontSize:12,fontWeight:700,color:"#2d6b4c",marginBottom:4 }}>{r.title}</div>
                 <div style={{ fontSize:12,color:"#4b5563",lineHeight:1.6 }}>{r.text}</div>
               </div>
             ))}
@@ -275,30 +275,30 @@ export default function App() {
 
           {/* ══ CURRÍCULO ══ */}
           <div style={{ borderTop:"1px solid #f0f4f0",paddingTop:36 }}>
-            <div style={{ display:"flex",alignItems:"center",gap:12,paddingBottom:14,borderBottom:"2px solid #f0faf4",marginBottom:20 }}>
-              <div style={{ width:32,height:32,borderRadius:"50%",backgroundColor:"#1a3d2b",color:"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:800,flexShrink:0 }}>6</div>
-              <h2 style={{ fontSize:16,fontWeight:700,color:"#1a3d2b",margin:0 }}>Currículo</h2>
+            <div style={{ display:"flex",alignItems:"center",gap:12,paddingBottom:14,borderBottom:"2px solid #e8f7ef",marginBottom:20 }}>
+              <div style={{ width:32,height:32,borderRadius:"50%",backgroundColor:"#2d6b4c",color:"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:800,flexShrink:0 }}>6</div>
+              <h2 style={{ fontSize:16,fontWeight:700,color:"#2d6b4c",margin:0 }}>Currículo</h2>
             </div>
             <div style={{ backgroundColor:"#f8fafc",border:"1.5px solid #e2ebe4",borderRadius:12,padding:"20px 24px" }}>
               <p style={{ fontSize:13,color:"#4b5563",marginBottom:16,lineHeight:1.6 }}>
                 Selecione seu currículo (PDF ou Word, máx. 5 MB). O arquivo deverá ser <strong>anexado manualmente ao e-mail</strong> ao enviar sua candidatura.
               </p>
-              <label style={{ display:"inline-flex",alignItems:"center",gap:10,padding:"11px 22px",border:"1.5px dashed #2d6a4f",borderRadius:10,cursor:"pointer",backgroundColor:"white",transition:"background .15s" }}>
+              <label style={{ display:"inline-flex",alignItems:"center",gap:10,padding:"11px 22px",border:"1.5px dashed #4aa07c",borderRadius:10,cursor:"pointer",backgroundColor:"white",transition:"background .15s" }}>
                 <input
                   type="file"
                   accept=".pdf,.doc,.docx"
                   style={{ display:"none" }}
                   onChange={e => setCurriculoNome(e.target.files?.[0]?.name || "")}
                 />
-                <Upload size={16} color="#2d6a4f"/>
-                <span style={{ fontSize:13,fontWeight:600,color:"#2d6a4f" }}>
+                <Upload size={16} color="#4aa07c"/>
+                <span style={{ fontSize:13,fontWeight:600,color:"#4aa07c" }}>
                   {curriculoNome ? curriculoNome : "Selecionar arquivo (PDF ou Word)"}
                 </span>
               </label>
               {curriculoNome && (
-                <div style={{ display:"flex",alignItems:"center",gap:8,marginTop:12,padding:"10px 14px",backgroundColor:"#f0faf4",border:"1.5px solid #a7d4b8",borderRadius:9 }}>
-                  <Paperclip size={14} color="#2d6a4f"/>
-                  <span style={{ fontSize:12,color:"#166534",fontWeight:600 }}>Arquivo selecionado: {curriculoNome}</span>
+                <div style={{ display:"flex",alignItems:"center",gap:8,marginTop:12,padding:"10px 14px",backgroundColor:"#e8f7ef",border:"1.5px solid #96d4b5",borderRadius:9 }}>
+                  <Paperclip size={14} color="#4aa07c"/>
+                  <span style={{ fontSize:12,color:"#1a7c40",fontWeight:600 }}>Arquivo selecionado: {curriculoNome}</span>
                 </div>
               )}
               {!curriculoNome && (
@@ -311,9 +311,9 @@ export default function App() {
 
           {/* ══ DECLARAÇÕES ══ */}
           <div style={{ borderTop:"1px solid #f0f4f0",paddingTop:36 }}>
-            <div style={{ display:"flex",alignItems:"center",gap:12,paddingBottom:14,borderBottom:"2px solid #f0faf4",marginBottom:20 }}>
-              <div style={{ width:32,height:32,borderRadius:"50%",backgroundColor:"#1a3d2b",color:"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:800,flexShrink:0 }}>7</div>
-              <h2 style={{ fontSize:16,fontWeight:700,color:"#1a3d2b",margin:0 }}>Declarações</h2>
+            <div style={{ display:"flex",alignItems:"center",gap:12,paddingBottom:14,borderBottom:"2px solid #e8f7ef",marginBottom:20 }}>
+              <div style={{ width:32,height:32,borderRadius:"50%",backgroundColor:"#2d6b4c",color:"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:800,flexShrink:0 }}>7</div>
+              <h2 style={{ fontSize:16,fontWeight:700,color:"#2d6b4c",margin:0 }}>Declarações</h2>
             </div>
             <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
               {[
@@ -324,12 +324,12 @@ export default function App() {
                 const checked = form.declaracoes[d.key];
                 return (
                   <label key={d.key}
-                    style={{ display:"flex",gap:14,padding:"14px 18px",cursor:"pointer",backgroundColor:checked?"#f0faf4":"#f9fafb",border:`2px solid ${checked?"#2d6a4f":"#e5e7eb"}`,borderRadius:12,transition:"all .15s" }}>
+                    style={{ display:"flex",gap:14,padding:"14px 18px",cursor:"pointer",backgroundColor:checked?"#e8f7ef":"#f9fafb",border:`2px solid ${checked?"#4aa07c":"#e5e7eb"}`,borderRadius:12,transition:"all .15s" }}>
                     <input type="checkbox" checked={checked}
                       onChange={e => updateDecl({ [d.key]: e.target.checked })}
-                      style={{ width:18,height:18,accentColor:"#2d6a4f",cursor:"pointer",flexShrink:0,marginTop:1 }}/>
+                      style={{ width:18,height:18,accentColor:"#4aa07c",cursor:"pointer",flexShrink:0,marginTop:1 }}/>
                     <div>
-                      <span style={{ fontSize:13,fontWeight:700,color:checked?"#1a3d2b":"#374151",display:"block" }}>{d.label} <span style={{ color:"#dc2626" }}>*</span></span>
+                      <span style={{ fontSize:13,fontWeight:700,color:checked?"#2d6b4c":"#374151",display:"block" }}>{d.label} <span style={{ color:"#dc2626" }}>*</span></span>
                       <span style={{ fontSize:12,color:"#6b7280",lineHeight:1.6,display:"block",marginTop:3 }}>{d.desc}</span>
                     </div>
                   </label>
@@ -344,7 +344,7 @@ export default function App() {
               <div style={{ borderTop:"1px solid #f0f4f0",paddingTop:28,display:"flex",justifyContent:"flex-end",alignItems:"center",gap:16 }}>
                 <p style={{ fontSize:12,color:"#9ca3af",margin:0 }}>Campos com <span style={{ color:"#dc2626" }}>*</span> são obrigatórios.</p>
                 <button type="button" onClick={handleSubmit} disabled={!allDecl}
-                  style={{ padding:"12px 32px",backgroundColor:allDecl?"#2d6a4f":"#9ca3af",border:"none",borderRadius:10,color:"white",fontSize:15,fontWeight:700,cursor:allDecl?"pointer":"not-allowed",boxShadow:allDecl?"0 3px 10px rgba(45,106,79,.3)":"none",letterSpacing:".01em",transition:"all .15s" }}>
+                  style={{ padding:"12px 32px",backgroundColor:allDecl?"#4aa07c":"#9ca3af",border:"none",borderRadius:10,color:"white",fontSize:15,fontWeight:700,cursor:allDecl?"pointer":"not-allowed",boxShadow:allDecl?"0 3px 10px rgba(45,106,79,.3)":"none",letterSpacing:".01em",transition:"all .15s" }}>
                   Verificar e Preparar Candidatura →
                 </button>
               </div>
