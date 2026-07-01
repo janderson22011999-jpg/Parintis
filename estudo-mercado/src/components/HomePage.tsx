@@ -31,6 +31,19 @@ const OPORTUNIDADES: Oportunidade[] = [
     temFormulario: true,
     linkTdr: "https://drive.google.com/file/d/13V2KXA4jS0KtPsZQvyiWP_yyTDrpf6KC/view?usp=sharing",
   },
+  {
+    id: "antropologo-2026",
+    titulo: "Antropólogo(a)",
+    categoria: "Consultoria Individual",
+    subprojeto: "UTÜ'Ü Y ITCHÁ – O Encantado Içá",
+    local: "Santo Antônio do Içá – AM",
+    duracao: "6 meses",
+    prazo: "10/07/2026",
+    status: "aberto",
+    descricao: "Apoio ao registro e sistematização de saberes tradicionais, mapeamento participativo e fortalecimento da governança cultural e territorial dos povos Magüta/Tikuna e Kokama em 14 comunidades indígenas da bacia do Rio Içá.",
+    temFormulario: false,
+    linkTdr: "https://drive.google.com/file/d/111n7fe_TwdWKzRHhqXHS1c4GXSvPVf71/view?usp=sharing",
+  },
 ];
 
 interface Props {
