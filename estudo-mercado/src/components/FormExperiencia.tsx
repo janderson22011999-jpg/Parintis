@@ -1,5 +1,6 @@
 import React from "react";
 import { ExperienciaGeralInfo, ExperienciaEspecificaInfo } from "../types";
+import { EditalConfig } from "../edital-config";
 import { SectionTitle } from "./FormIdentificacao";
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
   especifica: ExperienciaEspecificaInfo;
   onChangeGeral: (u: Partial<ExperienciaGeralInfo>) => void;
   onChangeEspecifica: (u: Partial<ExperienciaEspecificaInfo>) => void;
+  config: EditalConfig;
 }
 
 const inputStyle: React.CSSProperties = {
@@ -21,7 +23,7 @@ const labelStyle: React.CSSProperties = {
   display: "block", fontSize: 12, fontWeight: 700, color: "#374151", marginBottom: 6,
 };
 
-export function FormExperiencia({ geral, especifica, onChangeGeral, onChangeEspecifica }: Props) {
+export function FormExperiencia({ geral, especifica, onChangeGeral, onChangeEspecifica, config }: Props) {
   const mesesGeral = Number(geral.totalMesesExperiencia) || 0;
   const mesesEsp   = Number(especifica.totalMesesEspecifica) || 0;
   const geralOk    = mesesGeral >= 6;
@@ -73,12 +75,12 @@ export function FormExperiencia({ geral, especifica, onChangeGeral, onChangeEspe
 
       {/* Específica */}
       <div>
-        <SectionTitle num="4" title="Experiência Específica em Manejo Pesqueiro" />
+        <SectionTitle num="4" title={config.expEspecificaTitulo} />
         <div style={{ display: "flex", flexDirection: "column", gap: 18, marginTop: 20 }}>
 
           <div>
             <label style={labelStyle}>
-              Possui experiência em manejo participativo de Pirarucu e/ou manejo comunitário de recursos pesqueiros com povos indígenas ou comunidades tradicionais na Amazônia? <span style={{ color: "#dc2626" }}>*</span>
+              {config.expEspecificaPergunta} <span style={{ color: "#dc2626" }}>*</span>
             </label>
             <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
               {(["Sim", "Nao"] as const).map(opt => {
@@ -141,7 +143,7 @@ export function FormExperiencia({ geral, especifica, onChangeGeral, onChangeEspe
                 <textarea
                   value={especifica.descricaoEspecifica}
                   onChange={e => onChangeEspecifica({ descricaoEspecifica: e.target.value })}
-                  placeholder="Descreva: instituição, cargo, período (dd/mm/aaaa a dd/mm/aaaa), espécies manejadas (Pirarucu / outras), comunidades atendidas, metodologias utilizadas. Seja preciso — esta seção vale até 70 pontos na seleção."
+                  placeholder={config.expEspecificaPlaceholder}
                   style={{ ...textareaStyle, minHeight: 120 }}
                 />
                 <p style={{ fontSize: 11, color: "#9ca3af", marginTop: 4 }}>
@@ -154,7 +156,7 @@ export function FormExperiencia({ geral, especifica, onChangeGeral, onChangeEspe
           {especifica.possuiExperienciaEspecifica === "Nao" && (
             <div style={{ backgroundColor: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 10, padding: "12px 16px" }}>
               <p style={{ fontSize: 12, color: "#92400e", margin: 0, lineHeight: 1.6 }}>
-                <strong>Atenção:</strong> O TdR exige mínimo de 6 meses de experiência específica em manejo participativo de Pirarucu ou manejo comunitário de recursos pesqueiros com povos indígenas na Amazônia. Candidatos sem essa experiência não atendem ao perfil mínimo do processo.
+                <strong>Atenção:</strong> {config.expEspecificaAlerta}
               </p>
             </div>
           )}

@@ -41,7 +41,7 @@ const OPORTUNIDADES: Oportunidade[] = [
     prazo: "10/07/2026",
     status: "aberto",
     descricao: "Apoio ao registro e sistematização de saberes tradicionais, mapeamento participativo e fortalecimento da governança cultural e territorial dos povos Magüta/Tikuna e Kokama em 14 comunidades indígenas da bacia do Rio Içá.",
-    temFormulario: false,
+    temFormulario: true,
     linkTdr: "https://drive.google.com/file/d/111n7fe_TwdWKzRHhqXHS1c4GXSvPVf71/view?usp=sharing",
   },
 ];

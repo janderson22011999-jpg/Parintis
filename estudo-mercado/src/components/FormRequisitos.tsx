@@ -1,27 +1,15 @@
 import React from "react";
 import { RequisitosInfo } from "../types";
+import { EditalConfig } from "../edital-config";
 import { SectionTitle } from "./FormIdentificacao";
 
 interface Props {
   data: RequisitosInfo;
   onChange: (u: Partial<RequisitosInfo>) => void;
+  config: EditalConfig;
 }
 
-interface CheckItem {
-  key: keyof RequisitosInfo;
-  label: string;
-  desc: string;
-}
-
-const checkItems: CheckItem[] = [
-  { key: "disponibilidadeFluvial", label: "Deslocamentos fluviais em áreas remotas", desc: "Disponibilidade e capacidade para viagens de barco em comunidades ribeirinhas de difícil acesso." },
-  { key: "dominioColetaDados", label: "Coleta de dados em campo", desc: "Domínio básico de ferramentas de coleta de dados em campo (fichas, GPS, apps de monitoramento)." },
-  { key: "dominioOffice", label: "Pacote Office", desc: "Conhecimento em Word, Excel e PowerPoint para elaboração de relatórios técnicos." },
-  { key: "coordenacaoEquipes", label: "Coordenação de equipes comunitárias", desc: "Experiência em facilitar processos participativos e coordenar grupos em comunidades indígenas ou tradicionais." },
-  { key: "manuseioEquipamentos", label: "Manuseio de equipamentos eletrônicos", desc: "Capacidade de operar equipamentos de monitoramento, câmeras e dispositivos de coleta de dados digitais." },
-];
-
-export function FormRequisitos({ data, onChange }: Props) {
+export function FormRequisitos({ data, onChange, config }: Props) {
   return (
     <div>
       <SectionTitle num="5" title="Requisitos e Competências Adicionais" />
@@ -29,7 +17,7 @@ export function FormRequisitos({ data, onChange }: Props) {
         Marque os requisitos que você atende. Estes itens são desejáveis pelo TdR e contribuem para a avaliação na entrevista.
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {checkItems.map(item => {
+        {config.requisitosItems.map(item => {
           const checked = data[item.key] as boolean;
           return (
             <label

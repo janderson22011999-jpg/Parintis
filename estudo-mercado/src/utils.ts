@@ -1,10 +1,12 @@
 import { CandidatoForm, EMPTY_FORM } from "./types";
+import { EditalConfig, DEFAULT_CONFIG } from "./edital-config";
 
 export function makeInitialState(): CandidatoForm {
   return JSON.parse(JSON.stringify(EMPTY_FORM));
 }
 
-export function validateForm(form: CandidatoForm): string[] {
+export function validateForm(form: CandidatoForm, config?: EditalConfig): string[] {
+  const cfg = config ?? DEFAULT_CONFIG;
   const errors: string[] = [];
   const id = form.identificacao;
   if (!id.nomeCompleto.trim()) errors.push("Nome completo é obrigatório.");
@@ -24,10 +26,10 @@ export function validateForm(form: CandidatoForm): string[] {
   if (!eg.descricaoExperiencias.trim()) errors.push("Descreva sua experiência profissional.");
 
   const ee = form.experienciaEspecifica;
-  if (!ee.possuiExperienciaEspecifica) errors.push("Informe se possui experiência específica em manejo pesqueiro comunitário na Amazônia.");
+  if (!ee.possuiExperienciaEspecifica) errors.push(cfg.expEspecificaValidacaoMsg);
   if (ee.possuiExperienciaEspecifica === "Sim") {
     if (!ee.totalMesesEspecifica.trim()) errors.push("Informe o total de meses de experiência específica.");
-    if (!ee.descricaoEspecifica.trim()) errors.push("Descreva sua experiência específica em manejo pesqueiro / Pirarucu.");
+    if (!ee.descricaoEspecifica.trim()) errors.push(cfg.expEspecificaDescMsg);
   }
 
   const d = form.declaracoes;
@@ -38,7 +40,8 @@ export function validateForm(form: CandidatoForm): string[] {
   return errors;
 }
 
-export function formatToEmail(form: CandidatoForm, curriculoNome?: string): string {
+export function formatToEmail(form: CandidatoForm, curriculoNome?: string, config?: EditalConfig): string {
+  const cfg = config ?? DEFAULT_CONFIG;
   const id = form.identificacao;
   const fo = form.formacao;
   const eg = form.experienciaGeral;
@@ -56,9 +59,9 @@ export function formatToEmail(form: CandidatoForm, curriculoNome?: string): stri
   const checkMark = (v: boolean) => (v ? "Sim" : "Não");
 
   return `MANIFESTAÇÃO DE INTERESSE — NGUTAPA
-Vaga: Engenheiro(a) de Pesca
-Processo: SDC-NGUTUPA-C2-ENG-01-2026
-Subprojeto: Guardiões dos Peixes do Rio Içá
+Vaga: ${cfg.emailVaga}
+Processo: ${cfg.emailProcesso}
+Subprojeto: ${cfg.emailSubprojeto}
 
 ${sep}
 IDENTIFICAÇÃO DO CANDIDATO
@@ -89,9 +92,9 @@ Descrição:
 ${eg.descricaoExperiencias}
 
 ${sep}
-EXPERIÊNCIA ESPECÍFICA EM MANEJO PESQUEIRO
+${cfg.emailSecaoEspecificaTitulo}
 ${sep}
-Possui experiência em manejo de Pirarucu / pesca comunitária com povos indígenas na Amazônia: ${ee.possuiExperienciaEspecifica === "Sim" ? "Sim" : "Não"}
+${cfg.emailEspecificaPerguntaLabel}: ${ee.possuiExperienciaEspecifica === "Sim" ? "Sim" : "Não"}
 ${ee.possuiExperienciaEspecifica === "Sim" ? `Total de Meses de Experiência Específica: ${ee.totalMesesEspecifica} meses` : ""}
 ${ee.possuiExperienciaEspecifica === "Sim" && ee.regiaoAtuacao ? `Região de Atuação: ${ee.regiaoAtuacao}` : ""}
 ${ee.possuiExperienciaEspecifica === "Sim" ? `Descrição:\n${ee.descricaoEspecifica}` : ""}
@@ -99,11 +102,7 @@ ${ee.possuiExperienciaEspecifica === "Sim" ? `Descrição:\n${ee.descricaoEspeci
 ${sep}
 REQUISITOS ADICIONAIS
 ${sep}
-Disponibilidade para deslocamentos fluviais em áreas remotas: ${checkMark(re.disponibilidadeFluvial)}
-Domínio de ferramentas de coleta de dados em campo: ${checkMark(re.dominioColetaDados)}
-Domínio do pacote Office: ${checkMark(re.dominioOffice)}
-Capacidade de coordenação de equipes comunitárias: ${checkMark(re.coordenacaoEquipes)}
-Manuseio de equipamentos eletrônicos: ${checkMark(re.manuseioEquipamentos)}
+${cfg.requisitosItems.map(item => `${item.label}: ${checkMark(re[item.key] as boolean)}`).join("\n")}
 ${re.observacoesAdicionais ? `Observações: ${re.observacoesAdicionais}` : ""}
 
 ${sep}

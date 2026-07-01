@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CandidatoForm } from "./types";
+import { EditalConfig, EDITAIS_CONFIG } from "./edital-config";
 import { makeInitialState, validateForm } from "./utils";
 import { FormIdentificacao } from "./components/FormIdentificacao";
 import { FormFormacao } from "./components/FormFormacao";
@@ -7,9 +8,25 @@ import { FormExperiencia } from "./components/FormExperiencia";
 import { FormRequisitos } from "./components/FormRequisitos";
 import { PainelEnvio } from "./components/PainelEnvio";
 import { HomePage } from "./components/HomePage";
-import { AlertCircle, RotateCcw, ArrowLeft, Fish, MapPin, Clock, Users, Award, FileText, Download, Upload, Paperclip } from "lucide-react";
+import { AlertCircle, RotateCcw, ArrowLeft, Fish, Globe, MapPin, Clock, Users, Award, FileText, Download, Upload, Paperclip } from "lucide-react";
 
-const STORAGE_KEY = "ngutapa_eng_pesca_2026_v2";
+function getInitialEditalId(): string {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("edital");
+    if (id && EDITAIS_CONFIG[id]) return id;
+  } catch {}
+  return "eng-pesca-2026";
+}
+
+function getInitialForm(editalId: string): CandidatoForm {
+  const cfg = EDITAIS_CONFIG[editalId] ?? EDITAIS_CONFIG["eng-pesca-2026"];
+  try {
+    const s = localStorage.getItem(cfg.storageKey);
+    if (s) return JSON.parse(s);
+  } catch {}
+  return makeInitialState();
+}
 
 function NgutapaLogo() {
   return (
@@ -58,20 +75,16 @@ function getInitialPage(): Pagina {
 
 export default function App() {
   const [pagina, setPagina] = useState<Pagina>(getInitialPage);
-  const [form, setForm] = useState<CandidatoForm>(() => {
-    try {
-      const s = localStorage.getItem(STORAGE_KEY);
-      if (s) return JSON.parse(s);
-    } catch {}
-    return makeInitialState();
-  });
+  const [editalId, setEditalId] = useState<string>(getInitialEditalId);
+  const config: EditalConfig = EDITAIS_CONFIG[editalId] ?? EDITAIS_CONFIG["eng-pesca-2026"];
+  const [form, setForm] = useState<CandidatoForm>(() => getInitialForm(editalId));
   const [errors, setErrors] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [curriculoNome, setCurriculoNome] = useState("");
 
   useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(form)); } catch {}
-  }, [form]);
+    try { localStorage.setItem(config.storageKey, JSON.stringify(form)); } catch {}
+  }, [form, config.storageKey]);
 
   const updateId   = (u: any) => setForm(f => ({ ...f, identificacao: { ...f.identificacao, ...u } }));
   const updateFo   = (u: any) => setForm(f => ({ ...f, formacao: { ...f.formacao, ...u } }));
@@ -81,7 +94,7 @@ export default function App() {
   const updateDecl = (u: any) => setForm(f => ({ ...f, declaracoes: { ...f.declaracoes, ...u } }));
 
   const handleSubmit = () => {
-    const errs = validateForm(form);
+    const errs = validateForm(form, config);
     if (errs.length > 0) { setErrors(errs); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
     setErrors([]);
     setSubmitted(true);
@@ -91,7 +104,7 @@ export default function App() {
   const handleClear = () => {
     if (window.confirm("Limpar todos os dados do formulário?")) {
       setForm(makeInitialState());
-      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(config.storageKey);
       setErrors([]);
       setSubmitted(false);
     }
@@ -104,16 +117,37 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleAbrirFormulario = (id: string) => {
+    const cfg = EDITAIS_CONFIG[id] ?? EDITAIS_CONFIG["eng-pesca-2026"];
+    window.history.pushState({}, "", `?edital=${id}`);
+    setEditalId(id);
+    setForm(getInitialForm(id));
+    setErrors([]);
+    setSubmitted(false);
+    setCurriculoNome("");
+    setPagina("formulario");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    void cfg; // used above
+  };
+
   const decl = form.declaracoes;
   const allDecl = decl.aceitaTermos && decl.informacoesAutenticas && decl.aceitaPoliticasFraude;
 
+  const CommunityIcon = config.id === "antropologo-2026"
+    ? <Globe size={15} color="#d4a820"/>
+    : <Fish size={15} color="#d4a820"/>;
+
+  const infocards = [
+    { icon: <Clock  size={15} color="#d4a820"/>, label: "Duração",          value: config.duracao,                sub: config.periodoExecucao },
+    { icon: <Users  size={15} color="#d4a820"/>, label: "Tipo de Contrato", value: "Pessoa Física (CPF)",         sub: "RPA · Seleção competitiva" },
+    { icon: <MapPin size={15} color="#d4a820"/>, label: "Local de Execução",value: "Santo Antônio do Içá",        sub: "Vila Betânia SAI – AM" },
+    { icon: CommunityIcon,                       label: "Comunidades",       value: "14 comunidades",              sub: "Bacia do Rio Içá" },
+    { icon: <Award  size={15} color="#d4a820"/>, label: "Projeto",           value: "Cuenca Putumayo Içá",         sub: "Manejo Integrado da Bacia" },
+  ];
+
   // ── PÁGINA INICIAL ──────────────────────────────────────────
   if (pagina === "home") {
-    return <HomePage onAbrirFormulario={(id) => {
-      window.history.pushState({}, "", `?edital=${id}`);
-      setPagina("formulario");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }}/>;
+    return <HomePage onAbrirFormulario={handleAbrirFormulario}/>;
   }
 
   // ── FORMULÁRIO DE INSCRIÇÃO ──────────────────────────────────
@@ -156,12 +190,12 @@ export default function App() {
                 <span style={{ color:"#b8e0c8",fontSize:10,fontWeight:600,letterSpacing:"0.1em",textTransform:"uppercase" }}>Chamada Pública · Consultoria Individual</span>
               </div>
               <h1 style={{ color:"white",fontSize:20,fontWeight:800,margin:0,lineHeight:1.2 }}>Edital de Manifestação de Interesse</h1>
-              <p style={{ color:"#b8e0c8",fontSize:12,margin:"4px 0 0",fontWeight:600 }}>Engenheiro(a) de Pesca — Guardiões dos Peixes do Rio Içá</p>
+              <p style={{ color:"#b8e0c8",fontSize:12,margin:"4px 0 0",fontWeight:600 }}>{config.titulo} — {config.subprojeto}</p>
             </div>
           </div>
           <div style={{ backgroundColor:"rgba(212,168,32,.12)",border:"1px solid rgba(212,168,32,.3)",borderRadius:14,padding:"12px 18px",textAlign:"center" }}>
             <div style={{ color:"#d4a820",fontSize:9,fontWeight:700,letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:3 }}>Prazo de Inscrição</div>
-            <div style={{ color:"white",fontSize:20,fontWeight:800 }}>01/07/2026</div>
+            <div style={{ color:"white",fontSize:20,fontWeight:800 }}>{config.prazo}</div>
             <div style={{ color:"#b8e0c8",fontSize:11,marginTop:2 }}>às 23h59 · Horário do Amazonas</div>
           </div>
         </div>
@@ -175,7 +209,7 @@ export default function App() {
             style={{ display:"inline-flex",alignItems:"center",gap:6,padding:"8px 16px",backgroundColor:"white",border:"1.5px solid #d1d5db",borderRadius:8,fontSize:12,fontWeight:600,color:"#374151",cursor:"pointer" }}>
             <ArrowLeft size={13}/> Voltar às Oportunidades
           </button>
-          <a href="https://drive.google.com/file/d/13V2KXA4jS0KtPsZQvyiWP_yyTDrpf6KC/view?usp=sharing" target="_blank" rel="noopener noreferrer"
+          <a href={config.linkTdr} target="_blank" rel="noopener noreferrer"
             style={{ display:"inline-flex",alignItems:"center",gap:7,padding:"8px 16px",backgroundColor:"#2d6b4c",border:"none",borderRadius:8,fontSize:12,fontWeight:600,color:"white",textDecoration:"none",cursor:"pointer" }}>
             <FileText size={13} color="#d4a820"/> TdR Completo em PDF <Download size={11} color="#b8e0c8"/>
           </a>
@@ -183,13 +217,7 @@ export default function App() {
 
         {/* ══ EDITAL CARDS ══ */}
         <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:12,marginBottom:20 }}>
-          {[
-            { icon: <Clock size={15} color="#d4a820"/>, label:"Duração", value:"8 meses", sub:"Jul/2026 – Fev/2027" },
-            { icon: <Users size={15} color="#d4a820"/>, label:"Tipo de Contrato", value:"Pessoa Física (CPF)", sub:"RPA · Seleção competitiva" },
-            { icon: <MapPin size={15} color="#d4a820"/>, label:"Local de Execução", value:"Santo Antônio do Içá", sub:"Vila Betânia SAI – AM" },
-            { icon: <Fish size={15} color="#d4a820"/>, label:"Comunidades", value:"14 comunidades", sub:"Bacia do Rio Içá" },
-            { icon: <Award size={15} color="#d4a820"/>, label:"Projeto", value:"Cuenca Putumayo Içá", sub:"Manejo Integrado da Bacia" },
-          ].map(c => (
+          {infocards.map(c => (
             <div key={c.label} style={{ backgroundColor:"white",border:"1.5px solid #e2ebe4",borderRadius:12,padding:"12px 16px" }}>
               <div style={{ display:"flex",alignItems:"center",gap:6,marginBottom:5 }}>
                 {c.icon}
@@ -208,12 +236,7 @@ export default function App() {
             Perfil Mínimo dos Candidatos
           </h2>
           <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:10 }}>
-            {[
-              { title:"Formação Acadêmica", text:"Diploma em Engenharia de Pesca, Biologia, Engenharia Ambiental, Ciências Agrárias ou núcleos básicos afins." },
-              { title:"Experiência Profissional", text:"Mínimo de 6 meses de experiência profissional, contados a partir da obtenção do diploma universitário." },
-              { title:"Experiência Específica", text:"Mínimo de 6 meses em manejo participativo de Pirarucu (Arapaima gigas) e/ou manejo comunitário com povos indígenas na Amazônia." },
-              { title:"Desejável", text:"Manuseio de equipamentos eletrônicos, deslocamentos fluviais em áreas remotas, coleta de dados em campo, pacote Office e coordenação de equipes." },
-            ].map(r => (
+            {config.perfilMinimo.map(r => (
               <div key={r.title} style={{ backgroundColor:"#eaf7f1",borderRadius:9,padding:"12px 14px",borderLeft:"3px solid #4aa07c" }}>
                 <div style={{ fontSize:12,fontWeight:700,color:"#2d6b4c",marginBottom:4 }}>{r.title}</div>
                 <div style={{ fontSize:12,color:"#4b5563",lineHeight:1.6 }}>{r.text}</div>
@@ -223,11 +246,7 @@ export default function App() {
           <div style={{ marginTop:14,backgroundColor:"#fffbeb",border:"1.5px solid #fde68a",borderRadius:10,padding:"12px 16px" }}>
             <div style={{ fontSize:11,fontWeight:700,color:"#92400e",marginBottom:8,textTransform:"uppercase",letterSpacing:"0.08em" }}>Critérios de Pontuação (100 pontos)</div>
             <div style={{ display:"flex",flexWrap:"wrap",gap:16 }}>
-              {[
-                { pts:"até 20 pts", label:"Formação adicional (pós-grad)", desc:"Especialização = 8 pts · Mestrado = 12 pts" },
-                { pts:"até 70 pts", label:"Experiência específica acima do mínimo", desc:"Candidato com maior experiência recebe 70; demais proporcionalmente" },
-                { pts:"1–10 pts",   label:"Entrevista", desc:"Convocados os melhores classificados na fase anterior" },
-              ].map(c => (
+              {config.criteriosPontuacao.map(c => (
                 <div key={c.label} style={{ flex:"1 1 180px" }}>
                   <div style={{ fontSize:12,fontWeight:700,color:"#92400e" }}>{c.pts}</div>
                   <div style={{ fontSize:12,fontWeight:600,color:"#374151" }}>{c.label}</div>
@@ -266,11 +285,12 @@ export default function App() {
               especifica={form.experienciaEspecifica}
               onChangeGeral={updateEg}
               onChangeEspecifica={updateEe}
+              config={config}
             />
           </div>
 
           <div style={{ borderTop:"1px solid #f0f4f0",paddingTop:36 }}>
-            <FormRequisitos data={form.requisitos} onChange={updateReq}/>
+            <FormRequisitos data={form.requisitos} onChange={updateReq} config={config}/>
           </div>
 
           {/* ══ CURRÍCULO ══ */}
@@ -317,8 +337,8 @@ export default function App() {
             </div>
             <div style={{ display:"flex",flexDirection:"column",gap:10 }}>
               {[
-                { key:"aceitaTermos" as const, label:"Aceito os Termos de Referência", desc:"Declaro que li e aceito as condições do Edital SDC-NGUTUPA-C2-ENG-01-2026, incluindo escopo, cronograma, forma de pagamento e critérios de seleção." },
-                { key:"informacoesAutenticas" as const, label:"Informações autênticas e verificáveis", desc:"Declaro que todas as informações fornecidas são autênticas e que posso apresentar os comprovantes respectivos quando solicitado pelo NGUTAPA." },
+                { key:"aceitaTermos" as const,        label:"Aceito os Termos de Referência",                                  desc: config.declaracaoEditalDesc },
+                { key:"informacoesAutenticas" as const, label:"Informações autênticas e verificáveis",                         desc:"Declaro que todas as informações fornecidas são autênticas e que posso apresentar os comprovantes respectivos quando solicitado pelo NGUTAPA." },
                 { key:"aceitaPoliticasFraude" as const, label:"Aceito as Políticas de Fraude e Corrupção do Banco Mundial (BIRD)", desc:"Declaro que me submeto às Políticas de Fraude e Corrupção do Banco Internacional de Reconstrução e Desenvolvimento aplicáveis a este processo." },
               ].map(d => {
                 const checked = form.declaracoes[d.key];
@@ -339,7 +359,7 @@ export default function App() {
           </div>
 
           {submitted
-            ? (<div style={{ borderTop:"1px solid #f0f4f0",paddingTop:36 }}><PainelEnvio data={form} onClear={handleClear} curriculoNome={curriculoNome}/></div>)
+            ? (<div style={{ borderTop:"1px solid #f0f4f0",paddingTop:36 }}><PainelEnvio data={form} onClear={handleClear} curriculoNome={curriculoNome} config={config}/></div>)
             : (
               <div style={{ borderTop:"1px solid #f0f4f0",paddingTop:28,display:"flex",justifyContent:"flex-end",alignItems:"center",gap:16 }}>
                 <p style={{ fontSize:12,color:"#9ca3af",margin:0 }}>Campos com <span style={{ color:"#dc2626" }}>*</span> são obrigatórios.</p>

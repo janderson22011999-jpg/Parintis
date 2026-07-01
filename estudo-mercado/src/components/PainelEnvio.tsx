@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { CandidatoForm } from "../types";
+import { EditalConfig } from "../edital-config";
 import { formatToEmail } from "../utils";
 import { Mail, Copy, Check, Printer, CheckCircle2, AlertCircle, Paperclip } from "lucide-react";
 
-interface Props { data: CandidatoForm; onClear: () => void; curriculoNome?: string; }
+interface Props {
+  data: CandidatoForm;
+  onClear: () => void;
+  curriculoNome?: string;
+  config: EditalConfig;
+}
 
-export function PainelEnvio({ data, onClear, curriculoNome }: Props) {
+export function PainelEnvio({ data, onClear, curriculoNome, config }: Props) {
   const [copied, setCopied] = useState(false);
-  const texto = formatToEmail(data, curriculoNome);
+  const texto = formatToEmail(data, curriculoNome, config);
 
   const mesesGeral = Number(data.experienciaGeral.totalMesesExperiencia) || 0;
   const mesesEsp   = Number(data.experienciaEspecifica.totalMesesEspecifica) || 0;
@@ -29,7 +35,7 @@ export function PainelEnvio({ data, onClear, curriculoNome }: Props) {
     {
       label: "Experiência específica mínima (6 meses)",
       ok: temEsp && mesesEsp >= 6,
-      okMsg: `${mesesEsp} meses em manejo pesqueiro comunitário — requisito atendido.`,
+      okMsg: `${mesesEsp} ${config.expEspecificaSufixo} — requisito atendido.`,
       failMsg: temEsp ? `${mesesEsp} meses. Abaixo do mínimo de 6 meses.` : "Candidato declarou não possuir experiência específica.",
     },
     {
@@ -47,7 +53,7 @@ export function PainelEnvio({ data, onClear, curriculoNome }: Props) {
   ];
 
   const handleEmail = () => {
-    const subject = `TDR Engenheiro de Pesca – ${data.identificacao.nomeCompleto || "[Nome]"}`;
+    const subject = `TDR ${config.emailAssuntoPrefix} – ${data.identificacao.nomeCompleto || "[Nome]"}`;
     window.location.href = `mailto:Institutongutapatikuna@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(texto)}`;
   };
 
@@ -72,7 +78,7 @@ export function PainelEnvio({ data, onClear, curriculoNome }: Props) {
         <div>
           {curriculoNome
             ? <><span style={{ fontSize: 12, fontWeight: 700, color: "#1a7c40" }}>Currículo pronto para anexar: </span><span style={{ fontSize: 12, color: "#1a7c40" }}>{curriculoNome}</span><span style={{ fontSize: 11, color: "#4b5563", display: "block", marginTop: 2 }}>Lembre-se de anexar este arquivo ao e-mail antes de enviar.</span></>
-            : <><span style={{ fontSize: 12, fontWeight: 700, color: "#92400e" }}>Atenção: nenhum currículo foi selecionado.</span><span style={{ fontSize: 11, color: "#78350f", display: "block", marginTop: 2 }}>Volte à seção 6 e selecione seu arquivo, depois annexe-o manualmente ao e-mail.</span></>
+            : <><span style={{ fontSize: 12, fontWeight: 700, color: "#92400e" }}>Atenção: nenhum currículo foi selecionado.</span><span style={{ fontSize: 11, color: "#78350f", display: "block", marginTop: 2 }}>Volte à seção 6 e selecione seu arquivo, depois anexe-o manualmente ao e-mail.</span></>
           }
         </div>
       </div>
@@ -109,7 +115,7 @@ export function PainelEnvio({ data, onClear, curriculoNome }: Props) {
 
           <div style={{ backgroundColor: "#2d6b4c", borderRadius: 10, padding: "12px 14px" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#b8e0c8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Prazo de Inscrição</div>
-            <div style={{ fontSize: 18, fontWeight: 800, color: "white" }}>01/07/2026</div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: "white" }}>{config.prazo}</div>
             <div style={{ fontSize: 11, color: "#b8e0c8" }}>às 23h59 · Horário do Amazonas</div>
           </div>
         </div>
@@ -125,7 +131,7 @@ export function PainelEnvio({ data, onClear, curriculoNome }: Props) {
               Destinatário oficial: <strong style={{ color: "#d4a820" }}>Institutongutapatikuna@gmail.com</strong>
             </p>
             <p style={{ fontSize: 11, color: "#7db898", marginBottom: 16 }}>
-              Assunto gerado automaticamente: "TDR Engenheiro de Pesca – {data.identificacao.nomeCompleto || "[seu nome]"}"
+              Assunto gerado automaticamente: "TDR {config.emailAssuntoPrefix} – {data.identificacao.nomeCompleto || "[seu nome]"}"
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
               <button type="button" onClick={handleEmail}
