@@ -147,8 +147,11 @@ export default function App() {
 
   // ── PÁGINA INICIAL ──────────────────────────────────────────
   if (pagina === "home") {
+    document.title = "Editais NGUTAPA";
     return <HomePage onAbrirFormulario={handleAbrirFormulario}/>;
   }
+
+  document.title = `${config.titulo} — Editais NGUTAPA`;
 
   // ── FORMULÁRIO DE INSCRIÇÃO ──────────────────────────────────
   return (
