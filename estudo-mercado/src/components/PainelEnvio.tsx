@@ -13,6 +13,7 @@ interface Props {
 
 export function PainelEnvio({ data, onClear, curriculoNome, config }: Props) {
   const [copied, setCopied] = useState(false);
+  const [emailAberto, setEmailAberto] = useState(false);
   const texto = formatToEmail(data, curriculoNome, config);
 
   const mesesGeral = Number(data.experienciaGeral.totalMesesExperiencia) || 0;
@@ -52,9 +53,14 @@ export function PainelEnvio({ data, onClear, curriculoNome, config }: Props) {
     },
   ];
 
-  const handleEmail = () => {
+  const handleEmail = async () => {
     const subject = `TDR ${config.emailAssuntoPrefix} – ${data.identificacao.nomeCompleto || "[Nome]"}`;
-    window.location.href = `mailto:Institutongutapatikuna@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(texto)}`;
+    // mailto: has a ~2 000-char URL limit — put only the subject in the URL and copy
+    // the full body to clipboard so the candidate can paste it into the email.
+    await navigator.clipboard.writeText(texto).catch(() => {});
+    window.open(`mailto:Institutongutapatikuna@gmail.com?subject=${encodeURIComponent(subject)}`, "_self");
+    setEmailAberto(true);
+    setTimeout(() => setEmailAberto(false), 8000);
   };
 
   const handleCopy = async () => {
@@ -147,6 +153,14 @@ export function PainelEnvio({ data, onClear, curriculoNome, config }: Props) {
                 <Printer size={14} /> PDF
               </button>
             </div>
+            {emailAberto && (
+              <div style={{ marginTop: 12, backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 8, padding: "10px 14px", display: "flex", alignItems: "flex-start", gap: 8 }}>
+                <Check size={15} color="#86efac" style={{ flexShrink: 0, marginTop: 1 }}/>
+                <span style={{ fontSize: 12, color: "#d1fae5", lineHeight: 1.5 }}>
+                  <strong>Texto copiado!</strong> O e-mail foi aberto com o assunto já preenchido. Cole o conteúdo no corpo do e-mail com <strong>Ctrl+V</strong> (ou ⌘V no Mac) e anexe seu currículo antes de enviar.
+                </span>
+              </div>
+            )}
           </div>
 
           <div style={{ border: "1.5px solid #e2ebe4", borderRadius: 12, padding: 16 }}>
