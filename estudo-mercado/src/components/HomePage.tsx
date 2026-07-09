@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { ExternalLink, Share2, Check } from "lucide-react";
+import { ExternalLink, Share2, Check, Printer } from "lucide-react";
+import { EDITAIS_CONFIG } from "../edital-config";
 
 // v3 — design institucional limpo
 
@@ -46,6 +47,136 @@ const OPORTUNIDADES: Oportunidade[] = [
   },
 ];
 
+// Returns the effective status, overriding "aberto" to "encerrado" when the
+// deadline (prazo DD/MM/YYYY at 23:59 Amazonas = UTC-4) has passed.
+function computeStatus(prazo: string, base: Oportunidade["status"]): "aberto" | "encerrado" | "em_breve" {
+  if (base !== "aberto") return base;
+  const parts = prazo.split("/");
+  if (parts.length !== 3) return base;
+  const [d, m, y] = parts.map(Number);
+  if (isNaN(d) || isNaN(m) || isNaN(y)) return base;
+  // 23:59 Amazonas (UTC-4) = next calendar day at 03:59 UTC
+  const deadline = new Date(Date.UTC(y, m - 1, d + 1, 3, 59));
+  return Date.now() > deadline.getTime() ? "encerrado" : "aberto";
+}
+
+function gerarPdfEdital(op: Oportunidade, efetivo: string) {
+  const cfg = EDITAIS_CONFIG[op.id];
+  const statusLabel  = efetivo === "encerrado" ? "Processo Encerrado" : efetivo === "em_breve" ? "Em Breve" : "Inscrições Abertas";
+  const statusColor  = efetivo === "encerrado" ? "#6b7280" : efetivo === "em_breve" ? "#854d0e" : "#1a7c40";
+  const statusBg     = efetivo === "encerrado" ? "#f3f4f6" : efetivo === "em_breve" ? "#fef9c3" : "#e8f7ef";
+  const statusBorder = efetivo === "encerrado" ? "#d1d5db" : efetivo === "em_breve" ? "#fde68a" : "#96d4b5";
+
+  const perfilHTML = cfg
+    ? cfg.perfilMinimo.map(p => `
+        <div style="background:#eaf7f1;border-left:3px solid #4aa07c;border-radius:5px;padding:9px 11px;break-inside:avoid;margin-bottom:0">
+          <div style="font-size:9.5pt;font-weight:700;color:#2d6b4c;margin-bottom:3px">${p.title}</div>
+          <div style="font-size:9pt;color:#374151;line-height:1.5">${p.text}</div>
+        </div>`).join("")
+    : "";
+
+  const criteriosHTML = cfg
+    ? cfg.criteriosPontuacao.map(c => `
+        <tr>
+          <td style="padding:7px 10px;border-bottom:1px solid #e5e7eb;font-weight:700;color:#92400e;white-space:nowrap;font-size:9pt">${c.pts}</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#374151;font-size:9pt">${c.label}</td>
+          <td style="padding:7px 10px;border-bottom:1px solid #e5e7eb;color:#6b7280;font-size:8.5pt">${c.desc}</td>
+        </tr>`).join("")
+    : "";
+
+  const processo = cfg?.processo ?? "";
+  const emailPrefix = cfg?.emailAssuntoPrefix ?? op.titulo;
+
+  const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>${op.titulo} — Edital NGUTAPA</title>
+<style>
+@page { margin: 16mm 20mm; size: A4 portrait; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Georgia, 'Times New Roman', serif; color: #111827; font-size: 10.5pt; line-height: 1.6; background: white; }
+h1 { font-size: 20pt; font-weight: 700; color: #111; line-height: 1.2; margin-bottom: 12px; }
+.badge { display: inline-block; font-family: system-ui, sans-serif; font-size: 8.5pt; font-weight: 700; letter-spacing: 0.06em; padding: 2px 10px; border-radius: 3px; border: 1px solid ${statusBorder}; background: ${statusBg}; color: ${statusColor}; }
+.section-title { font-family: system-ui, sans-serif; font-size: 8pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: #2d6b4c; margin: 18px 0 10px; padding-bottom: 6px; border-bottom: 1.5px solid #2d6b4c; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 4px 24px; font-family: system-ui, sans-serif; font-size: 9.5pt; color: #555; margin-bottom: 6px; }
+.meta-row strong { color: #222; }
+.prazo { font-family: system-ui, sans-serif; font-size: 10pt; font-weight: 700; color: #b91c1c; margin-top: 4px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+.criteria-table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; }
+.alert-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 5px; padding: 10px 14px; font-family: system-ui, sans-serif; font-size: 9pt; color: #78350f; line-height: 1.5; }
+.header-bar { background: #2d6b4c; color: white; padding: 14px 20mm; margin: -16mm -20mm 20px; border-bottom: 3px solid #c8a01a; display: flex; justify-content: space-between; align-items: flex-end; }
+.footer-bar { margin-top: 28px; padding-top: 10px; border-top: 1px solid #d1d5db; font-family: system-ui, sans-serif; font-size: 8pt; color: #9ca3af; display: flex; justify-content: space-between; }
+.link { color: #2d6b4c; word-break: break-all; font-size: 9pt; }
+@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+<div class="header-bar">
+  <div>
+    <div style="font-family:system-ui,sans-serif;font-size:8pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#b8e0c8;margin-bottom:2px">Instituto NGUTAPA</div>
+    <div style="font-size:14pt;font-weight:400;letter-spacing:0.01em">Edital de Manifestação de Interesse</div>
+  </div>
+  <div style="text-align:right">
+    <div style="font-family:system-ui,sans-serif;font-size:8pt;color:#b8e0c8">Cuenca Putumayo Içá</div>
+    <div style="font-family:system-ui,sans-serif;font-size:8pt;color:#b8e0c8">Santo Antônio do Içá – AM</div>
+  </div>
+</div>
+
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;font-family:system-ui,sans-serif">
+  <span style="font-size:9.5pt;font-weight:700;color:#4aa07c;text-transform:uppercase;letter-spacing:0.14em">${op.categoria}</span>
+  <span class="badge">${statusLabel}</span>
+  ${processo ? `<span style="font-size:8.5pt;color:#9ca3af;margin-left:auto">Processo nº ${processo}</span>` : ""}
+</div>
+
+<h1>${op.titulo}</h1>
+
+<p style="font-size:11pt;color:#374151;line-height:1.75;margin-bottom:14px">${op.descricao}</p>
+
+<div class="meta-row">
+  <span><strong>Subprojeto:</strong> ${op.subprojeto}</span>
+  <span><strong>Local:</strong> ${op.local}</span>
+  <span><strong>Duração:</strong> ${op.duracao}</span>
+</div>
+<div class="prazo">Prazo de inscrição: ${op.prazo} às 23h59 (Horário do Amazonas)</div>
+
+${cfg ? `
+<div class="section-title">Perfil Mínimo dos Candidatos</div>
+<div class="grid-2">${perfilHTML}</div>
+
+<div class="section-title">Critérios de Pontuação (100 pontos)</div>
+<table class="criteria-table">
+  <tbody>${criteriosHTML}</tbody>
+</table>
+` : ""}
+
+<div class="section-title">Como Candidatar-se</div>
+${efetivo === "encerrado"
+  ? `<div class="alert-box">⚠ O prazo de inscrição para este processo seletivo foi encerrado em ${op.prazo} às 23h59 (Horário do Amazonas).</div>`
+  : `<div style="font-family:system-ui,sans-serif;font-size:9.5pt;line-height:1.8">
+      <div><strong>E-mail:</strong> Institutongutapatikuna@gmail.com</div>
+      <div><strong>Assunto:</strong> TDR ${emailPrefix} – [Nome completo do candidato]</div>
+      <div><strong>Prazo:</strong> ${op.prazo} às 23h59 (Horário do Amazonas)</div>
+      <div style="margin-top:4px"><strong>Envio:</strong> Currículo atualizado com datas de início e término de cada experiência (dd/mm/aaaa).</div>
+    </div>`
+}
+
+${op.linkTdr ? `<div style="margin-top:12px;font-family:system-ui,sans-serif;font-size:9pt"><strong>TdR completo:</strong> <a href="${op.linkTdr}" class="link">${op.linkTdr}</a></div>` : ""}
+
+<div class="footer-bar">
+  <span>© 2026 Instituto NGUTAPA · Cuenca Putumayo Içá · Santo Antônio do Içá – AM</span>
+  <span>Institutongutapatikuna@gmail.com</span>
+</div>
+</body>
+</html>`;
+
+  const w = window.open("", "_blank");
+  if (!w) { alert("Permita pop-ups para gerar o PDF."); return; }
+  w.document.write(html);
+  w.document.close();
+  setTimeout(() => w.print(), 450);
+}
+
 interface Props {
   onAbrirFormulario: (id: string) => void;
 }
@@ -68,8 +199,8 @@ function GefLogo() {
 }
 
 export function HomePage({ onAbrirFormulario }: Props) {
-  const abertas   = OPORTUNIDADES.filter(o => o.status === "aberto");
-  const restantes = OPORTUNIDADES.filter(o => o.status !== "aberto");
+  const abertas   = OPORTUNIDADES.filter(o => computeStatus(o.prazo, o.status) === "aberto");
+  const restantes = OPORTUNIDADES.filter(o => computeStatus(o.prazo, o.status) !== "aberto");
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f2efe9", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
@@ -82,6 +213,8 @@ export function HomePage({ onAbrirFormulario }: Props) {
         .btn-fill:hover { background: #4aa07c !important; }
         .btn-share { transition: background .15s, border-color .15s; }
         .btn-share:hover { background: #e8f7ef !important; border-color: #96d4b5 !important; }
+        .btn-pdf { transition: background .15s, border-color .15s; }
+        .btn-pdf:hover { background: #f8fafc !important; border-color: #2d6b4c !important; color: #2d6b4c !important; }
       `}</style>
 
       {/* HEADER */}
@@ -136,7 +269,12 @@ export function HomePage({ onAbrirFormulario }: Props) {
               </h2>
             </div>
             {abertas.map((op, i) => (
-              <Card key={op.id} op={op} onAbrirFormulario={onAbrirFormulario} last={i === abertas.length - 1}/>
+              <Card
+                key={op.id} op={op}
+                statusEfetivo={computeStatus(op.prazo, op.status)}
+                onAbrirFormulario={onAbrirFormulario}
+                last={i === abertas.length - 1}
+              />
             ))}
           </section>
         )}
@@ -146,11 +284,16 @@ export function HomePage({ onAbrirFormulario }: Props) {
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24, paddingBottom: 10, borderBottom: "1px solid #ccc" }}>
               <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: "#bbb", display: "inline-block" }}/>
               <h2 style={{ fontSize: 11, fontWeight: 700, color: "#888", textTransform: "uppercase", letterSpacing: "0.2em", margin: 0, fontFamily: "system-ui,sans-serif" }}>
-                Outras Oportunidades
+                Editais Encerrados
               </h2>
             </div>
             {restantes.map((op, i) => (
-              <Card key={op.id} op={op} onAbrirFormulario={onAbrirFormulario} last={i === restantes.length - 1}/>
+              <Card
+                key={op.id} op={op}
+                statusEfetivo={computeStatus(op.prazo, op.status)}
+                onAbrirFormulario={onAbrirFormulario}
+                last={i === restantes.length - 1}
+              />
             ))}
           </section>
         )}
@@ -181,9 +324,14 @@ export function HomePage({ onAbrirFormulario }: Props) {
   );
 }
 
-function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormulario: (id: string) => void; last: boolean }) {
+function Card({ op, statusEfetivo, onAbrirFormulario, last }: {
+  op: Oportunidade;
+  statusEfetivo: "aberto" | "encerrado" | "em_breve";
+  onAbrirFormulario: (id: string) => void;
+  last: boolean;
+}) {
   const [copiado, setCopiado] = useState(false);
-  const encerrado = op.status === "encerrado";
+  const encerrado = statusEfetivo === "encerrado";
 
   const copiarLink = async () => {
     const url = `${window.location.origin}${window.location.pathname}?edital=${op.id}`;
@@ -192,10 +340,10 @@ function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormul
     setTimeout(() => setCopiado(false), 2500);
   };
 
-  const statusLabel: Record<string, string> = { aberto: "Inscrições Abertas", encerrado: "Encerrado", em_breve: "Em Breve" };
-  const statusColor: Record<string, string> = { aberto: "#1a7c40", encerrado: "#6b7280", em_breve: "#854d0e" };
-  const statusBg:    Record<string, string> = { aberto: "#e8f7ef",  encerrado: "#f3f4f6", em_breve: "#fef9c3" };
-  const statusBorder:Record<string, string> = { aberto: "#96d4b5",  encerrado: "#e5e7eb", em_breve: "#fde68a" };
+  const statusLabel:  Record<string, string> = { aberto: "Inscrições Abertas", encerrado: "Encerrado", em_breve: "Em Breve" };
+  const statusColor:  Record<string, string> = { aberto: "#1a7c40", encerrado: "#6b7280", em_breve: "#854d0e" };
+  const statusBg:     Record<string, string> = { aberto: "#e8f7ef",  encerrado: "#f3f4f6", em_breve: "#fef9c3" };
+  const statusBorder: Record<string, string> = { aberto: "#96d4b5",  encerrado: "#e5e7eb", em_breve: "#fde68a" };
 
   return (
     <div className="oport-card" style={{
@@ -203,7 +351,7 @@ function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormul
       border: "1px solid #d4cfc6",
       borderBottom: last ? "1px solid #d4cfc6" : "none",
       padding: "32px 36px",
-      opacity: encerrado ? 0.6 : 1,
+      opacity: encerrado ? 0.65 : 1,
     }}>
       {/* Linha superior: categoria + status */}
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 14, fontFamily: "system-ui,sans-serif" }}>
@@ -212,11 +360,11 @@ function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormul
         </span>
         <span style={{
           fontSize: 10, fontWeight: 700, letterSpacing: "0.08em",
-          color: statusColor[op.status], backgroundColor: statusBg[op.status],
-          border: `1px solid ${statusBorder[op.status]}`,
+          color: statusColor[statusEfetivo], backgroundColor: statusBg[statusEfetivo],
+          border: `1px solid ${statusBorder[statusEfetivo]}`,
           padding: "2px 10px",
         }}>
-          {statusLabel[op.status]}
+          {statusLabel[statusEfetivo]}
         </span>
       </div>
 
@@ -235,8 +383,8 @@ function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormul
         <span><strong style={{ color: "#333" }}>Subprojeto:</strong> {op.subprojeto}</span>
         <span><strong style={{ color: "#333" }}>Local:</strong> {op.local}</span>
         <span><strong style={{ color: "#333" }}>Duração:</strong> {op.duracao}</span>
-        <span style={{ color: op.status === "aberto" ? "#b91c1c" : "#666", fontWeight: op.status === "aberto" ? 700 : 400 }}>
-          <strong style={{ color: op.status === "aberto" ? "#b91c1c" : "#333" }}>Prazo:</strong> {op.prazo} às 23h59 (Horário do Amazonas)
+        <span style={{ color: statusEfetivo === "aberto" ? "#b91c1c" : "#666", fontWeight: statusEfetivo === "aberto" ? 700 : 400 }}>
+          <strong style={{ color: statusEfetivo === "aberto" ? "#b91c1c" : "#333" }}>Prazo:</strong> {op.prazo} às 23h59 (Horário do Amazonas)
         </span>
       </div>
 
@@ -249,7 +397,7 @@ function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormul
           </a>
         )}
 
-        {op.temFormulario && op.status === "aberto" && (
+        {op.temFormulario && statusEfetivo === "aberto" && (
           <button type="button" onClick={() => onAbrirFormulario(op.id)} className="btn-fill"
             style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 28px", border: "1.5px solid #2d6b4c", backgroundColor: "#2d6b4c", color: "white", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer" }}>
             Inscrever-se
@@ -257,12 +405,19 @@ function Card({ op, onAbrirFormulario, last }: { op: Oportunidade; onAbrirFormul
         )}
 
         {encerrado && (
-          <span style={{ fontSize: 12, color: "#aaa", fontFamily: "system-ui,sans-serif" }}>Processo encerrado</span>
+          <span style={{ fontSize: 12, color: "#aaa", fontFamily: "system-ui,sans-serif" }}>Inscrições encerradas</span>
         )}
+
+        {/* PDF button */}
+        <button type="button" onClick={() => gerarPdfEdital(op, statusEfetivo)} className="btn-pdf"
+          title="Baixar edital em PDF"
+          style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 14px", border: "1px solid #d4cfc6", backgroundColor: "white", color: "#888", fontSize: 11, fontWeight: 600, fontFamily: "system-ui,sans-serif", cursor: "pointer" }}>
+          <Printer size={12}/> PDF
+        </button>
 
         <button type="button" onClick={copiarLink} className="btn-share"
           title="Copiar link desta oportunidade"
-          style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 14px", border: `1px solid ${copiado ? "#96d4b5" : "#d4cfc6"}`, backgroundColor: copiado ? "#e8f7ef" : "white", color: copiado ? "#1a7c40" : "#888", fontSize: 11, fontWeight: 600, fontFamily: "system-ui,sans-serif", cursor: "pointer" }}>
+          style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 14px", border: `1px solid ${copiado ? "#96d4b5" : "#d4cfc6"}`, backgroundColor: copiado ? "#e8f7ef" : "white", color: copiado ? "#1a7c40" : "#888", fontSize: 11, fontWeight: 600, fontFamily: "system-ui,sans-serif", cursor: "pointer" }}>
           {copiado ? <><Check size={12}/> Copiado!</> : <><Share2 size={12}/> Compartilhar</>}
         </button>
       </div>
