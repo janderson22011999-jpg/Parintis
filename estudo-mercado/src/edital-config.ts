@@ -88,7 +88,7 @@ export const EDITAIS_CONFIG: Record<string, EditalConfig> = {
     prazo: "31/07/2026",
     duracao: "5 meses",
     periodoExecucao: "Jul/2026 – Nov/2026",
-    linkTdr: "https://drive.google.com/file/d/1BG8noTMWO7Uy0IZrm2oCjKG3xOdcH1gW/view?usp=drive_link",
+    linkTdr: "https://drive.google.com/file/d/1sK9bJ7sALeaunboyDOmdIZ8b1XmeXLor/view?usp=drive_link",
     storageKey: "ngutapa_analista_dados_2026_v1",
     perfilMinimo: [
       { title: "Formação Acadêmica", text: "Diploma universitário em Estatística, Ciência de Dados, Biologia, Engenharia Pesqueira, Gestão Ambiental, Sistemas de Informação ou áreas afins." },

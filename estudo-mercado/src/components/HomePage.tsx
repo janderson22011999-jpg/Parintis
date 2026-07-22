@@ -43,7 +43,7 @@ const OPORTUNIDADES: Oportunidade[] = [
     status: "aberto",
     descricao: "Organização, análise e sistematização dos dados do monitoramento biológico participativo da pesca nas comunidades indígenas da bacia do Rio Içá, com elaboração de relatórios técnicos periódicos e materiais de feedback comunitário em linguagem acessível às lideranças.",
     temFormulario: true,
-    linkTdr: "https://drive.google.com/file/d/1BG8noTMWO7Uy0IZrm2oCjKG3xOdcH1gW/view?usp=drive_link",
+    linkTdr: "https://drive.google.com/file/d/1sK9bJ7sALeaunboyDOmdIZ8b1XmeXLor/view?usp=drive_link",
   },
   {
     id: "biologo-2026",
