@@ -7,14 +7,13 @@ import { Mail, Copy, Check, Printer, CheckCircle2, AlertCircle, Paperclip } from
 interface Props {
   data: CandidatoForm;
   onClear: () => void;
-  curriculoNome?: string;
   config: EditalConfig;
 }
 
-export function PainelEnvio({ data, onClear, curriculoNome, config }: Props) {
+export function PainelEnvio({ data, onClear, config }: Props) {
   const [copied, setCopied] = useState(false);
   const [emailAberto, setEmailAberto] = useState(false);
-  const texto = formatToEmail(data, curriculoNome, config);
+  const texto = formatToEmail(data, undefined, config);
 
   const mesesGeral = Number(data.experienciaGeral.totalMesesExperiencia) || 0;
   const mesesEsp   = Number(data.experienciaEspecifica.totalMesesEspecifica) || 0;
@@ -45,12 +44,6 @@ export function PainelEnvio({ data, onClear, curriculoNome, config }: Props) {
       okMsg: data.formacao.posGraduacao === "Mestrado" ? "Mestrado → +12 pontos" : data.formacao.posGraduacao === "Doutorado" ? "Doutorado → pontuação de mestrado" : "Especialização → +8 pontos",
       failMsg: "Sem pós-graduação. Não há pontuação extra neste critério.",
     },
-    {
-      label: "Currículo selecionado",
-      ok: !!curriculoNome,
-      okMsg: curriculoNome || "",
-      failMsg: "Nenhum arquivo selecionado. Lembre-se de anexar o currículo ao e-mail.",
-    },
   ];
 
   const handleEmail = async () => {
@@ -79,13 +72,11 @@ export function PainelEnvio({ data, onClear, curriculoNome, config }: Props) {
       </div>
 
       {/* Lembrete currículo */}
-      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, backgroundColor: curriculoNome ? "#e8f7ef" : "#fffbeb", border: `1.5px solid ${curriculoNome ? "#96d4b5" : "#fde68a"}`, borderRadius: 10, padding: "12px 16px", marginBottom: 20 }}>
-        <Paperclip size={16} color={curriculoNome ? "#4aa07c" : "#92400e"} style={{ flexShrink: 0, marginTop: 1 }}/>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, backgroundColor: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 10, padding: "12px 16px", marginBottom: 20 }}>
+        <Paperclip size={16} color="#92400e" style={{ flexShrink: 0, marginTop: 1 }}/>
         <div>
-          {curriculoNome
-            ? <><span style={{ fontSize: 12, fontWeight: 700, color: "#1a7c40" }}>Currículo pronto para anexar: </span><span style={{ fontSize: 12, color: "#1a7c40" }}>{curriculoNome}</span><span style={{ fontSize: 11, color: "#4b5563", display: "block", marginTop: 2 }}>Lembre-se de anexar este arquivo ao e-mail antes de enviar.</span></>
-            : <><span style={{ fontSize: 12, fontWeight: 700, color: "#92400e" }}>Atenção: nenhum currículo foi selecionado.</span><span style={{ fontSize: 11, color: "#78350f", display: "block", marginTop: 2 }}>Volte à seção 6 e selecione seu arquivo, depois anexe-o manualmente ao e-mail.</span></>
-          }
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#92400e" }}>Lembre-se de anexar seu currículo ao e-mail.</span>
+          <span style={{ fontSize: 11, color: "#78350f", display: "block", marginTop: 2 }}>Ao abrir o e-mail abaixo, anexe manualmente seu currículo atualizado (PDF ou Word) antes de enviar.</span>
         </div>
       </div>
 

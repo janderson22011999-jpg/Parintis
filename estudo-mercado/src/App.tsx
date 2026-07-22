@@ -8,7 +8,7 @@ import { FormExperiencia } from "./components/FormExperiencia";
 import { FormRequisitos } from "./components/FormRequisitos";
 import { PainelEnvio } from "./components/PainelEnvio";
 import { HomePage } from "./components/HomePage";
-import { AlertCircle, RotateCcw, ArrowLeft, Fish, Globe, MapPin, Clock, Users, Award, FileText, Download, Upload, Paperclip } from "lucide-react";
+import { AlertCircle, RotateCcw, ArrowLeft, Fish, Globe, MapPin, Clock, Users, Award, FileText, Download, Paperclip } from "lucide-react";
 
 function getInitialEditalId(): string {
   try {
@@ -80,7 +80,6 @@ export default function App() {
   const [form, setForm] = useState<CandidatoForm>(() => getInitialForm(editalId));
   const [errors, setErrors] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
-  const [curriculoNome, setCurriculoNome] = useState("");
 
   useEffect(() => {
     try { localStorage.setItem(config.storageKey, JSON.stringify(form)); } catch {}
@@ -124,7 +123,6 @@ export default function App() {
     setForm(getInitialForm(id));
     setErrors([]);
     setSubmitted(false);
-    setCurriculoNome("");
     setPagina("formulario");
     window.scrollTo({ top: 0, behavior: "smooth" });
     void cfg; // used above
@@ -302,33 +300,14 @@ export default function App() {
               <div style={{ width:32,height:32,borderRadius:"50%",backgroundColor:"#2d6b4c",color:"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:800,flexShrink:0 }}>6</div>
               <h2 style={{ fontSize:16,fontWeight:700,color:"#2d6b4c",margin:0 }}>Currículo</h2>
             </div>
-            <div style={{ backgroundColor:"#f8fafc",border:"1.5px solid #e2ebe4",borderRadius:12,padding:"20px 24px" }}>
-              <p style={{ fontSize:13,color:"#4b5563",marginBottom:16,lineHeight:1.6 }}>
-                Selecione seu currículo (PDF ou Word, máx. 5 MB). O arquivo deverá ser <strong>anexado manualmente ao e-mail</strong> ao enviar sua candidatura.
-              </p>
-              <label style={{ display:"inline-flex",alignItems:"center",gap:10,padding:"11px 22px",border:"1.5px dashed #4aa07c",borderRadius:10,cursor:"pointer",backgroundColor:"white",transition:"background .15s" }}>
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx"
-                  style={{ display:"none" }}
-                  onChange={e => setCurriculoNome(e.target.files?.[0]?.name || "")}
-                />
-                <Upload size={16} color="#4aa07c"/>
-                <span style={{ fontSize:13,fontWeight:600,color:"#4aa07c" }}>
-                  {curriculoNome ? curriculoNome : "Selecionar arquivo (PDF ou Word)"}
-                </span>
-              </label>
-              {curriculoNome && (
-                <div style={{ display:"flex",alignItems:"center",gap:8,marginTop:12,padding:"10px 14px",backgroundColor:"#e8f7ef",border:"1.5px solid #96d4b5",borderRadius:9 }}>
-                  <Paperclip size={14} color="#4aa07c"/>
-                  <span style={{ fontSize:12,color:"#1a7c40",fontWeight:600 }}>Arquivo selecionado: {curriculoNome}</span>
-                </div>
-              )}
-              {!curriculoNome && (
-                <p style={{ fontSize:11,color:"#9ca3af",marginTop:10 }}>
-                  ⚠ Recomendado: candidatos sem currículo anexado podem ser desclassificados na etapa de análise documental.
+            <div style={{ display:"flex",alignItems:"flex-start",gap:14,backgroundColor:"#fffbeb",border:"1.5px solid #fde68a",borderRadius:12,padding:"20px 24px" }}>
+              <Paperclip size={20} color="#92400e" style={{ flexShrink:0,marginTop:2 }}/>
+              <div>
+                <p style={{ fontSize:14,fontWeight:700,color:"#92400e",margin:"0 0 6px" }}>Anexe seu currículo diretamente ao e-mail</p>
+                <p style={{ fontSize:13,color:"#78350f",margin:0,lineHeight:1.7 }}>
+                  Após preencher este formulário, um e-mail será preparado automaticamente para você. <strong>Antes de enviar</strong>, anexe seu currículo atualizado (PDF ou Word) diretamente no cliente de e-mail. Candidatos sem currículo podem ser desclassificados na etapa de análise documental.
                 </p>
-              )}
+              </div>
             </div>
           </div>
 
@@ -362,7 +341,7 @@ export default function App() {
           </div>
 
           {submitted
-            ? (<div style={{ borderTop:"1px solid #f0f4f0",paddingTop:36 }}><PainelEnvio data={form} onClear={handleClear} curriculoNome={curriculoNome} config={config}/></div>)
+            ? (<div style={{ borderTop:"1px solid #f0f4f0",paddingTop:36 }}><PainelEnvio data={form} onClear={handleClear} config={config}/></div>)
             : (
               <div style={{ borderTop:"1px solid #f0f4f0",paddingTop:28,display:"flex",justifyContent:"flex-end",alignItems:"center",gap:16 }}>
                 <p style={{ fontSize:12,color:"#9ca3af",margin:0 }}>Campos com <span style={{ color:"#dc2626" }}>*</span> são obrigatórios.</p>
