@@ -65,7 +65,7 @@ const OPORTUNIDADES: Oportunidade[] = [
     subprojeto: "UTÜ'Ü Y ITCHÁ – O Encantado Içá",
     local: "Santo Antônio do Içá – AM",
     duracao: "2 meses",
-    prazo: "31/07/2026",
+    prazo: "10/08/2026",
     status: "aberto",
     descricao: "Mapeamento territorial participativo e zoneamento cultural das áreas de uso tradicional, sítios culturais e zonas de proteção territorial das comunidades indígenas da bacia do Rio Içá, integrando técnicas de geoprocessamento ao conhecimento territorial dos povos Tikuna e Kokama.",
     temFormulario: true,

@@ -171,7 +171,7 @@ export const EDITAIS_CONFIG: Record<string, EditalConfig> = {
     titulo: "Geógrafo(a)",
     subprojeto: "UTÜ'Ü Y ITCHÁ – O Encantado Içá",
     processo: "005/2026",
-    prazo: "31/07/2026",
+    prazo: "10/08/2026",
     duracao: "2 meses",
     periodoExecucao: "Jul/2026 – Ago/2026",
     linkTdr: "https://drive.google.com/file/d/1CZpDQ_I2KdfnYKObR3bOx4cECbo84UT8/view?usp=sharing",
