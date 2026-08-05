@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ExternalLink, Share2, Check, Printer } from "lucide-react";
 import { EDITAIS_CONFIG } from "../edital-config";
 
@@ -218,7 +218,6 @@ ${op.linkTdr ? `<div style="margin-top:12px;font-family:system-ui,sans-serif;fon
 
 interface Props {
   onAbrirFormulario: (id: string) => void;
-  destacarId?: string;
 }
 
 function GefLogo() {
@@ -238,20 +237,9 @@ function GefLogo() {
   );
 }
 
-export function HomePage({ onAbrirFormulario, destacarId }: Props) {
+export function HomePage({ onAbrirFormulario }: Props) {
   const abertas   = OPORTUNIDADES.filter(o => computeStatus(o.prazo, o.status) === "aberto");
   const restantes = OPORTUNIDADES.filter(o => computeStatus(o.prazo, o.status) !== "aberto");
-
-  useEffect(() => {
-    if (!destacarId) return;
-    const el = document.getElementById(`card-${destacarId}`);
-    if (!el) return;
-    const t = setTimeout(() => {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-      el.classList.add("card-destaque");
-    }, 250);
-    return () => clearTimeout(t);
-  }, [destacarId]);
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f2efe9", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
@@ -266,12 +254,6 @@ export function HomePage({ onAbrirFormulario, destacarId }: Props) {
         .btn-share:hover { background: #e8f7ef !important; border-color: #96d4b5 !important; }
         .btn-pdf { transition: background .15s, border-color .15s; }
         .btn-pdf:hover { background: #f8fafc !important; border-color: #2d6b4c !important; color: #2d6b4c !important; }
-        @keyframes destacaPulso {
-          0%   { box-shadow: 0 0 0 0 rgba(45,107,76,.35); border-color: #2d6b4c; }
-          60%  { box-shadow: 0 0 0 10px rgba(45,107,76,.0); border-color: #4aa07c; }
-          100% { box-shadow: 0 0 0 0 rgba(45,107,76,.0); border-color: #2d6b4c; }
-        }
-        .card-destaque { animation: destacaPulso 1.1s ease 3; border-color: #2d6b4c !important; }
       `}</style>
 
       {/* HEADER */}
@@ -403,7 +385,7 @@ function Card({ op, statusEfetivo, onAbrirFormulario, last }: {
   const statusBorder: Record<string, string> = { aberto: "#96d4b5",  encerrado: "#e5e7eb", em_breve: "#fde68a" };
 
   return (
-    <div id={`card-${op.id}`} className="oport-card" style={{
+    <div className="oport-card" style={{
       backgroundColor: "white",
       border: "1px solid #d4cfc6",
       borderBottom: last ? "1px solid #d4cfc6" : "none",

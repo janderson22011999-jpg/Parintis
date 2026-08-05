@@ -73,15 +73,6 @@ function getInitialPage(): Pagina {
   return "home";
 }
 
-function getInitialDestaque(): string {
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const ver = params.get("ver");
-    if (ver && EDITAIS_CONFIG[ver]) return ver;
-  } catch {}
-  return "";
-}
-
 export default function App() {
   const [pagina, setPagina] = useState<Pagina>(getInitialPage);
   const [editalId, setEditalId] = useState<string>(getInitialEditalId);
@@ -155,7 +146,7 @@ export default function App() {
   // ── PÁGINA INICIAL ──────────────────────────────────────────
   if (pagina === "home") {
     document.title = "Editais NGUTAPA";
-    return <HomePage onAbrirFormulario={handleAbrirFormulario} destacarId={getInitialDestaque()}/>;
+    return <HomePage onAbrirFormulario={handleAbrirFormulario}/>;
   }
 
   document.title = `${config.titulo} — Editais NGUTAPA`;
