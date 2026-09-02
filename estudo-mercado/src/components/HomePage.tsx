@@ -20,6 +20,19 @@ interface Oportunidade {
 
 const OPORTUNIDADES: Oportunidade[] = [
   {
+    id: "profissional-ambiental-2026",
+    titulo: "Profissional da Área Ambiental",
+    categoria: "Consultoria Individual",
+    subprojeto: "UTÜ'Ü Y ITCHÁ – O Encantado Içá",
+    local: "Santo Antônio do Içá – AM",
+    duracao: "4 meses",
+    prazo: "12/09/2026",
+    status: "aberto",
+    descricao: "Diagnóstico etnoambiental participativo, mapeamento de áreas prioritárias de conservação e biodiversidade, e integração entre o conhecimento científico e os saberes tradicionais dos povos Tikuna e Kokama na bacia do Rio Içá.",
+    temFormulario: true,
+    linkTdr: "https://drive.google.com/file/d/1yYJJH649TmjVSXzTagzF4ghQLpS7SFnX/view?usp=drivesdk",
+  },
+  {
     id: "eng-pesca-2026",
     titulo: "Engenheiro(a) de Pesca",
     categoria: "Consultoria Individual",
