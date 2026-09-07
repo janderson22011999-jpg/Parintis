@@ -12,13 +12,34 @@ interface Oportunidade {
   local: string;
   duracao: string;
   prazo: string;
+  prazoHorario?: string;
   status: "aberto" | "encerrado" | "em_breve";
+  statusLabelAberto?: string;
   descricao: string;
   temFormulario: boolean;
   linkTdr?: string;
+  labelLinkTdr?: string;
+  linkEspecificacoes?: string;
 }
 
 const OPORTUNIDADES: Oportunidade[] = [
+  {
+    id: "cotacao-equipamentos-002-2026",
+    titulo: "Cotação de Preços — Equipamentos (Nº 002/2026)",
+    categoria: "Compra de Bens",
+    subprojeto: "UTÜ'Ü Y ITCHÁ – O Encantado Içá",
+    local: "Santo Antônio do Içá – AM",
+    duracao: "30 dias (entrega)",
+    prazo: "14/09/2026",
+    prazoHorario: "19h00",
+    statusLabelAberto: "Cotações Abertas",
+    status: "aberto",
+    descricao: "Aquisição de equipamentos tecnológicos: 3 notebooks, 2 smartphones, 1 tenda gazebo (3×3m), 1 câmera Canon EOS REBEL T7 e 1 drone Fly More Combo. Enviar cotação para institutongutapatikuna@gmail.com com assunto: \"Cotação 002/2026 – [Nome da empresa]\". Valor estimado: R$ 34.526,00.",
+    temFormulario: false,
+    linkTdr: "https://docs.google.com/document/d/1QwtWTHha10Pr8raLvnC18PVmdYESkW9s/edit?usp=drive_link",
+    labelLinkTdr: "Ver Solicitação",
+    linkEspecificacoes: "https://docs.google.com/document/d/1QPl_q4HKASOB5j_2TM7MwZ4DtX5mlXCU/edit?usp=sharing",
+  },
   {
     id: "profissional-ambiental-2026",
     titulo: "Profissional da Área Ambiental",
@@ -392,7 +413,7 @@ function Card({ op, statusEfetivo, onAbrirFormulario, last }: {
     setTimeout(() => setCopiado(false), 2500);
   };
 
-  const statusLabel:  Record<string, string> = { aberto: "Inscrições Abertas", encerrado: "Encerrado", em_breve: "Em Breve" };
+  const statusLabel:  Record<string, string> = { aberto: op.statusLabelAberto ?? "Inscrições Abertas", encerrado: "Encerrado", em_breve: "Em Breve" };
   const statusColor:  Record<string, string> = { aberto: "#1a7c40", encerrado: "#6b7280", em_breve: "#854d0e" };
   const statusBg:     Record<string, string> = { aberto: "#e8f7ef",  encerrado: "#f3f4f6", em_breve: "#fef9c3" };
   const statusBorder: Record<string, string> = { aberto: "#96d4b5",  encerrado: "#e5e7eb", em_breve: "#fde68a" };
@@ -436,7 +457,7 @@ function Card({ op, statusEfetivo, onAbrirFormulario, last }: {
         <span><strong style={{ color: "#333" }}>Local:</strong> {op.local}</span>
         <span><strong style={{ color: "#333" }}>Duração:</strong> {op.duracao}</span>
         <span style={{ color: statusEfetivo === "aberto" ? "#b91c1c" : "#666", fontWeight: statusEfetivo === "aberto" ? 700 : 400 }}>
-          <strong style={{ color: statusEfetivo === "aberto" ? "#b91c1c" : "#333" }}>Prazo:</strong> {op.prazo} às 23h59 (Horário do Amazonas)
+          <strong style={{ color: statusEfetivo === "aberto" ? "#b91c1c" : "#333" }}>Prazo:</strong> {op.prazo} às {op.prazoHorario ?? "23h59"} (Horário do Amazonas)
         </span>
       </div>
 
@@ -445,7 +466,14 @@ function Card({ op, statusEfetivo, onAbrirFormulario, last }: {
         {op.linkTdr && (
           <a href={op.linkTdr} target="_blank" rel="noopener noreferrer" className="btn-borda"
             style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 22px", border: "1.5px solid #2d6b4c", backgroundColor: "white", color: "#2d6b4c", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textDecoration: "none", textTransform: "uppercase" }}>
-            <ExternalLink size={12}/> Ver TdR
+            <ExternalLink size={12}/> {op.labelLinkTdr ?? "Ver TdR"}
+          </a>
+        )}
+
+        {op.linkEspecificacoes && (
+          <a href={op.linkEspecificacoes} target="_blank" rel="noopener noreferrer" className="btn-borda"
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 22px", border: "1.5px solid #4aa07c", backgroundColor: "white", color: "#4aa07c", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textDecoration: "none", textTransform: "uppercase" }}>
+            <ExternalLink size={12}/> Especificações
           </a>
         )}
 
