@@ -180,7 +180,7 @@ function gerarPdfEdital(op: Oportunidade, efetivo: string) {
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>${op.titulo} — Edital NGUTAPA</title>
+<title>${op.titulo} — NGUTAPA</title>
 <style>
 @page { margin: 16mm 20mm; size: A4 portrait; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -326,7 +326,7 @@ export function HomePage({ onAbrirFormulario }: Props) {
             </div>
           </div>
           <div style={{ textAlign: "right" }}>
-            <div style={{ color: "white", fontSize: 22, fontWeight: 400, letterSpacing: "0.01em" }}>Editais e Oportunidades</div>
+            <div style={{ color: "white", fontSize: 22, fontWeight: 400, letterSpacing: "0.01em" }}>Oportunidades NGUTAPA</div>
             <div style={{ color: "#b8e0c8", fontSize: 11, marginTop: 4, fontFamily: "system-ui,sans-serif", letterSpacing: "0.02em" }}>Instituto de Etnodesenvolvimento NGUTAPA · Santo Antônio do Içá – AM</div>
           </div>
         </div>
@@ -373,7 +373,7 @@ export function HomePage({ onAbrirFormulario }: Props) {
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24, paddingBottom: 10, borderBottom: "1px solid #ccc" }}>
               <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: "#bbb", display: "inline-block" }}/>
               <h2 style={{ fontSize: 11, fontWeight: 700, color: "#888", textTransform: "uppercase", letterSpacing: "0.2em", margin: 0, fontFamily: "system-ui,sans-serif" }}>
-                Editais Encerrados
+                Processos Encerrados
               </h2>
             </div>
             {restantes.map((op, i) => (
