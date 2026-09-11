@@ -55,6 +55,11 @@ export function PainelEnvio({ data, onClear, config }: Props) {
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 640px) {
+          .painel-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       <div style={{ borderBottom: "2px solid #dceee5", paddingBottom: 12, marginBottom: 24 }}>
         <h2 style={{ fontSize: 16, fontWeight: 700, color: "#2d6b4c", margin: 0 }}>Candidatura Pronta — Envio</h2>
         <p style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>
@@ -62,7 +67,7 @@ export function PainelEnvio({ data, onClear, config }: Props) {
         </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 20 }}>
+      <div className="painel-grid" style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 20 }}>
         {/* Sidebar de qualificação */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 2 }}>

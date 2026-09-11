@@ -304,11 +304,18 @@ export function HomePage({ onAbrirFormulario }: Props) {
         .btn-share:hover { background: #e8f7ef !important; border-color: #96d4b5 !important; }
         .btn-pdf { transition: background .15s, border-color .15s; }
         .btn-pdf:hover { background: #f8fafc !important; border-color: #2d6b4c !important; color: #2d6b4c !important; }
+        @media (max-width: 640px) {
+          .home-header-inner { padding: 14px 16px !important; }
+          .home-infobar { padding: 8px 16px !important; }
+          .home-content { padding: 24px 16px 60px !important; }
+          .oport-card { padding: 20px 16px !important; }
+          .home-title { font-size: 16px !important; }
+        }
       `}</style>
 
       {/* HEADER */}
       <header style={{ backgroundColor: "#2d6b4c", borderBottom: "3px solid #c8a01a" }}>
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: "18px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+        <div className="home-header-inner" style={{ maxWidth: 960, margin: "0 auto", padding: "18px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             <img
               src="https://brasil.amazonteam.org/wp-content/uploads/2025/03/NGUTAPA-logo.png"
@@ -326,7 +333,7 @@ export function HomePage({ onAbrirFormulario }: Props) {
             </div>
           </div>
           <div style={{ textAlign: "right" }}>
-            <div style={{ color: "white", fontSize: 22, fontWeight: 400, letterSpacing: "0.01em" }}>Oportunidades NGUTAPA</div>
+            <div className="home-title" style={{ color: "white", fontSize: 22, fontWeight: 400, letterSpacing: "0.01em" }}>Oportunidades NGUTAPA</div>
             <div style={{ color: "#b8e0c8", fontSize: 11, marginTop: 4, fontFamily: "system-ui,sans-serif", letterSpacing: "0.02em" }}>Instituto de Etnodesenvolvimento NGUTAPA · Santo Antônio do Içá – AM</div>
           </div>
         </div>
@@ -334,7 +341,7 @@ export function HomePage({ onAbrirFormulario }: Props) {
 
       {/* FAIXA INFO */}
       <div style={{ backgroundColor: "#fff", borderBottom: "1px solid #ddd9d0" }}>
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: "9px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+        <div className="home-infobar" style={{ maxWidth: 960, margin: "0 auto", padding: "9px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
           <p style={{ color: "#555", fontSize: 12, margin: 0, fontFamily: "system-ui,sans-serif", lineHeight: 1.5 }}>
             Processos seletivos abertos e competitivos · <strong style={{ color: "#2d6b4c" }}>MANEJO INTEGRADO DA BACIA PUTUMAYO-IÇÁ</strong>
           </p>
@@ -347,7 +354,7 @@ export function HomePage({ onAbrirFormulario }: Props) {
       </div>
 
       {/* CONTEÚDO */}
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "44px 32px 80px" }}>
+      <div className="home-content" style={{ maxWidth: 960, margin: "0 auto", padding: "44px 32px 80px" }}>
 
         {abertas.length > 0 && (
           <section style={{ marginBottom: 52 }}>

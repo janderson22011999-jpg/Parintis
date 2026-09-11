@@ -160,6 +160,13 @@ export default function App() {
         @media print{#header-ban,#act-bar,#footer-bar,#btn-voltar{display:none!important;}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
         .fu{animation:fadeUp .22s ease forwards}
+        @media (max-width: 640px) {
+          .form-header-inner { padding: 16px !important; gap: 12px !important; }
+          .form-content { padding: 16px 16px 40px !important; }
+          .form-card { padding: 20px 16px !important; gap: 32px !important; }
+          .form-topbar { gap: 8px !important; }
+          .deadline-box { display: none !important; }
+        }
       `}</style>
 
       {/* ══ HEADER ══ */}
@@ -175,7 +182,7 @@ export default function App() {
           <path d="M0,150 C200,60 450,190 700,90 C900,10 1050,130 1200,65 L1200,220 L0,220Z" fill="white" fillOpacity="0.03"/>
           <path d="M80,185 C280,85 530,195 780,95 C960,15 1080,140 1240,60" stroke="#d4a820" strokeWidth="1.5" strokeOpacity="0.3" fill="none"/>
         </svg>
-        <div style={{ position:"relative",zIndex:10,maxWidth:960,margin:"0 auto",padding:"24px 24px 22px",display:"flex",flexWrap:"wrap",justifyContent:"space-between",alignItems:"center",gap:20 }}>
+        <div className="form-header-inner" style={{ position:"relative",zIndex:10,maxWidth:960,margin:"0 auto",padding:"24px 24px 22px",display:"flex",flexWrap:"wrap",justifyContent:"space-between",alignItems:"center",gap:20 }}>
           <div style={{ display:"flex",alignItems:"center",gap:14 }}>
             <NgutapaLogo/>
             <div style={{ width:1,height:36,backgroundColor:"rgba(255,255,255,.2)" }}/>
@@ -202,7 +209,7 @@ export default function App() {
         </div>
       </header>
 
-      <div style={{ maxWidth:960,margin:"0 auto",padding:"20px 24px 60px" }}>
+      <div className="form-content" style={{ maxWidth:960,margin:"0 auto",padding:"20px 24px 60px" }}>
 
         {/* ══ BOTÃO VOLTAR + TdR LINK ══ */}
         <div style={{ display:"flex",alignItems:"center",gap:12,marginBottom:20,flexWrap:"wrap" }}>
@@ -272,7 +279,7 @@ export default function App() {
         )}
 
         {/* ══ FORM ══ */}
-        <div className="fu" style={{ backgroundColor:"white",border:"1.5px solid #e2ebe4",borderRadius:20,padding:"32px 36px",boxShadow:"0 2px 8px rgba(0,0,0,.05)",display:"flex",flexDirection:"column",gap:44 }}>
+        <div className="fu form-card" style={{ backgroundColor:"white",border:"1.5px solid #e2ebe4",borderRadius:20,padding:"32px 36px",boxShadow:"0 2px 8px rgba(0,0,0,.05)",display:"flex",flexDirection:"column",gap:44 }}>
 
           <FormIdentificacao data={form.identificacao} onChange={updateId}/>
 
