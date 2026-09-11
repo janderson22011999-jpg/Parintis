@@ -12,7 +12,6 @@ interface Props {
 
 export function PainelEnvio({ data, onClear, config }: Props) {
   const [copied, setCopied] = useState(false);
-  const [emailAberto, setEmailAberto] = useState(false);
   const texto = formatToEmail(data, undefined, config);
 
   const mesesGeral = Number(data.experienciaGeral.totalMesesExperiencia) || 0;
@@ -46,20 +45,12 @@ export function PainelEnvio({ data, onClear, config }: Props) {
     },
   ];
 
-  const handleEmail = async () => {
-    const subject = `TDR ${config.emailAssuntoPrefix} – ${data.identificacao.nomeCompleto || "[Nome]"}`;
-    // mailto: has a ~2 000-char URL limit — put only the subject in the URL and copy
-    // the full body to clipboard so the candidate can paste it into the email.
-    await navigator.clipboard.writeText(texto).catch(() => {});
-    window.open(`mailto:Institutongutapatikuna@gmail.com?subject=${encodeURIComponent(subject)}`, "_self");
-    setEmailAberto(true);
-    setTimeout(() => setEmailAberto(false), 8000);
-  };
+  const subject = `TDR ${config.emailAssuntoPrefix} – ${data.identificacao.nomeCompleto || "[Nome]"}`;
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(texto).catch(() => {});
     setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
+    setTimeout(() => setCopied(false), 3000);
   };
 
   return (
@@ -67,17 +58,8 @@ export function PainelEnvio({ data, onClear, config }: Props) {
       <div style={{ borderBottom: "2px solid #dceee5", paddingBottom: 12, marginBottom: 24 }}>
         <h2 style={{ fontSize: 16, fontWeight: 700, color: "#2d6b4c", margin: 0 }}>Candidatura Pronta — Envio</h2>
         <p style={{ fontSize: 12, color: "#6b7280", marginTop: 4 }}>
-          Revise sua qualificação e utilize as opções abaixo para concluir a manifestação de interesse.
+          Revise sua qualificação e siga os passos abaixo para enviar sua manifestação de interesse.
         </p>
-      </div>
-
-      {/* Lembrete currículo */}
-      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, backgroundColor: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 10, padding: "12px 16px", marginBottom: 20 }}>
-        <Paperclip size={16} color="#92400e" style={{ flexShrink: 0, marginTop: 1 }}/>
-        <div>
-          <span style={{ fontSize: 12, fontWeight: 700, color: "#92400e" }}>Lembre-se de anexar seu currículo ao e-mail.</span>
-          <span style={{ fontSize: 11, color: "#78350f", display: "block", marginTop: 2 }}>Ao abrir o e-mail abaixo, anexe manualmente seu currículo atualizado (PDF ou Word) antes de enviar.</span>
-        </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 20 }}>
@@ -119,41 +101,59 @@ export function PainelEnvio({ data, onClear, config }: Props) {
 
         {/* Ações */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {/* Bloco de instruções de envio */}
           <div style={{ backgroundColor: "#2d6b4c", borderRadius: 14, padding: 20 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
               <Mail size={18} color="#b8e0c8" />
-              <span style={{ fontWeight: 700, color: "white", fontSize: 14 }}>Enviar Manifestação de Interesse</span>
+              <span style={{ fontWeight: 700, color: "white", fontSize: 14 }}>Como enviar sua candidatura</span>
             </div>
-            <p style={{ fontSize: 12, color: "#b8e0c8", marginBottom: 4, lineHeight: 1.5 }}>
-              Destinatário oficial: <strong style={{ color: "#d4a820" }}>Institutongutapatikuna@gmail.com</strong>
-            </p>
-            <p style={{ fontSize: 11, color: "#7db898", marginBottom: 16 }}>
-              Assunto gerado automaticamente: "TDR {config.emailAssuntoPrefix} – {data.identificacao.nomeCompleto || "[seu nome]"}"
-            </p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-              <button type="button" onClick={handleEmail}
-                style={{ flex: 1, minWidth: 130, padding: "10px 16px", backgroundColor: "#4aa07c", border: "none", borderRadius: 8, color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
-                <Mail size={14} /> Abrir E-mail
-              </button>
-              <button type="button" onClick={handleCopy}
-                style={{ flex: 1, minWidth: 130, padding: "10px 16px", backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 8, color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
-                {copied ? <><Check size={14} /> Copiado!</> : <><Copy size={14} /> Copiar texto</>}
-              </button>
-              <button type="button" onClick={() => window.print()}
-                style={{ padding: "10px 14px", backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 8, color: "white", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
-                <Printer size={14} /> PDF
-              </button>
+
+            {/* Passo 1 */}
+            <div style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "flex-start" }}>
+              <div style={{ flexShrink: 0, width: 22, height: 22, borderRadius: "50%", backgroundColor: "#4aa07c", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, color: "white" }}>1</div>
+              <div style={{ flex: 1 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "white", display: "block", marginBottom: 6 }}>Copie o texto da manifestação de interesse</span>
+                <button type="button" onClick={handleCopy}
+                  style={{ width: "100%", padding: "10px 16px", backgroundColor: copied ? "#22b857" : "#4aa07c", border: "none", borderRadius: 8, color: "white", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, transition: "background-color 0.2s" }}>
+                  {copied ? <><Check size={14} /> Texto copiado!</> : <><Copy size={14} /> Copiar texto</>}
+                </button>
+              </div>
             </div>
-            {emailAberto && (
-              <div style={{ marginTop: 12, backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 8, padding: "10px 14px", display: "flex", alignItems: "flex-start", gap: 8 }}>
-                <Check size={15} color="#86efac" style={{ flexShrink: 0, marginTop: 1 }}/>
-                <span style={{ fontSize: 12, color: "#d1fae5", lineHeight: 1.5 }}>
-                  <strong>Texto copiado!</strong> O e-mail foi aberto com o assunto já preenchido. Cole o conteúdo no corpo do e-mail com <strong>Ctrl+V</strong> (ou ⌘V no Mac) e anexe seu currículo antes de enviar.
+
+            {/* Passo 2 */}
+            <div style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "flex-start" }}>
+              <div style={{ flexShrink: 0, width: 22, height: 22, borderRadius: "50%", backgroundColor: "#4aa07c", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, color: "white" }}>2</div>
+              <div>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "white", display: "block", marginBottom: 3 }}>Abra seu e-mail e componha uma nova mensagem</span>
+                <span style={{ fontSize: 11, color: "#b8e0c8", lineHeight: 1.6, display: "block" }}>
+                  Para: <strong style={{ color: "#d4a820" }}>Institutongutapatikuna@gmail.com</strong><br/>
+                  Assunto: <strong style={{ color: "#d4a820" }}>{subject}</strong><br/>
+                  Cole o texto copiado no corpo do e-mail com <strong>Ctrl+V</strong> (ou ⌘V no Mac).
                 </span>
               </div>
-            )}
+            </div>
+
+            {/* Passo 3 */}
+            <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <div style={{ flexShrink: 0, width: 22, height: 22, borderRadius: "50%", backgroundColor: "#4aa07c", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, color: "white" }}>3</div>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                <Paperclip size={14} color="#fde68a" style={{ flexShrink: 0, marginTop: 2 }}/>
+                <span style={{ fontSize: 12, color: "#fef3c7", lineHeight: 1.6 }}>
+                  <strong>Anexe seu currículo</strong> (PDF ou Word) antes de enviar. Candidatos sem currículo podem ser desclassificados na etapa de análise documental.
+                </span>
+              </div>
+            </div>
+
+            {/* Botão PDF */}
+            <div style={{ marginTop: 16, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.15)" }}>
+              <button type="button" onClick={() => window.print()}
+                style={{ padding: "8px 14px", backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 8, color: "white", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <Printer size={13} /> Salvar como PDF
+              </button>
+            </div>
           </div>
 
+          {/* Pré-visualização */}
           <div style={{ border: "1.5px solid #e2ebe4", borderRadius: 12, padding: 16 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }}>
               Pré-visualização da Candidatura
