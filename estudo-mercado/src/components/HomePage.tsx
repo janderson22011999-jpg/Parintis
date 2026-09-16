@@ -17,6 +17,7 @@ interface Oportunidade {
   statusLabelAberto?: string;
   descricao: string;
   temFormulario: boolean;
+  notaPublicacao?: string;
   linkTdr?: string;
   labelLinkTdr?: string;
   linkEspecificacoes?: string;
@@ -57,16 +58,31 @@ const OPORTUNIDADES: Oportunidade[] = [
     labelLinkTdr: "Ver Pedido de Orçamento",
   },
   {
+    id: "geografo-2026",
+    titulo: "Geógrafo(a)",
+    categoria: "Consultoria Individual",
+    subprojeto: "UTÜ'Ü Y ITCHÁ – O Encantado Içá",
+    local: "Santo Antônio do Içá – AM",
+    duracao: "2 meses",
+    prazo: "30/09/2026",
+    status: "aberto",
+    descricao: "Mapeamento territorial participativo e zoneamento cultural das áreas de uso tradicional, sítios culturais e zonas de proteção territorial das comunidades indígenas da bacia do Rio Içá, integrando técnicas de geoprocessamento ao conhecimento territorial dos povos Tikuna e Kokama.",
+    temFormulario: false,
+    notaPublicacao: "📢 Processo republicado em 16/09/2026. O prazo para recebimento de manifestações de interesse corresponde a 10 (dez) dias úteis contados a partir desta data, encerrando-se em 30/09/2026 às 23h59 (Horário do Amazonas). Envie currículo e manifestação de interesse para Institutongutapatikuna@gmail.com com assunto: \"TDR Geógrafo – [Seu Nome]\".",
+    linkTdr: "https://drive.google.com/file/d/1CZpDQ_I2KdfnYKObR3bOx4cECbo84UT8/view?usp=sharing",
+  },
+  {
     id: "profissional-ambiental-2026",
     titulo: "Profissional da Área Ambiental",
     categoria: "Consultoria Individual",
     subprojeto: "UTÜ'Ü Y ITCHÁ – O Encantado Içá",
     local: "Santo Antônio do Içá – AM",
     duracao: "4 meses",
-    prazo: "12/09/2026",
+    prazo: "30/09/2026",
     status: "aberto",
     descricao: "Diagnóstico etnoambiental participativo, mapeamento de áreas prioritárias de conservação e biodiversidade, e integração entre o conhecimento científico e os saberes tradicionais dos povos Tikuna e Kokama na bacia do Rio Içá.",
-    temFormulario: true,
+    temFormulario: false,
+    notaPublicacao: "📢 Processo republicado em 16/09/2026. O prazo para recebimento de manifestações de interesse corresponde a 10 (dez) dias úteis contados a partir desta data, encerrando-se em 30/09/2026 às 23h59 (Horário do Amazonas). Envie currículo e manifestação de interesse para Institutongutapatikuna@gmail.com com assunto: \"TDR Profissional Ambiental – [Seu Nome]\".",
     linkTdr: "https://drive.google.com/file/d/1yYJJH649TmjVSXzTagzF4ghQLpS7SFnX/view?usp=drivesdk",
   },
   {
@@ -107,19 +123,6 @@ const OPORTUNIDADES: Oportunidade[] = [
     descricao: "Monitoramento biológico participativo das espécies pesqueiras prioritárias — pirarucu, aruanã, tambaqui e surubim — nas comunidades indígenas da bacia do rio Içá, com capacitação de monitores comunitários e suporte técnico ao Acordo de Pesca e ao Plano de Manejo Pesqueiro.",
     temFormulario: true,
     linkTdr: "https://drive.google.com/file/d/1-OkkIzCkOaFxTtUr1iPoMfgg7Gh6aR5l/view?usp=drive_link",
-  },
-  {
-    id: "geografo-2026",
-    titulo: "Geógrafo(a)",
-    categoria: "Consultoria Individual",
-    subprojeto: "UTÜ'Ü Y ITCHÁ – O Encantado Içá",
-    local: "Santo Antônio do Içá – AM",
-    duracao: "2 meses",
-    prazo: "31/07/2026",
-    status: "aberto",
-    descricao: "Mapeamento territorial participativo e zoneamento cultural das áreas de uso tradicional, sítios culturais e zonas de proteção territorial das comunidades indígenas da bacia do Rio Içá, integrando técnicas de geoprocessamento ao conhecimento territorial dos povos Tikuna e Kokama.",
-    temFormulario: true,
-    linkTdr: "https://drive.google.com/file/d/1CZpDQ_I2KdfnYKObR3bOx4cECbo84UT8/view?usp=sharing",
   },
   {
     id: "antropologo-2026",
@@ -473,6 +476,13 @@ function Card({ op, statusEfetivo, onAbrirFormulario, last }: {
       <p style={{ fontSize: 14, color: "#444", lineHeight: 1.8, margin: "0 0 20px" }}>
         {op.descricao}
       </p>
+
+      {/* Nota de republicação */}
+      {op.notaPublicacao && (
+        <div style={{ backgroundColor: "#fffbeb", border: "1px solid #fde68a", borderRadius: 6, padding: "10px 14px", marginBottom: 20, fontFamily: "system-ui,sans-serif", fontSize: 12, color: "#78350f", lineHeight: 1.65 }}>
+          {op.notaPublicacao}
+        </div>
+      )}
 
       {/* Meta info */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: "5px 28px", fontSize: 12, color: "#666", fontFamily: "system-ui,sans-serif", marginBottom: 24, paddingBottom: 20, borderBottom: "1px solid #ece8e0" }}>
