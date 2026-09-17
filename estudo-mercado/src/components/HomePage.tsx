@@ -57,7 +57,7 @@ const OPORTUNIDADES: Oportunidade[] = [
     temFormulario: false,
     linkTdr: "https://drive.google.com/file/d/1UmpuO3FxJ2aaNNFI58gMcsF7-9f8PwvG/view?usp=sharing",
     labelLinkTdr: "Ver Solicitação",
-    linkEspecificacoes: "https://drive.google.com/file/d/18wuVGDxxtRrmG5j6I_C-c3X2bxRbFQAh/view?usp=drivesdk",
+    linkEspecificacoes: "https://docs.google.com/document/d/18wuVGDxxtRrmG5j6I_C-c3X2bxRbFQAh/edit?usp=sharing",
     labelEspecificacoes: "Formulário de Cotação",
   },
   {
