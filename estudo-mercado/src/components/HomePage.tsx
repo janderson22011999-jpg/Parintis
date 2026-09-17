@@ -21,6 +21,7 @@ interface Oportunidade {
   linkTdr?: string;
   labelLinkTdr?: string;
   linkEspecificacoes?: string;
+  labelEspecificacoes?: string;
 }
 
 const OPORTUNIDADES: Oportunidade[] = [
@@ -56,6 +57,8 @@ const OPORTUNIDADES: Oportunidade[] = [
     temFormulario: false,
     linkTdr: "https://drive.google.com/file/d/1UmpuO3FxJ2aaNNFI58gMcsF7-9f8PwvG/view?usp=sharing",
     labelLinkTdr: "Ver Solicitação",
+    linkEspecificacoes: "https://drive.google.com/file/d/18wuVGDxxtRrmG5j6I_C-c3X2bxRbFQAh/view?usp=drivesdk",
+    labelEspecificacoes: "Formulário de Cotação",
   },
   {
     id: "cotacao-mobiliario-sdc01-2026",
@@ -522,7 +525,7 @@ function Card({ op, statusEfetivo, onAbrirFormulario, last }: {
         {op.linkEspecificacoes && (
           <a href={op.linkEspecificacoes} target="_blank" rel="noopener noreferrer" className="btn-borda"
             style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 22px", border: "1.5px solid #4aa07c", backgroundColor: "white", color: "#4aa07c", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textDecoration: "none", textTransform: "uppercase" }}>
-            <ExternalLink size={12}/> Especificações
+            <ExternalLink size={12}/> {op.labelEspecificacoes ?? "Especificações"}
           </a>
         )}
 
