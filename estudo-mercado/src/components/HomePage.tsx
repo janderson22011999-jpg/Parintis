@@ -22,6 +22,8 @@ interface Oportunidade {
   labelLinkTdr?: string;
   linkEspecificacoes?: string;
   labelEspecificacoes?: string;
+  linkAdendo?: string;
+  labelAdendo?: string;
 }
 
 const OPORTUNIDADES: Oportunidade[] = [
@@ -49,16 +51,19 @@ const OPORTUNIDADES: Oportunidade[] = [
     subprojeto: "Guardiões dos Peixes e Quelônios do Rio Içá",
     local: "Santo Antônio do Içá – AM",
     duracao: "30 dias (entrega)",
-    prazo: "24/09/2026",
+    prazo: "29/09/2026",
     prazoHorario: "23h59",
     statusLabelAberto: "Cotações Abertas",
     status: "aberto",
-    descricao: "Aquisição de 2 (dois) notebooks (Intel i5+, 8GB RAM, SSD 512GB, bateria ≥ 6h) e 5 (cinco) kits solares completos (painel ≥ 200W, controladora de carga, bateria 12V 100Ah e inversor 500W) para funcionamento administrativo e atividades de campo nas 14 comunidades atendidas pelo subprojeto. Entrega: Comunidade Vila Betânia, Santo Antônio do Içá – AM. Enviar cotação para Institutongutapatikuna@gmail.com com assunto: \"Cotação 006/2026 Lote 2 – [Nome da empresa]\".",
+    descricao: "Aquisição de 2 (dois) notebooks (Intel i5+, 8GB RAM, SSD 512GB, bateria ≥ 6h) e 5 (cinco) kits solares completos (painel ≥ 200W, controladora de carga, bateria 12V 100Ah e inversor 500W) para funcionamento administrativo e atividades de campo nas 14 comunidades atendidas pelo subprojeto. Entrega: Comunidade Vila Betânia, Santo Antônio do Içá – AM. Enviar cotação para Institutongutapatikuna@gmail.com com assunto: \"Cotação 006/2026 – [Nome da empresa]\".",
     temFormulario: false,
+    notaPublicacao: "📢 ADENDO Nº 1, emitido em 24/09/2026: o prazo para apresentação de cotações fica prorrogado para 29/09/2026 às 23h59 (Horário do Amazonas). As demais condições do documento permanecem inalteradas.",
     linkTdr: "https://drive.google.com/file/d/1UmpuO3FxJ2aaNNFI58gMcsF7-9f8PwvG/view?usp=sharing",
     labelLinkTdr: "Ver Solicitação",
     linkEspecificacoes: "https://docs.google.com/document/d/18wuVGDxxtRrmG5j6I_C-c3X2bxRbFQAh/edit?usp=sharing",
     labelEspecificacoes: "Formulário de Cotação",
+    linkAdendo: "https://drive.google.com/file/d/1ujoMtsF-YBC5MopOHs31a1B1NJiwUVqg/view?usp=sharing",
+    labelAdendo: "Adendo Nº 1",
   },
   {
     id: "cotacao-mobiliario-sdc01-2026",
@@ -356,6 +361,8 @@ export function HomePage({ onAbrirFormulario }: Props) {
         .btn-fill:hover { background: #4aa07c !important; }
         .btn-share { transition: background .15s, border-color .15s; }
         .btn-share:hover { background: #e8f7ef !important; border-color: #96d4b5 !important; }
+        .btn-adendo { transition: background .15s, color .15s; }
+        .btn-adendo:hover { background: #b45309 !important; color: white !important; }
         .btn-pdf { transition: background .15s, border-color .15s; }
         .btn-pdf:hover { background: #f8fafc !important; border-color: #2d6b4c !important; color: #2d6b4c !important; }
         @media (max-width: 640px) {
@@ -558,6 +565,13 @@ function Card({ op, statusEfetivo, onAbrirFormulario, last }: {
           <a href={op.linkEspecificacoes} target="_blank" rel="noopener noreferrer" className="btn-borda"
             style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 22px", border: "1.5px solid #4aa07c", backgroundColor: "white", color: "#4aa07c", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textDecoration: "none", textTransform: "uppercase" }}>
             <ExternalLink size={12}/> {op.labelEspecificacoes ?? "Especificações"}
+          </a>
+        )}
+
+        {op.linkAdendo && (
+          <a href={op.linkAdendo} target="_blank" rel="noopener noreferrer" className="btn-adendo"
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 22px", border: "1.5px solid #b45309", backgroundColor: "white", color: "#b45309", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textDecoration: "none", textTransform: "uppercase" }}>
+            <ExternalLink size={12}/> {op.labelAdendo ?? "Adendo"}
           </a>
         )}
 
