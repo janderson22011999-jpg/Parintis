@@ -22,8 +22,7 @@ interface Oportunidade {
   labelLinkTdr?: string;
   linkEspecificacoes?: string;
   labelEspecificacoes?: string;
-  linkAdendo?: string;
-  labelAdendo?: string;
+  adendos?: { url: string; label: string }[];
 }
 
 const OPORTUNIDADES: Oportunidade[] = [
@@ -62,8 +61,10 @@ const OPORTUNIDADES: Oportunidade[] = [
     labelLinkTdr: "Ver Solicitação",
     linkEspecificacoes: "https://docs.google.com/document/d/18wuVGDxxtRrmG5j6I_C-c3X2bxRbFQAh/edit?usp=sharing",
     labelEspecificacoes: "Formulário de Cotação",
-    linkAdendo: "https://drive.google.com/file/d/1ujoMtsF-YBC5MopOHs31a1B1NJiwUVqg/view?usp=sharing",
-    labelAdendo: "Adendo Nº 1",
+    adendos: [
+      { url: "https://drive.google.com/file/d/1ujoMtsF-YBC5MopOHs31a1B1NJiwUVqg/view?usp=sharing", label: "Adendo Nº 1" },
+      { url: "https://docs.google.com/document/d/1P97k2uu6U3D4Oj1HFzI_EgEprsICCtHMmrRH7FCA4iA/edit?usp=sharing", label: "Adendo Nº 3" },
+    ],
   },
   {
     id: "cotacao-mobiliario-sdc01-2026",
@@ -99,8 +100,9 @@ const OPORTUNIDADES: Oportunidade[] = [
     labelLinkTdr: "Ver Solicitação",
     linkEspecificacoes: "https://docs.google.com/document/d/14MN260txNYd6wJUNHvBvsqm48by3mH8t/edit?usp=sharing",
     labelEspecificacoes: "Formulário de Cotação",
-    linkAdendo: "https://drive.google.com/file/d/106_4I_GXc9sEpTSlUC5DqxT6durJxfxL/view?usp=sharing",
-    labelAdendo: "Adendo Nº 1",
+    adendos: [
+      { url: "https://drive.google.com/file/d/106_4I_GXc9sEpTSlUC5DqxT6durJxfxL/view?usp=sharing", label: "Adendo Nº 1" },
+    ],
   },
   {
     id: "especialista-linguas-2026",
@@ -571,12 +573,12 @@ function Card({ op, statusEfetivo, onAbrirFormulario, last }: {
           </a>
         )}
 
-        {op.linkAdendo && (
-          <a href={op.linkAdendo} target="_blank" rel="noopener noreferrer" className="btn-adendo"
+        {op.adendos?.map(ad => (
+          <a key={ad.url} href={ad.url} target="_blank" rel="noopener noreferrer" className="btn-adendo"
             style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 22px", border: "1.5px solid #b45309", backgroundColor: "white", color: "#b45309", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textDecoration: "none", textTransform: "uppercase" }}>
-            <ExternalLink size={12}/> {op.labelAdendo ?? "Adendo"}
+            <ExternalLink size={12}/> {ad.label}
           </a>
-        )}
+        ))}
 
         {op.temFormulario && statusEfetivo === "aberto" && (
           <button type="button" onClick={() => onAbrirFormulario(op.id)} className="btn-fill"
