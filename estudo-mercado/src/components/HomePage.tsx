@@ -44,8 +44,8 @@ const OPORTUNIDADES: Oportunidade[] = [
     linkEspecificacoes: "https://docs.google.com/document/d/1QPl_q4HKASOB5j_2TM7MwZ4DtX5mlXCU/edit?usp=sharing",
   },
   {
-    id: "sdc-006-lote2-2026",
-    titulo: "Cotação de Preços — Notebook e Kit Solar (006/2026 · Lote 2)",
+    id: "sdc-006-2026",
+    titulo: "Cotação de Preços — Notebook e Kit Solar (006/2026)",
     categoria: "Compra de Bens",
     subprojeto: "Guardiões dos Peixes e Quelônios do Rio Içá",
     local: "Santo Antônio do Içá – AM",
