@@ -56,14 +56,13 @@ const OPORTUNIDADES: Oportunidade[] = [
     status: "aberto",
     descricao: "Aquisição de 2 (dois) notebooks (Intel i5+, 8GB RAM, SSD 512GB, bateria ≥ 6h) e 5 (cinco) kits solares completos (painel ≥ 200W, controladora de carga, bateria 12V 100Ah e inversor 500W) para funcionamento administrativo e atividades de campo nas 14 comunidades atendidas pelo subprojeto. Entrega: Comunidade Vila Betânia, Santo Antônio do Içá – AM. Enviar cotação para Institutongutapatikuna@gmail.com com assunto: \"Cotação 006/2026 – [Nome da empresa]\".",
     temFormulario: false,
-    notaPublicacao: "📢 ADENDO Nº 3, emitido em 02/10/2026: o prazo para apresentação de cotações fica prorrogado para 07/10/2026 às 23h59 (Horário do Amazonas). Prorrogações anteriores: Adendo Nº 1 (24/09/2026) e Adendo Nº 2 (29/09/2026). As demais condições do documento permanecem inalteradas.",
+    notaPublicacao: "📢 ADENDO Nº 1, emitido em 24/09/2026: o prazo para apresentação de cotações fica prorrogado para 07/10/2026 às 23h59 (Horário do Amazonas). As demais condições do documento permanecem inalteradas.",
     linkTdr: "https://drive.google.com/file/d/1UmpuO3FxJ2aaNNFI58gMcsF7-9f8PwvG/view?usp=sharing",
     labelLinkTdr: "Ver Solicitação",
     linkEspecificacoes: "https://docs.google.com/document/d/18wuVGDxxtRrmG5j6I_C-c3X2bxRbFQAh/edit?usp=sharing",
     labelEspecificacoes: "Formulário de Cotação",
     adendos: [
-      { url: "https://drive.google.com/file/d/1ujoMtsF-YBC5MopOHs31a1B1NJiwUVqg/view?usp=sharing", label: "Adendo Nº 1" },
-      { url: "https://docs.google.com/document/d/1P97k2uu6U3D4Oj1HFzI_EgEprsICCtHMmrRH7FCA4iA/edit?usp=sharing", label: "Adendo Nº 3" },
+      { url: "https://drive.google.com/file/d/1xBUygQGN8lsgPudOUNv5i1g0ZRSOjFze/view?usp=sharing", label: "Adendo Nº 1" },
     ],
   },
   {
