@@ -8,15 +8,18 @@ interface Oportunidade {
   id: string;
   titulo: string;
   categoria: string;
+  processo?: string;
   subprojeto: string;
   local: string;
   duracao: string;
+  dataPublicacao?: string;
   prazo: string;
   prazoHorario?: string;
   status: "aberto" | "encerrado" | "em_breve";
   statusLabelAberto?: string;
   descricao: string;
   temFormulario: boolean;
+  emailAssunto?: string;
   notaPublicacao?: string;
   linkTdr?: string;
   labelLinkTdr?: string;
@@ -47,15 +50,18 @@ const OPORTUNIDADES: Oportunidade[] = [
     id: "sdc-006-2026",
     titulo: "Cotação de Preços — Notebook e Kit Solar (006/2026)",
     categoria: "Compra de Bens",
+    processo: "006/2026",
     subprojeto: "Guardiões dos Peixes e Quelônios do Rio Içá",
     local: "Santo Antônio do Içá – AM",
     duracao: "30 dias (entrega)",
+    dataPublicacao: "19/09/2026",
     prazo: "07/10/2026",
     prazoHorario: "23h59",
     statusLabelAberto: "Cotações Abertas",
     status: "aberto",
     descricao: "Aquisição de 2 (dois) notebooks (Intel i5+, 8GB RAM, SSD 512GB, bateria ≥ 6h) e 5 (cinco) kits solares completos (painel ≥ 200W, controladora de carga, bateria 12V 100Ah e inversor 500W) para funcionamento administrativo e atividades de campo nas 14 comunidades atendidas pelo subprojeto. Entrega: Comunidade Vila Betânia, Santo Antônio do Içá – AM. Enviar cotação para Institutongutapatikuna@gmail.com com assunto: \"Cotação 006/2026 – [Nome da empresa]\".",
     temFormulario: false,
+    emailAssunto: "Cotação 006/2026 – [Nome da empresa]",
     notaPublicacao: "📢 ADENDO Nº 1, emitido em 24/09/2026: o prazo para apresentação de cotações fica prorrogado para 07/10/2026 às 23h59 (Horário do Amazonas). As demais condições do documento permanecem inalteradas.",
     linkTdr: "https://drive.google.com/file/d/1UmpuO3FxJ2aaNNFI58gMcsF7-9f8PwvG/view?usp=sharing",
     labelLinkTdr: "Ver Solicitação",
@@ -85,15 +91,18 @@ const OPORTUNIDADES: Oportunidade[] = [
     id: "sdc-003-2026",
     titulo: "Cotação de Preços — Bens Logísticos, EPIs e Equipamentos (003/2026)",
     categoria: "Compra de Bens",
+    processo: "003/2026",
     subprojeto: "Guardiões dos Peixes e Quelônios do Rio Içá",
     local: "Santo Antônio do Içá – AM",
     duracao: "30 dias (entrega)",
+    dataPublicacao: "21/09/2026",
     prazo: "02/10/2026",
     prazoHorario: "23h59",
     statusLabelAberto: "Cotações Abertas",
     status: "aberto",
     descricao: "Aquisição em 3 lotes — Lote 1: mesas (10), cadeiras (60), bonés c/ proteção de pescoço (30), lanternas de cabeça (30), terçados (28), botas (40), luvas (60) e camisas manga longa personalizadas (40); Lote 2: 40 coletes salva-vidas homologados Marinha do Brasil (classe IV, 90N); Lote 3: 1 balança plataforma 400kg e 9 balanças tipo relógio 10kg. Entrega pelo fornecedor até o Porto de Manaus. Enviar cotação para Institutongutapatikuna@gmail.com com assunto: \"Cotação 003/2026 – [Nome da empresa]\".",
     temFormulario: false,
+    emailAssunto: "Cotação 003/2026 – [Nome da empresa]",
     notaPublicacao: "📢 ADENDO Nº 1, emitido em 28/09/2026: o prazo para apresentação de cotações fica prorrogado para 02/10/2026 às 23h59 (Horário do Amazonas). As demais condições do documento permanecem inalteradas.",
     linkTdr: "https://drive.google.com/file/d/1dIrkkXkp2a3SdkQyV6uuHs1_kkM_oiv9/view?usp=sharing",
     labelLinkTdr: "Ver Solicitação",
@@ -214,7 +223,7 @@ function computeStatus(prazo: string, base: Oportunidade["status"]): "aberto" | 
 
 function gerarPdfEdital(op: Oportunidade, efetivo: string) {
   const cfg = EDITAIS_CONFIG[op.id];
-  const statusLabel  = efetivo === "encerrado" ? "Processo Encerrado" : efetivo === "em_breve" ? "Em Breve" : "Inscrições Abertas";
+  const statusLabel  = efetivo === "encerrado" ? "Processo Encerrado" : efetivo === "em_breve" ? "Em Breve" : (op.statusLabelAberto ?? "Inscrições Abertas");
   const statusColor  = efetivo === "encerrado" ? "#6b7280" : efetivo === "em_breve" ? "#854d0e" : "#1a7c40";
   const statusBg     = efetivo === "encerrado" ? "#f3f4f6" : efetivo === "em_breve" ? "#fef9c3" : "#e8f7ef";
   const statusBorder = efetivo === "encerrado" ? "#d1d5db" : efetivo === "em_breve" ? "#fde68a" : "#96d4b5";
@@ -236,8 +245,24 @@ function gerarPdfEdital(op: Oportunidade, efetivo: string) {
         </tr>`).join("")
     : "";
 
-  const processo = cfg?.processo ?? "";
+  const processo = op.processo ?? cfg?.processo ?? "";
   const emailPrefix = cfg?.emailAssuntoPrefix ?? op.titulo;
+  const isCotacao = op.categoria === "Compra de Bens";
+  const horario = op.prazoHorario ?? "23h59";
+  const tipoDocumento = isCotacao ? "Solicitação de Cotação" : "Edital de Manifestação de Interesse";
+  const statusAberto = op.statusLabelAberto ?? "Inscrições Abertas";
+  const rotuloPrazo = isCotacao ? "Prazo para apresentação de cotações" : "Prazo de inscrição";
+  const assunto = op.emailAssunto ?? `TDR ${emailPrefix} – [Nome completo do candidato]`;
+
+  const documentos = [
+    op.linkTdr && { label: isCotacao ? (op.labelLinkTdr ?? "Solicitação de cotação") : "TdR completo", url: op.linkTdr },
+    op.linkEspecificacoes && { label: op.labelEspecificacoes ?? "Especificações técnicas", url: op.linkEspecificacoes },
+    ...(op.adendos ?? []).map(a => ({ label: a.label, url: a.url })),
+  ].filter(Boolean) as { label: string; url: string }[];
+
+  const documentosHTML = documentos
+    .map(d => `<div style="margin-bottom:4px"><strong>${d.label}:</strong> <a href="${d.url}" class="link">${d.url}</a></div>`)
+    .join("");
 
   const html = `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -257,7 +282,7 @@ h1 { font-size: 20pt; font-weight: 700; color: #111; line-height: 1.2; margin-bo
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
 .criteria-table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; }
 .alert-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 5px; padding: 10px 14px; font-family: system-ui, sans-serif; font-size: 9pt; color: #78350f; line-height: 1.5; }
-.header-bar { background: #2d6b4c; color: white; padding: 14px 20mm; margin: -16mm -20mm 20px; border-bottom: 3px solid #c8a01a; display: flex; justify-content: space-between; align-items: flex-end; }
+.header-bar { background: #2d6b4c; color: white; padding: 14px 20mm; margin: 0 -20mm 20px; border-bottom: 3px solid #c8a01a; display: flex; justify-content: space-between; align-items: flex-end; }
 .footer-bar { margin-top: 28px; padding-top: 10px; border-top: 1px solid #d1d5db; font-family: system-ui, sans-serif; font-size: 8pt; color: #9ca3af; display: flex; justify-content: space-between; }
 .link { color: #2d6b4c; word-break: break-all; font-size: 9pt; }
 @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
@@ -267,7 +292,7 @@ h1 { font-size: 20pt; font-weight: 700; color: #111; line-height: 1.2; margin-bo
 <div class="header-bar">
   <div>
     <div style="font-family:system-ui,sans-serif;font-size:8pt;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#b8e0c8;margin-bottom:2px">Instituto NGUTAPA</div>
-    <div style="font-size:14pt;font-weight:400;letter-spacing:0.01em">Edital de Manifestação de Interesse</div>
+    <div style="font-size:14pt;font-weight:400;letter-spacing:0.01em">${tipoDocumento}</div>
   </div>
   <div style="text-align:right">
     <div style="font-family:system-ui,sans-serif;font-size:8pt;color:#b8e0c8">Cuenca Putumayo Içá</div>
@@ -289,8 +314,11 @@ h1 { font-size: 20pt; font-weight: 700; color: #111; line-height: 1.2; margin-bo
   <span><strong>Subprojeto:</strong> ${op.subprojeto}</span>
   <span><strong>Local:</strong> ${op.local}</span>
   <span><strong>Duração:</strong> ${op.duracao}</span>
+  ${op.dataPublicacao ? `<span><strong>Data de publicação:</strong> ${op.dataPublicacao}</span>` : ""}
 </div>
-<div class="prazo">Prazo de inscrição: ${op.prazo} às 23h59 (Horário do Amazonas)</div>
+<div class="prazo">${rotuloPrazo}: ${op.prazo} às ${horario} (Horário do Amazonas)</div>
+
+${op.notaPublicacao ? `<div class="alert-box" style="margin-top:12px">${op.notaPublicacao}</div>` : ""}
 
 ${cfg ? `
 <div class="section-title">Perfil Mínimo dos Candidatos</div>
@@ -302,18 +330,23 @@ ${cfg ? `
 </table>
 ` : ""}
 
-<div class="section-title">Como Candidatar-se</div>
+<div class="section-title">${isCotacao ? "Como Apresentar sua Cotação" : "Como Candidatar-se"}</div>
 ${efetivo === "encerrado"
-  ? `<div class="alert-box">⚠ O prazo de inscrição para este processo seletivo foi encerrado em ${op.prazo} às 23h59 (Horário do Amazonas).</div>`
+  ? `<div class="alert-box">⚠ O prazo ${isCotacao ? "para apresentação de cotações" : "de inscrição"} para este processo foi encerrado em ${op.prazo} às ${horario} (Horário do Amazonas).</div>`
   : `<div style="font-family:system-ui,sans-serif;font-size:9.5pt;line-height:1.8">
       <div><strong>E-mail:</strong> Institutongutapatikuna@gmail.com</div>
-      <div><strong>Assunto:</strong> TDR ${emailPrefix} – [Nome completo do candidato]</div>
-      <div><strong>Prazo:</strong> ${op.prazo} às 23h59 (Horário do Amazonas)</div>
-      <div style="margin-top:4px"><strong>Envio:</strong> Currículo atualizado com datas de início e término de cada experiência (dd/mm/aaaa).</div>
+      <div><strong>Assunto:</strong> ${assunto}</div>
+      <div><strong>Prazo:</strong> ${op.prazo} às ${horario} (Horário do Amazonas)</div>
+      <div style="margin-top:4px"><strong>Envio:</strong> ${isCotacao
+        ? "Formulário de cotação preenchido, com preços unitários, impostos, preço total e especificações técnicas de cada item."
+        : "Currículo atualizado com datas de início e término de cada experiência (dd/mm/aaaa)."}</div>
     </div>`
 }
 
-${op.linkTdr ? `<div style="margin-top:12px;font-family:system-ui,sans-serif;font-size:9pt"><strong>TdR completo:</strong> <a href="${op.linkTdr}" class="link">${op.linkTdr}</a></div>` : ""}
+${documentosHTML ? `
+<div class="section-title">Documentos do Processo</div>
+<div style="font-family:system-ui,sans-serif;font-size:9pt">${documentosHTML}</div>
+` : ""}
 
 <div class="footer-bar">
   <span>© 2026 Instituto NGUTAPA · Cuenca Putumayo Içá · Santo Antônio do Içá – AM</span>
@@ -551,6 +584,8 @@ function Card({ op, statusEfetivo, onAbrirFormulario, last }: {
         <span><strong style={{ color: "#333" }}>Subprojeto:</strong> {op.subprojeto}</span>
         <span><strong style={{ color: "#333" }}>Local:</strong> {op.local}</span>
         <span><strong style={{ color: "#333" }}>Duração:</strong> {op.duracao}</span>
+        {op.processo && <span><strong style={{ color: "#333" }}>Processo nº:</strong> {op.processo}</span>}
+        {op.dataPublicacao && <span><strong style={{ color: "#333" }}>Publicado em:</strong> {op.dataPublicacao}</span>}
         <span style={{ color: statusEfetivo === "aberto" ? "#b91c1c" : "#666", fontWeight: statusEfetivo === "aberto" ? 700 : 400 }}>
           <strong style={{ color: statusEfetivo === "aberto" ? "#b91c1c" : "#333" }}>Prazo:</strong> {op.prazo} às {op.prazoHorario ?? "23h59"} (Horário do Amazonas)
         </span>
