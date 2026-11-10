@@ -23,12 +23,35 @@ interface Oportunidade {
   notaPublicacao?: string;
   linkTdr?: string;
   labelLinkTdr?: string;
-  linkEspecificacoes?: string;
-  labelEspecificacoes?: string;
+  documentos?: { url: string; label: string }[];
   adendos?: { url: string; label: string }[];
 }
 
 const OPORTUNIDADES: Oportunidade[] = [
+  {
+    id: "pedido-orcamento-008-2026",
+    titulo: "Pedido de Orçamento — Motores de Popa 15 HP (008/2026)",
+    categoria: "Compra de Bens",
+    processo: "008/2026",
+    subprojeto: "Guardiões dos Peixes e Quelônios do Rio Içá",
+    local: "Santo Antônio do Içá – AM",
+    duracao: "30 dias (entrega)",
+    dataPublicacao: "11/11/2026",
+    prazo: "25/11/2026",
+    prazoHorario: "17h00",
+    statusLabelAberto: "Cotações Abertas",
+    status: "aberto",
+    descricao: "Aquisição de 6 (seis) motores de popa novos, sem uso, de 15 HP, 2 tempos a gasolina, com partida manual retrátil, comando por cana de leme, tanque de combustível externo com mangueira e conectores, hélice instalada e kit de ferramentas do fabricante. Devem ser entregues com manual em português, certificado de garantia e número de série informado na nota fiscal, com garantia mínima de 1 (um) ano do fabricante e assistência técnica autorizada em Manaus/AM. Destinam-se ao deslocamento fluvial da equipe, ao monitoramento e à vigilância dos lagos de manejo nas 14 comunidades atendidas. Entrega pelo fornecedor até o Porto de Manaus; o transporte até a Vila Betânia fica a cargo do Instituto NGUTAPA. Somente pessoa jurídica, com no mínimo 1 contrato similar executado nos últimos 2 anos. Enviar proposta para institutongutapa@hotmail.com ou entregar na sede do Instituto (Rua Goiabal, S/N, Vila Betânia, Santo Antônio do Içá/AM).",
+    temFormulario: false,
+    emailAssunto: "Convite 008/2026 – Motores de popa de 15 HP – [Nome da empresa]",
+    notaPublicacao: "📄 A proposta deve incluir o Formulário de Cotação e a Declaração de Manutenção da Oferta, ambos assinados pelo representante legal, acompanhados dos documentos de capacidade jurídica da empresa. A cotação permanece válida por 60 dias.",
+    linkTdr: "https://drive.google.com/file/d/1qY6uu7wpUmWhq1PCVJojRjwRHr0ubrA3/view?usp=sharing",
+    labelLinkTdr: "Ver Pedido de Orçamento",
+    documentos: [
+      { url: "https://docs.google.com/document/d/1NCHNjxSY7_KSwI_zUxGN_RNc7s5aZaXY/edit?usp=sharing", label: "Formulários Editáveis" },
+      { url: "https://drive.google.com/file/d/1z5XhhHmkCaD37Y6yzpaPYNYD0dzi5ne-/view?usp=sharing", label: "Especificações Técnicas" },
+    ],
+  },
   {
     id: "cotacao-equipamentos-002-2026",
     titulo: "Cotação de Preços — Equipamentos de Informática, Câmera e Drone (002/2026)",
@@ -48,8 +71,9 @@ const OPORTUNIDADES: Oportunidade[] = [
     notaPublicacao: "📢 Processo republicado em 06/11/2026. Esta publicação substitui integralmente a anterior, cujo prazo encerrou em 14/09/2026. Novo prazo para apresentação de cotações: 13/11/2026 às 17h00 (Horário de Manaus).",
     linkTdr: "https://drive.google.com/file/d/1VBgeB2O9uskiDFaNXz83NBLyo2J_lIM4/view?usp=sharing",
     labelLinkTdr: "Ver Solicitação",
-    linkEspecificacoes: "https://drive.google.com/file/d/1v2_l6h2wusceew4BwXviK8E3Bs8J4WCr/view?usp=sharing",
-    labelEspecificacoes: "Especificações Técnicas",
+    documentos: [
+      { url: "https://drive.google.com/file/d/1v2_l6h2wusceew4BwXviK8E3Bs8J4WCr/view?usp=sharing", label: "Especificações Técnicas" },
+    ],
   },
   {
     id: "sdc-006-2026",
@@ -70,8 +94,9 @@ const OPORTUNIDADES: Oportunidade[] = [
     notaPublicacao: "📢 Processo republicado em 04/11/2026 com aquisição unificada de notebooks e kits solares. Esta publicação substitui integralmente a anterior. Prazo para apresentação de cotações: 11/11/2026 às 23h59 (Horário do Amazonas).",
     linkTdr: "https://drive.google.com/file/d/1EG4TmkKEeNhr1ZSBnATDefMTPevSu_sI/view?usp=sharing",
     labelLinkTdr: "Ver Solicitação",
-    linkEspecificacoes: "https://docs.google.com/document/d/1N7fA0IhWzrPpSh0lgC_8Ga9xoc8aYWj-/edit?usp=sharing",
-    labelEspecificacoes: "Formulário de Cotação",
+    documentos: [
+      { url: "https://docs.google.com/document/d/1N7fA0IhWzrPpSh0lgC_8Ga9xoc8aYWj-/edit?usp=sharing", label: "Formulário de Cotação" },
+    ],
   },
   {
     id: "cotacao-mobiliario-sdc01-2026",
@@ -108,8 +133,9 @@ const OPORTUNIDADES: Oportunidade[] = [
     notaPublicacao: "📢 ADENDO Nº 1, emitido em 28/09/2026: o prazo para apresentação de cotações fica prorrogado para 02/10/2026 às 23h59 (Horário do Amazonas). As demais condições do documento permanecem inalteradas.",
     linkTdr: "https://drive.google.com/file/d/1dIrkkXkp2a3SdkQyV6uuHs1_kkM_oiv9/view?usp=sharing",
     labelLinkTdr: "Ver Solicitação",
-    linkEspecificacoes: "https://docs.google.com/document/d/14MN260txNYd6wJUNHvBvsqm48by3mH8t/edit?usp=sharing",
-    labelEspecificacoes: "Formulário de Cotação",
+    documentos: [
+      { url: "https://docs.google.com/document/d/14MN260txNYd6wJUNHvBvsqm48by3mH8t/edit?usp=sharing", label: "Formulário de Cotação" },
+    ],
     adendos: [
       { url: "https://drive.google.com/file/d/106_4I_GXc9sEpTSlUC5DqxT6durJxfxL/view?usp=sharing", label: "Adendo Nº 1" },
     ],
@@ -256,13 +282,13 @@ function gerarPdfEdital(op: Oportunidade, efetivo: string) {
   const rotuloPrazo = isCotacao ? "Prazo para apresentação de cotações" : "Prazo de inscrição";
   const assunto = op.emailAssunto ?? `TDR ${emailPrefix} – [Nome completo do candidato]`;
 
-  const documentos = [
+  const listaDocumentos = [
     op.linkTdr && { label: isCotacao ? (op.labelLinkTdr ?? "Solicitação de cotação") : "TdR completo", url: op.linkTdr },
-    op.linkEspecificacoes && { label: op.labelEspecificacoes ?? "Especificações técnicas", url: op.linkEspecificacoes },
+    ...(op.documentos ?? []),
     ...(op.adendos ?? []).map(a => ({ label: a.label, url: a.url })),
   ].filter(Boolean) as { label: string; url: string }[];
 
-  const documentosHTML = documentos
+  const documentosHTML = listaDocumentos
     .map(d => `<div style="margin-bottom:4px"><strong>${d.label}:</strong> <a href="${d.url}" class="link">${d.url}</a></div>`)
     .join("");
 
@@ -602,12 +628,12 @@ function Card({ op, statusEfetivo, onAbrirFormulario, last }: {
           </a>
         )}
 
-        {op.linkEspecificacoes && (
-          <a href={op.linkEspecificacoes} target="_blank" rel="noopener noreferrer" className="btn-borda"
+        {op.documentos?.map(doc => (
+          <a key={doc.url} href={doc.url} target="_blank" rel="noopener noreferrer" className="btn-borda"
             style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 22px", border: "1.5px solid #4aa07c", backgroundColor: "white", color: "#4aa07c", fontSize: 12, fontWeight: 700, fontFamily: "system-ui,sans-serif", letterSpacing: "0.1em", textDecoration: "none", textTransform: "uppercase" }}>
-            <ExternalLink size={12}/> {op.labelEspecificacoes ?? "Especificações"}
+            <ExternalLink size={12}/> {doc.label}
           </a>
-        )}
+        ))}
 
         {op.adendos?.map(ad => (
           <a key={ad.url} href={ad.url} target="_blank" rel="noopener noreferrer" className="btn-adendo"
