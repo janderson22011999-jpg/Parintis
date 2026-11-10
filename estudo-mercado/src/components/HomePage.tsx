@@ -19,6 +19,7 @@ interface Oportunidade {
   statusLabelAberto?: string;
   descricao: string;
   temFormulario: boolean;
+  email?: string;
   emailAssunto?: string;
   notaPublicacao?: string;
   linkTdr?: string;
@@ -43,6 +44,7 @@ const OPORTUNIDADES: Oportunidade[] = [
     status: "aberto",
     descricao: "Aquisição de 6 (seis) motores de popa novos, sem uso, de 15 HP, 2 tempos a gasolina, com partida manual retrátil, comando por cana de leme, tanque de combustível externo com mangueira e conectores, hélice instalada e kit de ferramentas do fabricante. Devem ser entregues com manual em português, certificado de garantia e número de série informado na nota fiscal, com garantia mínima de 1 (um) ano do fabricante e assistência técnica autorizada em Manaus/AM. Destinam-se ao deslocamento fluvial da equipe, ao monitoramento e à vigilância dos lagos de manejo nas 14 comunidades atendidas. Entrega pelo fornecedor até o Porto de Manaus; o transporte até a Vila Betânia fica a cargo do Instituto NGUTAPA. Somente pessoa jurídica, com no mínimo 1 contrato similar executado nos últimos 2 anos. Enviar proposta para institutongutapa@hotmail.com ou entregar na sede do Instituto (Rua Goiabal, S/N, Vila Betânia, Santo Antônio do Içá/AM).",
     temFormulario: false,
+    email: "institutongutapa@hotmail.com",
     emailAssunto: "Convite 008/2026 – Motores de popa de 15 HP – [Nome da empresa]",
     notaPublicacao: "📄 A proposta deve incluir o Formulário de Cotação e a Declaração de Manutenção da Oferta, ambos assinados pelo representante legal, acompanhados dos documentos de capacidade jurídica da empresa. A cotação permanece válida por 60 dias.",
     linkTdr: "https://drive.google.com/file/d/1qY6uu7wpUmWhq1PCVJojRjwRHr0ubrA3/view?usp=sharing",
@@ -111,6 +113,7 @@ const OPORTUNIDADES: Oportunidade[] = [
     status: "aberto",
     descricao: "Aquisição de mobiliários (cadeiras, mesas), eletrodomésticos, utensílios de cozinha, equipamentos de TI, sistema de câmeras de segurança, materiais de escritório e itens de campo (botas, bacias) para infraestrutura do Instituto e ações nas 14 comunidades. Enviar cotação para institutongutapa@hotmail.com ou presencialmente na sede. Valor estimado: R$ 76.163,69.",
     temFormulario: false,
+    email: "institutongutapa@hotmail.com",
     linkTdr: "https://drive.google.com/file/d/1W_VkrzjVvgRE2Q7VK5Irt36BfxOU20K2/view?usp=sharing",
     labelLinkTdr: "Ver Pedido de Orçamento",
   },
@@ -362,7 +365,7 @@ ${cfg ? `
 ${efetivo === "encerrado"
   ? `<div class="alert-box">⚠ O prazo ${isCotacao ? "para apresentação de cotações" : "de inscrição"} para este processo foi encerrado em ${op.prazo} às ${horario} (Horário do Amazonas).</div>`
   : `<div style="font-family:system-ui,sans-serif;font-size:9.5pt;line-height:1.8">
-      <div><strong>E-mail:</strong> Institutongutapatikuna@gmail.com</div>
+      <div><strong>E-mail:</strong> ${op.email ?? "Institutongutapatikuna@gmail.com"}</div>
       <div><strong>Assunto:</strong> ${assunto}</div>
       <div><strong>Prazo:</strong> ${op.prazo} às ${horario} (Horário do Amazonas)</div>
       <div style="margin-top:4px"><strong>Envio:</strong> ${isCotacao
