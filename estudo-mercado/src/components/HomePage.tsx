@@ -31,7 +31,7 @@ interface Oportunidade {
 const OPORTUNIDADES: Oportunidade[] = [
   {
     id: "pedido-orcamento-008-2026",
-    titulo: "Pedido de Orçamento — Motores de Popa 15 HP (008/2026)",
+    titulo: "Pedido de Orçamento — Motores 15 HP (008/2026)",
     categoria: "Compra de Bens",
     processo: "008/2026",
     subprojeto: "Guardiões dos Peixes e Quelônios do Rio Içá",
@@ -42,10 +42,10 @@ const OPORTUNIDADES: Oportunidade[] = [
     prazoHorario: "17h00",
     statusLabelAberto: "Cotações Abertas",
     status: "aberto",
-    descricao: "Aquisição de 6 (seis) motores de popa novos, sem uso, de 15 HP, 2 tempos a gasolina, com partida manual retrátil, comando por cana de leme, tanque de combustível externo com mangueira e conectores, hélice instalada e kit de ferramentas do fabricante. Devem ser entregues com manual em português, certificado de garantia e número de série informado na nota fiscal, com garantia mínima de 1 (um) ano do fabricante e assistência técnica autorizada em Manaus/AM. Destinam-se ao deslocamento fluvial da equipe, ao monitoramento e à vigilância dos lagos de manejo nas 14 comunidades atendidas. Entrega pelo fornecedor até o Porto de Manaus; o transporte até a Vila Betânia fica a cargo do Instituto NGUTAPA. Somente pessoa jurídica, com no mínimo 1 contrato similar executado nos últimos 2 anos. Enviar proposta para institutongutapa@hotmail.com ou entregar na sede do Instituto (Rua Goiabal, S/N, Vila Betânia, Santo Antônio do Içá/AM).",
+    descricao: "Aquisição de 6 (seis) motores novos, sem uso, de 15 HP, 2 tempos a gasolina, com partida manual retrátil, comando por cana de leme, tanque de combustível externo com mangueira e conectores, hélice instalada e kit de ferramentas do fabricante. Devem ser entregues com manual em português, certificado de garantia e número de série informado na nota fiscal, com garantia mínima de 1 (um) ano do fabricante e assistência técnica autorizada em Manaus/AM. Destinam-se ao deslocamento fluvial da equipe, ao monitoramento e à vigilância dos lagos de manejo nas 14 comunidades atendidas. Entrega pelo fornecedor até o Porto de Manaus; o transporte até a Vila Betânia fica a cargo do Instituto NGUTAPA. Somente pessoa jurídica, com no mínimo 1 contrato similar executado nos últimos 2 anos. Enviar proposta para institutongutapa@hotmail.com ou entregar na sede do Instituto (Rua Goiabal, S/N, Vila Betânia, Santo Antônio do Içá/AM).",
     temFormulario: false,
     email: "institutongutapa@hotmail.com",
-    emailAssunto: "Convite 008/2026 – Motores de popa de 15 HP – [Nome da empresa]",
+    emailAssunto: "Convite 008/2026 – Motores 15 HP – [Nome da empresa]",
     notaPublicacao: "📄 A proposta deve incluir o Formulário de Cotação e a Declaração de Manutenção da Oferta, ambos assinados pelo representante legal, acompanhados dos documentos de capacidade jurídica da empresa. A cotação permanece válida por 60 dias.",
     linkTdr: "https://drive.google.com/file/d/1qY6uu7wpUmWhq1PCVJojRjwRHr0ubrA3/view?usp=sharing",
     labelLinkTdr: "Ver Pedido de Orçamento",
